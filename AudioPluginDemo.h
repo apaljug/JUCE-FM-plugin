@@ -75,22 +75,27 @@ public:
     {
         return dynamic_cast<SineWaveSound*> (sound) != nullptr;
     }
-
+    
     void startNote (int midiNoteNumber, float velocity,
                     SynthesiserSound* /*sound*/, int) override
     {
         
-        int modFreq = 440; //new
-        float freqDev = 10; //new
+        
         currentAngle = 0.0;
         level = velocity * 0.15;
         tailOff = 0.0;
 
+        if (modRatioDen == 0) {
+            modRatio = 0.5;
+        } else {
+            modRatio = (modRatioNum * 1.0 / modRatioDen);
+        }
         auto cyclesPerSecond = MidiMessage::getMidiNoteInHertz (midiNoteNumber);
-        auto cyclesPerSample = cyclesPerSecond / getSampleRate();
+        auto cyclesPerSample = (cyclesPerSecond)/ getSampleRate();
 
         angleDelta = cyclesPerSample * MathConstants<double>::twoPi;
-        
+        int modFreq = int(cyclesPerSecond * modRatio); //new
+        // float freqDev = 10; //new
         
         auto modCyclesPerSample = modFreq / getSampleRate(); //new
         modAngleDelta = modCyclesPerSample * MathConstants<double>::twoPi;//new
@@ -121,10 +126,19 @@ public:
     {
         // not implemented for the purposes of this demo!
     }
-
-    void controllerMoved (int /*controllerNumber*/, int /*newValue*/) override
+    
+    
+    void controllerMoved (int paramNum, int value) override
     {
-        // not implemented for the purposes of this demo!
+        
+        if (paramNum == 0) { //freqDev
+            freqDev = value;
+        } else if (paramNum == 1) {
+            modRatioNum = value;
+        } else if (paramNum == 2) {
+            modRatioDen = value;
+        }
+
     }
 
     void renderNextBlock (AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override
@@ -186,6 +200,10 @@ private:
     double modCurrentAngle = 0.0;
     double modAngleDelta = 0.0;
     double modIndex = 0.0;
+    int freqDev = 100;
+    int modRatioNum = 1;
+    int modRatioDen = 2;
+    double modRatio = 0.5;
 };
 
 //==============================================================================
@@ -198,7 +216,9 @@ public:
         : AudioProcessor (getBusesProperties()),
           state (*this, nullptr, "state",
                  { std::make_unique<AudioParameterFloat> ("gain",  "Gain",           NormalisableRange<float> (0.0f, 1.0f), 0.9f),
-                   std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 1.0f), 0.5f) })
+                  std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 100.0f), 0.5f) })
+
+               //    std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 1.0f), 0.5f) })
     {
         // Add a sub-tree to store the state of our UI
         state.state.addChild ({ "uiState", { { "width",  400 }, { "height", 200 } }, {} }, -1, nullptr);
@@ -392,7 +412,8 @@ private:
             : AudioProcessorEditor (owner),
               midiKeyboard         (owner.keyboardState, MidiKeyboardComponent::horizontalKeyboard),
               gainAttachment       (owner.state, "gain",  gainSlider),
-              delayAttachment      (owner.state, "delay", delaySlider)
+              delayAttachment      (owner.state, "delay", delaySlider),
+              modAttachment        (owner.state, "mod", modSlider)
         {
             // add some sliders..
             addAndMakeVisible (gainSlider);
@@ -496,10 +517,11 @@ private:
 
         Label timecodeDisplayLabel,
               gainLabel  { {}, "Throughput level:" },
-              delayLabel { {}, "Delay:" };
+              delayLabel { {}, "Delay:" },
+              modLabel { {}, "Modulation:" };
 
-        Slider gainSlider, delaySlider;
-        AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment;
+        Slider gainSlider, delaySlider, modSlider;
+        AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment;
         Colour backgroundColour;
 
         // these are used to persist the UI's size - the values are stored along with the
@@ -585,15 +607,19 @@ private:
         for (auto i = getTotalNumInputChannels(); i < getTotalNumOutputChannels(); ++i)
             buffer.clear (i, 0, numSamples);
 
+        //synth.defineModulation(1.0, delayParamValue);
         // Now pass any incoming midi messages to our keyboard state object, and let it
         // add messages to the buffer if the user is clicking on the on-screen keys
         keyboardState.processNextMidiBuffer (midiMessages, 0, numSamples, true);
 
         // and now get our synth to process these midi events and generate its output.
+        for (int i = 0; i < synth.getNumVoices(); i++) {
+            (synth.getVoice(i))->controllerMoved(0, 100 * delayParamValue);
+        }
         synth.renderNextBlock (buffer, midiMessages, 0, numSamples);
 
         // Apply our delay effect to the new output..
-        applyDelay (buffer, delayBuffer, delayParamValue);
+       // applyDelay (buffer, delayBuffer, delayParamValue);
 
         // Apply our gain change to the outgoing data..
         applyGain (buffer, delayBuffer, gainParamValue);
