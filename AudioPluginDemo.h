@@ -216,7 +216,8 @@ public:
         : AudioProcessor (getBusesProperties()),
           state (*this, nullptr, "state",
                  { std::make_unique<AudioParameterFloat> ("gain",  "Gain",           NormalisableRange<float> (0.0f, 1.0f), 0.9f),
-                  std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 100.0f), 0.5f) })
+                  std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 100.0f), 0.5f),
+                 std::make_unique<AudioParameterFloat> ("mod", "Modulation", NormalisableRange<float> (0.0f, 100.0f), 0.5f) })
 
                //    std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 1.0f), 0.5f) })
     {
@@ -421,6 +422,9 @@ private:
 
             addAndMakeVisible (delaySlider);
             delaySlider.setSliderStyle (Slider::Rotary);
+            
+            addAndMakeVisible (modSlider);
+            delaySlider.setSliderStyle (Slider::Rotary);
 
             // add some labels for the sliders..
             gainLabel.attachToComponent (&gainSlider, false);
@@ -428,6 +432,9 @@ private:
 
             delayLabel.attachToComponent (&delaySlider, false);
             delayLabel.setFont (Font (11.0f));
+            
+            modLabel.attachToComponent (&modSlider, false);
+            modLabel.setFont (Font (11.0f));
 
             // add the midi keyboard component..
             addAndMakeVisible (midiKeyboard);
@@ -476,6 +483,7 @@ private:
             auto sliderArea = r.removeFromTop (60);
             gainSlider.setBounds  (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth() / 2)));
             delaySlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+            modSlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
 
             lastUIWidth  = getWidth();
             lastUIHeight = getHeight();
@@ -518,7 +526,7 @@ private:
         Label timecodeDisplayLabel,
               gainLabel  { {}, "Throughput level:" },
               delayLabel { {}, "Delay:" },
-              modLabel { {}, "Modulation:" };
+              modLabel { {}, "Freq Mod (deviation):" };
 
         Slider gainSlider, delaySlider, modSlider;
         AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment;
@@ -599,6 +607,8 @@ private:
     {
         auto gainParamValue  = state.getParameter ("gain") ->getValue();
         auto delayParamValue = state.getParameter ("delay")->getValue();
+        auto modParamValue = state.getParameter ("mod")->getValue();
+
         auto numSamples = buffer.getNumSamples();
 
         // In case we have more outputs than inputs, we'll clear any output
@@ -614,12 +624,12 @@ private:
 
         // and now get our synth to process these midi events and generate its output.
         for (int i = 0; i < synth.getNumVoices(); i++) {
-            (synth.getVoice(i))->controllerMoved(0, 100 * delayParamValue);
+            (synth.getVoice(i))->controllerMoved(0, 100 * modParamValue);
         }
         synth.renderNextBlock (buffer, midiMessages, 0, numSamples);
 
         // Apply our delay effect to the new output..
-       // applyDelay (buffer, delayBuffer, delayParamValue);
+        applyDelay (buffer, delayBuffer, delayParamValue);
 
         // Apply our gain change to the outgoing data..
         applyGain (buffer, delayBuffer, gainParamValue);
