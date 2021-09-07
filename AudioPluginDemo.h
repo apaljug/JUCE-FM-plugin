@@ -217,7 +217,10 @@ public:
           state (*this, nullptr, "state",
                  { std::make_unique<AudioParameterFloat> ("gain",  "Gain",           NormalisableRange<float> (0.0f, 1.0f), 0.9f),
                   std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 100.0f), 0.5f),
-                 std::make_unique<AudioParameterFloat> ("mod", "Modulation", NormalisableRange<float> (0.0f, 100.0f), 0.5f) })
+                 std::make_unique<AudioParameterFloat> ("mod", "Modulation", NormalisableRange<float> (0.0f, 100.0f), 0.5f),
+              std::make_unique<AudioParameterFloat> ("indexNum", "Modulation", NormalisableRange<float> (0.0f, 100.0f), 0.5f),
+              std::make_unique<AudioParameterFloat> ("indexDen", "Modulation", NormalisableRange<float> (0.0f, 100.0f), 0.5f),
+          })
 
                //    std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 1.0f), 0.5f) })
     {
@@ -414,7 +417,10 @@ private:
               midiKeyboard         (owner.keyboardState, MidiKeyboardComponent::horizontalKeyboard),
               gainAttachment       (owner.state, "gain",  gainSlider),
               delayAttachment      (owner.state, "delay", delaySlider),
-              modAttachment        (owner.state, "mod", modSlider)
+              modAttachment        (owner.state, "mod", modSlider),
+              indexNumAttachment   (owner.state, "indexNum", iNumSlider),
+              indexDenAttachment   (owner.state, "indexDen", iDenSlider)
+
         {
             // add some sliders..
             addAndMakeVisible (gainSlider);
@@ -424,7 +430,13 @@ private:
             delaySlider.setSliderStyle (Slider::Rotary);
             
             addAndMakeVisible (modSlider);
-            delaySlider.setSliderStyle (Slider::Rotary);
+            modSlider.setSliderStyle (Slider::Rotary);
+            
+            addAndMakeVisible (iNumSlider);
+            iNumSlider.setSliderStyle (Slider::Rotary);
+            
+            addAndMakeVisible (iDenSlider);
+            iDenSlider.setSliderStyle (Slider::Rotary);
 
             // add some labels for the sliders..
             gainLabel.attachToComponent (&gainSlider, false);
@@ -435,6 +447,12 @@ private:
             
             modLabel.attachToComponent (&modSlider, false);
             modLabel.setFont (Font (11.0f));
+            
+            numLabel.attachToComponent (&iNumSlider, false);
+            numLabel.setFont (Font (11.0f));
+            
+            denLabel.attachToComponent (&iDenSlider, false);
+            denLabel.setFont (Font (11.0f));
 
             // add the midi keyboard component..
             addAndMakeVisible (midiKeyboard);
@@ -484,7 +502,9 @@ private:
             gainSlider.setBounds  (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth() / 2)));
             delaySlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
             modSlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
-
+            iNumSlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+            iDenSlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+          
             lastUIWidth  = getWidth();
             lastUIHeight = getHeight();
         }
@@ -526,10 +546,13 @@ private:
         Label timecodeDisplayLabel,
               gainLabel  { {}, "Throughput level:" },
               delayLabel { {}, "Delay:" },
-              modLabel { {}, "Freq Mod (deviation):" };
+              modLabel { {}, "Freq Mod (deviation):" },
+              numLabel { {},  "Index Numerator:"},
+              denLabel { {},  "Index Denominator:"};
 
-        Slider gainSlider, delaySlider, modSlider;
-        AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment;
+
+        Slider gainSlider, delaySlider, modSlider, iNumSlider, iDenSlider;
+        AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment, indexNumAttachment, indexDenAttachment;
         Colour backgroundColour;
 
         // these are used to persist the UI's size - the values are stored along with the
@@ -608,6 +631,9 @@ private:
         auto gainParamValue  = state.getParameter ("gain") ->getValue();
         auto delayParamValue = state.getParameter ("delay")->getValue();
         auto modParamValue = state.getParameter ("mod")->getValue();
+        auto numParamValue = state.getParameter ("indexNum")->getValue();
+        auto denParamValue = state.getParameter ("indexDen")->getValue();
+
 
         auto numSamples = buffer.getNumSamples();
 
@@ -625,6 +651,9 @@ private:
         // and now get our synth to process these midi events and generate its output.
         for (int i = 0; i < synth.getNumVoices(); i++) {
             (synth.getVoice(i))->controllerMoved(0, 100 * modParamValue);
+            (synth.getVoice(i))->controllerMoved(1, 100 * numParamValue);
+            (synth.getVoice(i))->controllerMoved(2, 100 * denParamValue);
+
         }
         synth.renderNextBlock (buffer, midiMessages, 0, numSamples);
 
