@@ -83,7 +83,7 @@ public:
         
         currentAngle = 0.0;
         level = velocity * 0.15;
-        tailOff = 0.0;
+        release = 0.0;
 
         if (modRatioDen == 0) {
             modRatio = 0.5;
@@ -109,9 +109,9 @@ public:
             // start a tail-off by setting this flag. The render callback will pick up on
             // this and do a fade out, calling clearCurrentNote() when it's finished.
 
-            if (tailOff == 0.0) // we only need to begin a tail-off if it's not already doing so - the
+            if (release == 0.0) // we only need to begin a tail-off if it's not already doing so - the
                                 // stopNote method could be called more than once.
-                tailOff = 1.0;
+                release = 1.0;
         }
         else
         {
@@ -145,12 +145,11 @@ public:
     {
         if (angleDelta != 0.0)
         {
-            if (tailOff > 0.0)
-            {
+            if (attack < 1) {
                 while (--numSamples >= 0)
                 {
-                    // auto currentSample = (float) (sin (currentAngle) * level * tailOff);
-                    auto currentSample = (float) (sin (currentAngle + modIndex * sin( modCurrentAngle ) ) * level * tailOff);
+                    // auto currentSample = (float) (sin (currentAngle) * level * release);
+                    auto currentSample = (float) (sin (currentAngle + modIndex * sin( modCurrentAngle ) ) * level * attack);
 
                     for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
                         outputBuffer.addSample (i, startSample, currentSample);
@@ -159,9 +158,25 @@ public:
                     modCurrentAngle += modAngleDelta;
                     ++startSample;
 
-                    tailOff *= 0.99;
+                    attack *= 1.01;
+               }
+            }
+            else  if (release > 0.0)
+            {
+                while (--numSamples >= 0)
+                {
+                    // auto currentSample = (float) (sin (currentAngle) * level * release);
+                    auto currentSample = (float) (sin (currentAngle + modIndex * sin( modCurrentAngle ) ) * level * release);
 
-                    if (tailOff <= 0.005)
+                    for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
+                        outputBuffer.addSample (i, startSample, currentSample);
+
+                    currentAngle += angleDelta;
+                    modCurrentAngle += modAngleDelta;
+                    ++startSample;
+
+                    release *= 0.99;
+                    if (release <= 0.005)
                     {
                         // tells the synth that this voice has stopped
                         clearCurrentNote();
@@ -193,10 +208,16 @@ public:
     using SynthesiserVoice::renderNextBlock;
 
 private:
+    //sine parameters
     double currentAngle = 0.0;
     double angleDelta   = 0.0;
     double level        = 0.0;
-    double tailOff      = 0.0;
+    //adsr parameters
+    double attack       = 0.5;
+    //TODO: add decay, sustain, etc.
+    double release      = 0.5;
+    
+    //FM parameters
     double modCurrentAngle = 0.0;
     double modAngleDelta = 0.0;
     double modIndex = 0.0;
@@ -218,9 +239,13 @@ public:
                  { std::make_unique<AudioParameterFloat> ("gain",  "Gain",           NormalisableRange<float> (0.0f, 1.0f), 0.9f),
                   std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 100.0f), 0.5f),
                  std::make_unique<AudioParameterFloat> ("mod", "Modulation", NormalisableRange<float> (0.0f, 100.0f), 0.5f),
-              std::make_unique<AudioParameterFloat> ("indexNum", "Modulation", NormalisableRange<float> (0.0f, 100.0f), 0.5f),
-              std::make_unique<AudioParameterFloat> ("indexDen", "Modulation", NormalisableRange<float> (0.0f, 100.0f), 0.5f),
-          })
+              std::make_unique<AudioParameterInt> ("indexNum", "Index Numerator", 1, 99, 1),
+              std::make_unique<AudioParameterInt> ("indexDen", "Index Denominator", 1, 20, 2), //min, max, default
+              std::make_unique<AudioParameterFloat>("attack", "Attack", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
+              std::make_unique<AudioParameterFloat>("sustain", "Sustain", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
+              std::make_unique<AudioParameterFloat>("release", "Release", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
+             
+              })
 
                //    std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 1.0f), 0.5f) })
     {
@@ -418,9 +443,11 @@ private:
               gainAttachment       (owner.state, "gain",  gainSlider),
               delayAttachment      (owner.state, "delay", delaySlider),
               modAttachment        (owner.state, "mod", modSlider),
-              indexNumAttachment   (owner.state, "indexNum", iNumSlider),
-              indexDenAttachment   (owner.state, "indexDen", iDenSlider)
-
+              iNumAttachment   (owner.state, "indexNum", iNumBox),
+              iDenAttachment   (owner.state, "indexDen", iDenBox),
+              attackAttachment (owner.state, "attack", attackSlider),
+              sustainAttachment(owner.state, "sustain", sustainSlider),
+              releaseAttachment (owner.state, "release", releaseSlider)
         {
             // add some sliders..
             addAndMakeVisible (gainSlider);
@@ -431,12 +458,36 @@ private:
             
             addAndMakeVisible (modSlider);
             modSlider.setSliderStyle (Slider::Rotary);
+
+            addAndMakeVisible(attackSlider);
+            attackSlider.setSliderStyle(Slider::Rotary);
+
+            addAndMakeVisible(sustainSlider);
+            sustainSlider.setSliderStyle(Slider::Rotary);
+
+            addAndMakeVisible(releaseSlider);
+            releaseSlider.setSliderStyle(Slider::Rotary);
+
             
-            addAndMakeVisible (iNumSlider);
+            /*addAndMakeVisible (iNumSlider);
             iNumSlider.setSliderStyle (Slider::Rotary);
             
             addAndMakeVisible (iDenSlider);
-            iDenSlider.setSliderStyle (Slider::Rotary);
+            iDenSlider.setSliderStyle (Slider::Rotary);*/
+            
+            addAndMakeVisible(iNumBox);
+            
+            for (int i = 1; i < 100; i++)
+            { iNumBox.addItem(std::to_string(i), i);
+            }
+            
+            addAndMakeVisible(iDenBox);
+            for (int i = 1; i <= 20; i++)
+            {
+                iDenBox.addItem(std::to_string(i), i);
+            }
+
+
 
             // add some labels for the sliders..
             gainLabel.attachToComponent (&gainSlider, false);
@@ -448,11 +499,20 @@ private:
             modLabel.attachToComponent (&modSlider, false);
             modLabel.setFont (Font (11.0f));
             
-            numLabel.attachToComponent (&iNumSlider, false);
+            numLabel.attachToComponent (&iNumBox, false);
             numLabel.setFont (Font (11.0f));
             
-            denLabel.attachToComponent (&iDenSlider, false);
+            denLabel.attachToComponent (&iDenBox, false);
             denLabel.setFont (Font (11.0f));
+
+            attackLabel.attachToComponent(&attackSlider, false);
+            attackLabel.setFont(Font(11.0f));
+
+            sustainLabel.attachToComponent(&sustainSlider, false);
+            sustainLabel.setFont(Font(11.0f));
+
+            releaseLabel.attachToComponent(&releaseSlider, false);
+            releaseLabel.setFont(Font(11.0f));
 
             // add the midi keyboard component..
             addAndMakeVisible (midiKeyboard);
@@ -499,11 +559,15 @@ private:
 
             r.removeFromTop (20);
             auto sliderArea = r.removeFromTop (60);
+            auto sliderArea2 = r.removeFromTop (60);
             gainSlider.setBounds  (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth() / 2)));
             delaySlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
             modSlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
-            iNumSlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
-            iDenSlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+            iNumBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+            iDenBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+            attackSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
+            sustainSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
+            releaseSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
           
             lastUIWidth  = getWidth();
             lastUIHeight = getHeight();
@@ -544,15 +608,24 @@ private:
         MidiKeyboardComponent midiKeyboard;
 
         Label timecodeDisplayLabel,
-              gainLabel  { {}, "Throughput level:" },
-              delayLabel { {}, "Delay:" },
-              modLabel { {}, "Freq Mod (deviation):" },
-              numLabel { {},  "Index Numerator:"},
-              denLabel { {},  "Index Denominator:"};
+            gainLabel{ {}, "Throughput level:" },
+            delayLabel{ {}, "Delay:" },
+            modLabel{ {}, "Freq Mod (deviation):" },
+            numLabel{ {},  "Index Numerator:" },
+            denLabel{ {},  "Index Denominator:" },
+            attackLabel{ {}, "Attack Magnitude:" },
+            sustainLabel{ {}, "Sustain Magnitude:" },
+            releaseLabel{ {}, "Release Magnitude:" };
 
 
-        Slider gainSlider, delaySlider, modSlider, iNumSlider, iDenSlider;
-        AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment, indexNumAttachment, indexDenAttachment;
+        Slider gainSlider, delaySlider, modSlider, attackSlider, sustainSlider, releaseSlider /*, iNumSlider, iDenSlider*/;
+        
+        ComboBox iNumBox, iDenBox;
+        
+        AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment, attackAttachment, sustainAttachment, releaseAttachment;
+        /*,indexNumAttachment, indexDenAttachment;*/
+        
+        AudioProcessorValueTreeState::ComboBoxAttachment iNumAttachment, iDenAttachment;
         Colour backgroundColour;
 
         // these are used to persist the UI's size - the values are stored along with the
@@ -666,7 +739,7 @@ private:
         // Now ask the host for the current time so we can store it to be displayed later...
         updateCurrentTimeInfoFromHost();
     }
-
+    
     template <typename FloatType>
     void applyGain (AudioBuffer<FloatType>& buffer, AudioBuffer<FloatType>& delayBuffer, float gainLevel)
     {
@@ -699,9 +772,9 @@ private:
                     delayPos = 0;
             }
         }
-
         delayPosition = delayPos;
     }
+    
 
     AudioBuffer<float> delayBufferFloat;
     AudioBuffer<double> delayBufferDouble;
