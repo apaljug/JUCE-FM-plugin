@@ -145,7 +145,7 @@ public:
     {
         if (angleDelta != 0.0)
         {
-            /*if (attack < 1) {
+            if (attack < 1) {
                 while (--numSamples >= 0)
                 {
                     // auto currentSample = (float) (sin (currentAngle) * level * release);
@@ -159,9 +159,9 @@ public:
                     ++startSample;
 
                     attack *= 1.01;
-             /Users/andreaspaljug/Downloads/olddownloads/JUCE 2/modules/juce_audio_plugin_client                }
+               }
             }
-            else */ if (release > 0.0)
+            else  if (release > 0.0)
             {
                 while (--numSamples >= 0)
                 {
@@ -213,7 +213,7 @@ private:
     double angleDelta   = 0.0;
     double level        = 0.0;
     //adsr parameters
-    //double attack       = 0.5;
+    double attack       = 0.5;
     //TODO: add decay, sustain, etc.
     double release      = 0.5;
     
@@ -241,16 +241,16 @@ public:
                  std::make_unique<AudioParameterFloat> ("mod", "Modulation", NormalisableRange<float> (0.0f, 100.0f), 0.5f),
               std::make_unique<AudioParameterInt> ("indexNum", "Index Numerator", 1, 99, 1),
               std::make_unique<AudioParameterInt> ("indexDen", "Index Denominator", 1, 20, 2), //min, max, default
-              std::make_unique<AudioParameterFloat> ("attack", "Attack", NormalisableRange<float> (0.0f, 100.0f), 0.5f), //min, max, default
-              
-              //TODO: define variables for sustain, release
-
-          })
+              std::make_unique<AudioParameterFloat>("attack", "Attack", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
+              std::make_unique<AudioParameterFloat>("sustain", "Sustain", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
+              std::make_unique<AudioParameterFloat>("release", "Release", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
+             
+              })
 
                //    std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 1.0f), 0.5f) })
     {
         // Add a sub-tree to store the state of our UI
-        state.state.addChild ({ "uiState", { { "width",  800 }, { "height", 200 } }, {} }, -1, nullptr);
+        state.state.addChild ({ "uiState", { { "width",  400 }, { "height", 200 } }, {} }, -1, nullptr);
 
         initialiseSynth();
     }
@@ -443,9 +443,11 @@ private:
               gainAttachment       (owner.state, "gain",  gainSlider),
               delayAttachment      (owner.state, "delay", delaySlider),
               modAttachment        (owner.state, "mod", modSlider),
-              attackAttachment (owner.state, "attack", attackSlider),
               iNumAttachment   (owner.state, "indexNum", iNumBox),
-              iDenAttachment   (owner.state, "indexDen", iDenBox)
+              iDenAttachment   (owner.state, "indexDen", iDenBox),
+              attackAttachment (owner.state, "attack", attackSlider),
+              sustainAttachment(owner.state, "sustain", sustainSlider),
+              releaseAttachment (owner.state, "release", releaseSlider)
         {
             // add some sliders..
             addAndMakeVisible (gainSlider);
@@ -456,12 +458,22 @@ private:
             
             addAndMakeVisible (modSlider);
             modSlider.setSliderStyle (Slider::Rotary);
+
+            addAndMakeVisible(attackSlider);
+            attackSlider.setSliderStyle(Slider::Rotary);
+
+            addAndMakeVisible(sustainSlider);
+            sustainSlider.setSliderStyle(Slider::Rotary);
+
+            addAndMakeVisible(releaseSlider);
+            releaseSlider.setSliderStyle(Slider::Rotary);
+
             
+            /*addAndMakeVisible (iNumSlider);
+            iNumSlider.setSliderStyle (Slider::Rotary);
             
-            addAndMakeVisible (attackSlider);
-            attackSlider.setSliderStyle (Slider::Rotary);
-            
-            // add some checkboxes:
+            addAndMakeVisible (iDenSlider);
+            iDenSlider.setSliderStyle (Slider::Rotary);*/
             
             addAndMakeVisible(iNumBox);
             
@@ -474,13 +486,9 @@ private:
             {
                 iDenBox.addItem(std::to_string(i), i);
             }
-            
-            
 
 
-            attackLabel.attachToComponent (&attackSlider, false);
-            attackLabel.setFont (Font (11.0f));
-            
+
             // add some labels for the sliders..
             gainLabel.attachToComponent (&gainSlider, false);
             gainLabel.setFont (Font (11.0f));
@@ -494,10 +502,17 @@ private:
             numLabel.attachToComponent (&iNumBox, false);
             numLabel.setFont (Font (11.0f));
             
-            
-            
             denLabel.attachToComponent (&iDenBox, false);
             denLabel.setFont (Font (11.0f));
+
+            attackLabel.attachToComponent(&attackSlider, false);
+            attackLabel.setFont(Font(11.0f));
+
+            sustainLabel.attachToComponent(&sustainSlider, false);
+            sustainLabel.setFont(Font(11.0f));
+
+            releaseLabel.attachToComponent(&releaseSlider, false);
+            releaseLabel.setFont(Font(11.0f));
 
             // add the midi keyboard component..
             addAndMakeVisible (midiKeyboard);
@@ -544,13 +559,16 @@ private:
 
             r.removeFromTop (20);
             auto sliderArea = r.removeFromTop (60);
-            gainSlider.setBounds  (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth() / 3)));
-            delaySlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth() * 2 / 3)));
+            auto sliderArea2 = r.removeFromTop (60);
+            gainSlider.setBounds  (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth() / 2)));
+            delaySlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
             modSlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
             iNumBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
             iDenBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
-            //attackSlider.setBounds  (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth() / 2)));
-
+            attackSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
+            sustainSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
+            releaseSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
+          
             lastUIWidth  = getWidth();
             lastUIHeight = getHeight();
         }
@@ -590,22 +608,21 @@ private:
         MidiKeyboardComponent midiKeyboard;
 
         Label timecodeDisplayLabel,
-              gainLabel  { {}, "Throughput level:" },
-              delayLabel { {}, "Delay:" },
-              modLabel { {}, "Freq Mod (deviation):" },
-              numLabel { {},  "Index Numerator:"},
-              denLabel { {},  "Index Denominator:"},
-              attackLabel {{}, "Attack Magnitude"};
-                //TODO: add sustain and gain labels
+            gainLabel{ {}, "Throughput level:" },
+            delayLabel{ {}, "Delay:" },
+            modLabel{ {}, "Freq Mod (deviation):" },
+            numLabel{ {},  "Index Numerator:" },
+            denLabel{ {},  "Index Denominator:" },
+            attackLabel{ {}, "Attack Magnitude:" },
+            sustainLabel{ {}, "Sustain Magnitude:" },
+            releaseLabel{ {}, "Release Magnitude:" };
 
 
-
-        Slider gainSlider, delaySlider, modSlider, attackSlider/*, iNumSlider, iDenSlider*/;
+        Slider gainSlider, delaySlider, modSlider, attackSlider, sustainSlider, releaseSlider /*, iNumSlider, iDenSlider*/;
         
         ComboBox iNumBox, iDenBox;
         
-        AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment, attackAttachment; //Sustain attachment;
-
+        AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment, attackAttachment, sustainAttachment, releaseAttachment;
         /*,indexNumAttachment, indexDenAttachment;*/
         
         AudioProcessorValueTreeState::ComboBoxAttachment iNumAttachment, iDenAttachment;
@@ -689,7 +706,7 @@ private:
         auto modParamValue = state.getParameter ("mod")->getValue();
         auto numParamValue = state.getParameter ("indexNum")->getValue();
         auto denParamValue = state.getParameter ("indexDen")->getValue();
-    
+
 
         auto numSamples = buffer.getNumSamples();
 
@@ -709,6 +726,7 @@ private:
             (synth.getVoice(i))->controllerMoved(0, 100 * modParamValue);
             (synth.getVoice(i))->controllerMoved(1, 100 * numParamValue);
             (synth.getVoice(i))->controllerMoved(2, 100 * denParamValue);
+
         }
         synth.renderNextBlock (buffer, midiMessages, 0, numSamples);
 
