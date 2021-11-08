@@ -40,3 +40,6 @@ AudioPluginDemo/Builds/MacOSX/build/Debug/AudioPluginDemo.component
 /Library/Audio/Plug-Ins/Components
 - Open Logic or garage band. (Restart if already open)
 Check available plugins for "3rd party" plugins. Open this for testing of plugin.
+
+Walk thru link for step 5: https://producersociety.com/plug-ins-garageband/
+
