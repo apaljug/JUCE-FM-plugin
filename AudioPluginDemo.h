@@ -755,24 +755,31 @@ private:
 
             r.removeFromTop (20);
             auto sliderArea = r.removeFromTop (60);
+            auto spacer = r.removeFromTop(20);
             auto sliderArea2 = r.removeFromTop (60);
+            auto spacer2 = r.removeFromTop(20);
             auto sliderArea3 = r.removeFromTop (60);
+
             gainSlider.setBounds  (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth() / 2)));
             delaySlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
             modSlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
             iNumBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+            auto boxSpacer = sliderArea.removeFromLeft(20);
             iDenBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+
             attackSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
             sustainSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
             releaseSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
             resetEnvelope.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
-            iEnvBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+            auto boxSpacer2 = sliderArea2.removeFromLeft(20);
+            iEnvBox.setBounds (sliderArea2.removeFromLeft (jmin (180, sliderArea2.getWidth())));
 
             mattackSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
             msustainSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
             mreleaseSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
             resetModEnvelope.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
-            iModBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+            auto boxSpacer3 = sliderArea3.removeFromLeft(20);
+            iModBox.setBounds (sliderArea3.removeFromLeft (jmin (180, sliderArea3.getWidth())));
 
             
             lastUIWidth  = getWidth();
