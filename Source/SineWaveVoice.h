@@ -6,7 +6,8 @@
 //==============================================================================
 /** A simple demo synth voice that just plays a sine wave.. */
 
-//TODO: Remember to change Juce Header include to ifndef
+#pragma once
+
 #include <JuceHeader.h>
 
 class SineWaveVoice   : public SynthesiserVoice

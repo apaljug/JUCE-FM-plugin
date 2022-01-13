@@ -4,6 +4,7 @@
 //
 //  Copyright © 2022 JUCE. All rights reserved.
 //
+#pragma once
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"

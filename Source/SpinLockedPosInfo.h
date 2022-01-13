@@ -5,7 +5,8 @@
 //  Copyright © 2022 JUCE. All rights reserved.
 //
 
-//TODO: Remember to change Juce Header include to ifndef
+#pragma once
+
 #include <JuceHeader.h>
 
 class SpinLockedPosInfo
