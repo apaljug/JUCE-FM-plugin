@@ -58,6 +58,8 @@
 
 *******************************************************************************/
 
+#pragma once
+
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "SineWaveVoice.h"
