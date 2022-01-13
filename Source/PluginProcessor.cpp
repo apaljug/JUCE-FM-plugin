@@ -31,7 +31,7 @@
 
  BEGIN_JUCE_PIP_METADATA
 
- name:                  AudioPluginDemo
+ name:                  FMPlugin
  version:               1.0.0
  vendor:                JUCE
  website:               http://juce.com
@@ -57,8 +57,6 @@
  END_JUCE_PIP_METADATA
 
 *******************************************************************************/
-
-#pragma once
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
