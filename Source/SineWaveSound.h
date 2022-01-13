@@ -2,7 +2,6 @@
 //  SineWaveSound.h
 //  AudioPluginDemo
 //
-//  Created by Keary Mobley on 1/13/22.
 //  Copyright © 2022 JUCE. All rights reserved.
 //
 
