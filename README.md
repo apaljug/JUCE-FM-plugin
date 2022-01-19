@@ -1,25 +1,26 @@
-# JUCE-FM plugin
-modifications to the juce synthesizer plugin demo to incorporate FM synthesis.
+# JUCE-FM Plugin
+Modifications to the JUCE Synthesizer Plugin Demo to incorporate FM synthesis.
 
 This file has some small changes built on top of a JUCE tutorial to support some aspects of FM synthesis for your DAW plugin.  
 
-####The current iteration supports: 
+#### The current iteration supports: 
  - (Added by Andreas) slider for index of modulation
  - (From Original Demo) Midi Playback with Volume Adjustment
  - (From Original Demo) Basic Envelope w/ Delay parameter
  
-####Todo: (Add the following)
+#### Todo: (Add the following)
  + Adjustment for ratio selector between mod freq and carrier freq
  + Envelope adjustment
     + Signal
     + ADSR adjustors
     
     
-##To run this adaption of the program (Mac os installation guide)
+## Installation Guide (Mac OS)
 
 Step 1: (intsallations)
-Install JUCE from source 
-Install Xcode
+Install [JUCE](https://juce.com) from source
+
+Install [Xcode](https://developer.apple.com/xcode/)
 
 Step 2: Open Audio Plugin Demo
 Open "Audio Plugin Demo" within Juce tutorials directory, Make a copy of this demo in another location
@@ -41,5 +42,11 @@ AudioPluginDemo/Builds/MacOSX/build/Debug/AudioPluginDemo.component
 - Open Logic or garage band. (Restart if already open)
 Check available plugins for "3rd party" plugins. Open this for testing of plugin.
 
-Walk thru link for step 5: https://producersociety.com/plug-ins-garageband/
+[Walk thru link](https://producersociety.com/plug-ins-garageband/) for step 5 
 
+
+## FM Synthesizer Links
+
+[FM SYNTHS in under 4 minutes](https://www.youtube.com/watch?v=vvBl3YUBUyY)
+
+[Logic Pro Guide to Frequency Modulation](https://support.apple.com/guide/logicpro/frequency-modulation-fm-synthesis-lgsife418213/mac)
