@@ -5,26 +5,27 @@
               projectType="audioplug" pluginAUIsSandboxSafe="1" pluginManufacturer="JUCE"
               pluginFormats="buildVST3,buildAU,buildStandalone,buildAUv3" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn,pluginProducesMidiOut,pluginEditorRequiresKeys"
               useAppConfig="0" addUsingNamespaceToJuceHeader="1" id="pBZJUb"
-              jucerFormatVersion="1" pluginName="FM Plugin">
+              jucerFormatVersion="1" pluginName="FM Plugin" pluginCode="Pbzk">
   <MAINGROUP id="mYkFYr" name="FM Plugin">
-    <GROUP id="{B0B5AB16-2FF1-22BD-65AB-F26847DD600B}" name="Source"/>
-    <FILE id="CCCkvF" name="PluginEditor.cpp" compile="1" resource="0"
-          file="Source/PluginEditor.cpp"/>
-    <FILE id="oXC6ds" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
-    <FILE id="d8aHqw" name="PluginProcessor.cpp" compile="1" resource="0"
-          file="Source/PluginProcessor.cpp"/>
-    <FILE id="DhGuZ2" name="PluginProcessor.h" compile="0" resource="0"
-          file="Source/PluginProcessor.h"/>
-    <FILE id="WfzL0k" name="SineWaveSound.cpp" compile="1" resource="0"
-          file="Source/SineWaveSound.cpp"/>
-    <FILE id="y9Igix" name="SineWaveSound.h" compile="0" resource="0" file="Source/SineWaveSound.h"/>
-    <FILE id="qx44ZO" name="SineWaveVoice.cpp" compile="1" resource="0"
-          file="Source/SineWaveVoice.cpp"/>
-    <FILE id="JRzPuv" name="SineWaveVoice.h" compile="0" resource="0" file="Source/SineWaveVoice.h"/>
-    <FILE id="ACoHon" name="SpinLockedPosInfo.cpp" compile="1" resource="0"
-          file="Source/SpinLockedPosInfo.cpp"/>
-    <FILE id="V3UpTs" name="SpinLockedPosInfo.h" compile="0" resource="0"
-          file="Source/SpinLockedPosInfo.h"/>
+    <GROUP id="{B0B5AB16-2FF1-22BD-65AB-F26847DD600B}" name="Source">
+      <FILE id="CCCkvF" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="oXC6ds" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="DhGuZ2" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="d8aHqw" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="WfzL0k" name="SineWaveSound.cpp" compile="1" resource="0"
+            file="Source/SineWaveSound.cpp"/>
+      <FILE id="y9Igix" name="SineWaveSound.h" compile="0" resource="0" file="Source/SineWaveSound.h"/>
+      <FILE id="qx44ZO" name="SineWaveVoice.cpp" compile="1" resource="0"
+            file="Source/SineWaveVoice.cpp"/>
+      <FILE id="JRzPuv" name="SineWaveVoice.h" compile="0" resource="0" file="Source/SineWaveVoice.h"/>
+      <FILE id="ACoHon" name="SpinLockedPosInfo.cpp" compile="1" resource="0"
+            file="Source/SpinLockedPosInfo.cpp"/>
+      <FILE id="V3UpTs" name="SpinLockedPosInfo.h" compile="0" resource="0"
+            file="Source/SpinLockedPosInfo.h"/>
+    </GROUP>
   </MAINGROUP>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
