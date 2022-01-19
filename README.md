@@ -15,24 +15,24 @@ This file has some small changes built on top of a JUCE tutorial to support some
     + ADSR adjustors
     
     
-## Installation Guide (Mac OS)
+## Installation
+### Mac OS
+Step 1: Installations
 
-Step 1: (intsallations)
-Install [JUCE](https://juce.com) from source
-
-Install [Xcode](https://developer.apple.com/xcode/)
+- Install [JUCE](https://juce.com) from source
+- Install [Xcode](https://developer.apple.com/xcode/)
 
 Step 2: Open Audio Plugin Demo
-Open "Audio Plugin Demo" within Juce tutorials directory, Make a copy of this demo in another location
+- Open "Audio Plugin Demo" within Juce tutorials directory 
+- Make a copy of this demo in another location
 
-Step 3: Replace build files with our custom source code
-Replace "Source Code with our files from github"
+Step 3: Replace build files with our custom source code.
 This includes: 
 - AudioPluginDemo.h
 - Main.cpp
 
 Step 4: Build 
-Build tutorial in Xcode. Click the play button to build. Confirm no errors occur
+- Build tutorial in Xcode. Click the play button to build. Confirm no errors occur
 
 Step 5: Move plugin to daw
 - Find build file in this subdirectory within your project folder:
@@ -43,6 +43,13 @@ AudioPluginDemo/Builds/MacOSX/build/Debug/AudioPluginDemo.component
 Check available plugins for "3rd party" plugins. Open this for testing of plugin.
 
 [Walk thru link](https://producersociety.com/plug-ins-garageband/) for step 5 
+
+### Windows
+TBD
+
+### Linux
+
+TBD
 
 
 ## FM Synthesizer Links
