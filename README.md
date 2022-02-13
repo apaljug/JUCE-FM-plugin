@@ -45,7 +45,34 @@ Check available plugins for "3rd party" plugins. Open this for testing of plugin
 [Walk thru link](https://producersociety.com/plug-ins-garageband/) for step 5 
 
 ### Windows
-TBD
+
+Step 1: Installations
+
+- Install [JUCE](https://juce.com) from source
+- Install Visual Studio (Not Visual Studio Code!)
+
+Step 2: Download Code
+
+- Download this repository
+
+Step 3: Creating Project
+
+- Open Visual Studio
+- continue without code --> file --> new --> project from existing code
+- Select the folder in which your code is located in
+- Build or press the green play arrow (this should throw an error at first, but we need to have a build file)
+
+Step 4: Open in JUCE
+
+- Open JUCE
+- Click "Open"
+- Select a file from your project folder
+- Set "Selected exporter" to Visual Studio 
+- Click the Visual Studio icon
+
+Step 5: Run code
+
+- Click the green play arrow
 
 ### Linux
 
