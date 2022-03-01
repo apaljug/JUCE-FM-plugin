@@ -27,20 +27,35 @@ public:
 
 private:
     //sine parameters
-    double currentAngle = 0.0;
-    double angleDelta   = 0.0;
-    double level        = 0.0;
-    //adsr parameters
-    //double attack       = 0.5;
-    //TODO: add decay, sustain, etc.
-    double release      = 0.5;
+      double currentAngle = 0.0;
+      double angleDelta   = 0.0;
+      double level        = 1.0;
+      //adsr parameters
+      int att_is_exp = 0;
+      int dec_is_exp = 0;
+      int modatt_is_exp = 1;
+      int moddec_is_exp = 1;
+      double attack_param       = 0.5;
+      //TODO: add decay, sustain, etc.
+      double sustain_param      = 1.0;
+      double decay_param      = 1.0;
+      double release_param     = 0.5;
+      
+      double release       = 0.0;
+      double attack = .01;
     
-    //FM parameters
-    double modCurrentAngle = 0.0;
-    double modAngleDelta = 0.0;
-    double modIndex = 0.0;
-    int freqDev = 100;
-    int modRatioNum = 1;
-    int modRatioDen = 2;
-    double modRatio = 0.5;
+      double mattack = 0.1;
+      double mrelease = 0.0;
+      
+      juce::ADSR adsr;
+      juce::ADSR::Parameters adsrParams;
+      juce::ADSR::Parameters modAdsrParams;
+      //FM parameters
+      double modCurrentAngle = 0.0;
+      double modAngleDelta = 0.0;
+      double modIndex = 0.0;
+      int freqDev = 50;
+      int modRatioNum = 1;
+      int modRatioDen = 1;
+      double modRatio = 1.0;
 };

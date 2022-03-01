@@ -62,36 +62,37 @@
 #include "PluginEditor.h"
 #include "SineWaveVoice.h"
 #include "SineWaveSound.h"
-//TODO: Change Juce Header include to ifndef
+//TODO: Change Juce Header include to ifndef or pragma
 #include <JuceHeader.h>
 
 //==============================================================================
 JuceDemoPluginAudioProcessor::JuceDemoPluginAudioProcessor()
     : AudioProcessor (getBusesProperties()),
       state (*this, nullptr, "state",
-             { std::make_unique<AudioParameterFloat> ("gain",  "Gain",           NormalisableRange<float> (0.0f, 1.0f), 0.9f),
-              std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 100.0f), 0.5f),
+             { std::make_unique<AudioParameterFloat> ("gain",  "Gain",           NormalisableRange<float> (0.0f, 1.0f), 1.0f),
+              std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 100.0f), 0.0f),
              std::make_unique<AudioParameterFloat> ("mod", "Modulation", NormalisableRange<float> (0.0f, 100.0f), 0.5f),
-          std::make_unique<AudioParameterInt> ("indexNum", "Index Numerator", 1, 99, 1),
-          std::make_unique<AudioParameterInt> ("indexDen", "Index Denominator", 1, 20, 2), //min, max, default
-          std::make_unique<AudioParameterFloat> ("attack", "Attack", NormalisableRange<float> (0.0f, 100.0f), 0.5f), //min, max, default
+          std::make_unique<AudioParameterInt> ("indexNum", "Index Numerator", 2, 99, 2),
+          std::make_unique<AudioParameterInt> ("indexDen", "Index Denominator", 2, 20, 2), //min, max, default
+          std::make_unique<AudioParameterFloat>("attack", "Attack", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
+          std::make_unique<AudioParameterFloat>("sustain", "Sustain", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
+          std::make_unique<AudioParameterFloat>("release", "Release", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
           
-          //TODO: define variables for sustain, release
-
-      })
+          std::make_unique<AudioParameterFloat>("mattack", "mAttack", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
+          std::make_unique<AudioParameterFloat>("msustain", "mSustain", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
+          std::make_unique<AudioParameterFloat>("mrelease", "mRelease", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
+          std::make_unique<AudioParameterInt> ("expLineEnv", "Index Numerator", 0, 3, 0),
+          std::make_unique<AudioParameterInt> ("expLinModEnv", "Index Denominator", 0, 3, 0), //min, max, default
+          })
 
            //    std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 1.0f), 0.5f) })
 {
     // Add a sub-tree to store the state of our UI
-    state.state.addChild ({ "uiState", { { "width",  800 }, { "height", 200 } }, {} }, -1, nullptr);
+    state.state.addChild ({ "uiState", { { "width",  800 }, { "height", 400 } }, {} }, -1, nullptr);
 
     initialiseSynth();
 }
 
-JuceDemoPluginAudioProcessor::~JuceDemoPluginAudioProcessor()
-{
-}
-    
 //==============================================================================
 bool JuceDemoPluginAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
@@ -164,10 +165,7 @@ void JuceDemoPluginAudioProcessor::processBlock (AudioBuffer<double>& buffer, Mi
 }
 
 //==============================================================================
-bool JuceDemoPluginAudioProcessor::hasEditor() const
-{
-    return true;
-}
+bool JuceDemoPluginAudioProcessor::hasEditor() const                                  { return true; }
 
 AudioProcessorEditor* JuceDemoPluginAudioProcessor::createEditor()
 {
@@ -175,17 +173,17 @@ AudioProcessorEditor* JuceDemoPluginAudioProcessor::createEditor()
 }
 
 //==============================================================================
-const String JuceDemoPluginAudioProcessor::getName() const                             { return "FMPlugin"; }
+const String JuceDemoPluginAudioProcessor::getName() const                            { return "AudioPluginDemo"; }
 bool JuceDemoPluginAudioProcessor::acceptsMidi() const                                 { return true; }
 bool JuceDemoPluginAudioProcessor::producesMidi() const                                { return true; }
-double JuceDemoPluginAudioProcessor::getTailLengthSeconds() const                    { return 0.0; }
+double JuceDemoPluginAudioProcessor::getTailLengthSeconds() const                      { return 0.0; }
 
 //==============================================================================
-int JuceDemoPluginAudioProcessor::getNumPrograms()                                      { return 0; }
-int JuceDemoPluginAudioProcessor::getCurrentProgram()                                   { return 0; }
-void JuceDemoPluginAudioProcessor::setCurrentProgram (int)                              {}
+int JuceDemoPluginAudioProcessor::getNumPrograms()                                     { return 0; }
+int JuceDemoPluginAudioProcessor::getCurrentProgram()                                  { return 0; }
+void JuceDemoPluginAudioProcessor::setCurrentProgram (int)                             {}
 const String JuceDemoPluginAudioProcessor::getProgramName (int)                        { return {}; }
-void JuceDemoPluginAudioProcessor::changeProgramName (int, const String&)              {}
+void JuceDemoPluginAudioProcessor::changeProgramName (int, const String&)          {}
 
 //==============================================================================
 void JuceDemoPluginAudioProcessor::getStateInformation (MemoryBlock& destData)
@@ -211,18 +209,19 @@ void JuceDemoPluginAudioProcessor::updateTrackProperties (const TrackProperties&
         trackProperties = properties;
     }
 
-     MessageManager::callAsync ([this]
+    MessageManager::callAsync ([this]
     {
         if (auto* editor = dynamic_cast<JuceDemoPluginAudioProcessorEditor*> (getActiveEditor()))
              editor->updateTrackProperties();
     });
 }
 
-juce::AudioProcessor::TrackProperties JuceDemoPluginAudioProcessor::getTrackProperties() const
+JuceDemoPluginAudioProcessor::TrackProperties JuceDemoPluginAudioProcessor::getTrackProperties() const
 {
     const ScopedLock sl (trackPropertiesLock);
     return trackProperties;
 }
+
 
 //==============================================================================
 template <typename FloatType>
@@ -233,6 +232,18 @@ void JuceDemoPluginAudioProcessor::process (AudioBuffer<FloatType>& buffer, Midi
     auto modParamValue = state.getParameter ("mod")->getValue();
     auto numParamValue = state.getParameter ("indexNum")->getValue();
     auto denParamValue = state.getParameter ("indexDen")->getValue();
+
+    auto att = state.getParameter ("attack")->getValue();
+    auto sus = state.getParameter ("sustain")->getValue();
+    auto rel = state.getParameter ("release")->getValue();
+    
+    auto matt = state.getParameter ("mattack")->getValue();
+    auto msus = state.getParameter ("msustain")->getValue();
+    auto mrel = state.getParameter ("mrelease")->getValue();
+    
+    
+    auto lexenv = state.getParameter ("expLineEnv")->getValue();
+    auto lexmenv = state.getParameter ("expLinModEnv")->getValue();
 
 
     auto numSamples = buffer.getNumSamples();
@@ -248,12 +259,39 @@ void JuceDemoPluginAudioProcessor::process (AudioBuffer<FloatType>& buffer, Midi
     // add messages to the buffer if the user is clicking on the on-screen keys
     keyboardState.processNextMidiBuffer (midiMessages, 0, numSamples, true);
 
-    // and now get our synth to process these midi events and generate its output.
     for (int i = 0; i < synth.getNumVoices(); i++) {
         (synth.getVoice(i))->controllerMoved(0, 100 * modParamValue);
         (synth.getVoice(i))->controllerMoved(1, 100 * numParamValue);
         (synth.getVoice(i))->controllerMoved(2, 100 * denParamValue);
+        (synth.getVoice(i))->controllerMoved(3, 100 * att);
+        (synth.getVoice(i))->controllerMoved(4, 100 * sus);
+
+        (synth.getVoice(i))->controllerMoved(5, 65 + 35 * (rel));
+        
+        
+        (synth.getVoice(i))->controllerMoved(6, 100 * matt);
+        (synth.getVoice(i))->controllerMoved(7, 100 * msus);
+        (synth.getVoice(i))->controllerMoved(8, 65 + 35 * (mrel));
+        
+        for (int j = 9; j < 13; j++){
+            if (lexenv < 2) {
+                if (j % 2== lexenv) {
+                    (synth.getVoice(i))->controllerMoved(j, lexenv);
+                } else {
+                    (synth.getVoice(i))->controllerMoved(j, lexenv);
+                }
+            } else {
+                if (j % 2 == lexmenv) {
+                    (synth.getVoice(i))->controllerMoved(j, lexmenv);
+                } else {
+                    (synth.getVoice(i))->controllerMoved(j, lexmenv);
+                }
+            }
+        }
+
+
     }
+    // and now get our synth to process these midi events and generate its output.
     synth.renderNextBlock (buffer, midiMessages, 0, numSamples);
 
     // Apply our delay effect to the new output..
@@ -339,9 +377,8 @@ juce::AudioProcessor::BusesProperties JuceDemoPluginAudioProcessor::getBusesProp
     return BusesProperties().withInput  ("Input",  AudioChannelSet::stereo(), true)
                             .withOutput ("Output", AudioChannelSet::stereo(), true);
 }
-//==============================================================================
-// This creates new instances of the plugin..
+
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-return new JuceDemoPluginAudioProcessor();
+    return new JuceDemoPluginAudioProcessor();
 }
