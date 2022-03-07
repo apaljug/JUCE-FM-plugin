@@ -43,19 +43,20 @@ public:
         mattackLabel{ {}, "Mod Attack Speed:" },
         msustainLabel{ {}, "Mod Sustain Magnitude:" },
 
-        mreleaseLabel{ {}, "Mod Release Speed:" };
-
+        mreleaseLabel{ {}, "Mod Release Speed:" },
+        
+        presetsLabel{ {}, "Presets" };
 
         Slider gainSlider, delaySlider, modSlider, attackSlider, sustainSlider, releaseSlider, mattackSlider, msustainSlider, mreleaseSlider/*, iNumSlider, iDenSlider*/;
         
-        ComboBox iNumBox, iDenBox, iEnvBox, iModBox;
+        ComboBox iNumBox, iDenBox, iEnvBox, iModBox, presetsBox;
         
-        juce::TextButton resetEnvelope, resetModEnvelope;
+        juce::TextButton resetEnvelope, resetModEnvelope, savePreset;
         
         AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment, attackAttachment, sustainAttachment, releaseAttachment, mattackAttachment, msustainAttachment, mreleaseAttachment ;
         /*,indexNumAttachment, indexDenAttachment;*/
         
-        AudioProcessorValueTreeState::ComboBoxAttachment iNumAttachment, iDenAttachment, iEnvAttachment, iModEnvAttachment;
+        AudioProcessorValueTreeState::ComboBoxAttachment iNumAttachment, iDenAttachment, iEnvAttachment, iModEnvAttachment, presetsAttachment;
         Colour backgroundColour;
 
         // these are used to persist the UI's size - the values are stored along with the

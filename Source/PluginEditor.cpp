@@ -25,7 +25,9 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
        msustainAttachment(owner.state, "msustain", msustainSlider),
        mreleaseAttachment (owner.state, "mrelease", mreleaseSlider),
        iEnvAttachment   (owner.state, "expLineEnv", iEnvBox),
-       iModEnvAttachment   (owner.state, "expLinModEnv", iModBox)
+       iModEnvAttachment   (owner.state, "expLinModEnv", iModBox),
+    presetsAttachment   (owner.state, "presets", presetsBox)
+
    {
        // add some sliders..
        addAndMakeVisible (gainSlider);
@@ -59,14 +61,22 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
        resetEnvelope.setButtonText ("Reset Envelope.");
        resetEnvelope.addListener (this);
        
-       addAndMakeVisible (resetModEnvelope);
+       addAndMakeVisible(resetModEnvelope);
        resetModEnvelope.setButtonText ("Reset Modulation Envelope.");
-       resetModEnvelope.addListener (this);            /*addAndMakeVisible (iNumSlider);
+       resetModEnvelope.addListener (this);      
+       
+       addAndMakeVisible(savePreset);
+       savePreset.setButtonText("Save Preset");
+       savePreset.addListener(this);
+       
+       /*addAndMakeVisible (iNumSlider);
        iNumSlider.setSliderStyle (Slider::Rotary);
        
        addAndMakeVisible (iDenSlider);
        iDenSlider.setSliderStyle (Slider::Rotary);*/
        
+       addAndMakeVisible(presetsBox);
+
        addAndMakeVisible(iNumBox);
        
        for (int i = 2; i < 100; i++)
@@ -132,6 +142,9 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
 
        mreleaseLabel.attachToComponent(&mreleaseSlider, false);
        mreleaseLabel.setFont(Font(11.0f));
+
+       presetsLabel.attachToComponent(&presetsBox, false);
+       presetsLabel.setFont(Font(11.0f));
 
        // add the midi keyboard component..
        addAndMakeVisible (midiKeyboard);
@@ -212,15 +225,19 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
        delaySlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
        modSlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
        iNumBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
-       auto boxSpacer = sliderArea.removeFromLeft(20);
+       auto boxSpacer_1a = sliderArea.removeFromLeft(20);
        iDenBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+       auto boxSpacer_1b = sliderArea.removeFromLeft(20);
+       savePreset.setBounds(sliderArea.removeFromLeft(jmin(180, sliderArea.getWidth())));
 
        attackSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
        sustainSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
        releaseSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
        resetEnvelope.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
-       auto boxSpacer2 = sliderArea2.removeFromLeft(20);
+       auto boxSpacer_2a = sliderArea2.removeFromLeft(20);
        iEnvBox.setBounds (sliderArea2.removeFromLeft (jmin (180, sliderArea2.getWidth())));
+       auto boxSpacer_2b = sliderArea2.removeFromLeft(20);
+       presetsBox.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
 
        mattackSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
        msustainSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
