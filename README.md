@@ -20,29 +20,36 @@ This file has some small changes built on top of a JUCE tutorial to support some
 Step 1: Installations
 
 - Install [JUCE](https://juce.com) from source
-- Install [Xcode](https://developer.apple.com/xcode/)
+- Install [XCode](https://developer.apple.com/xcode/)
 
-Step 2: Open Audio Plugin Demo
-- Open "Audio Plugin Demo" within Juce tutorials directory 
-- Make a copy of this demo in another location
+Step 2: Clone The Repo
+```
+git clone https://github.com/rayxke/JUCE-FM-plugin
+```
 
-Step 3: Replace build files with our custom source code.
-This includes: 
-- AudioPluginDemo.h
-- Main.cpp
 
-Step 4: Build 
-- Build tutorial in Xcode. Click the play button to build. Confirm no errors occur
+Step 3: Using the Projucer open the "FM Plugin.jucer" file.
 
-Step 5: Move plugin to daw
+
+Step 4: Click the export button in the [Projucer](https://juce.com/discover/projucer)
+
+Step 5: Click the build button in XCode
+
+Step 6: Find the build file
 - Find build file in this subdirectory within your project folder:
-AudioPluginDemo/Builds/MacOSX/build/Debug/AudioPluginDemo.component
-- Copy this file into:
-/Library/Audio/Plug-Ins/Components
-- Open Logic or garage band. (Restart if already open)
-Check available plugins for "3rd party" plugins. Open this for testing of plugin.
+```
+cd JUCE\ Projects/JUCE-FM-plugin/Builds/MacOSX/build/Debug/
+```
+- The file should be named "FM Plugin.component"
 
-[Walk thru link](https://producersociety.com/plug-ins-garageband/) for step 5 
+Step 7: Copy this file into:
+```
+/Library/Audio/Plug-Ins/Components
+```
+Step 8: Open Logic or garage band. (Restart if already open)
+- Check available plugins for "3rd party" plugins. Open this for testing of plugin.
+
+[Walk thru link](https://producersociety.com/plug-ins-garageband/) for step 8 
 
 ### Windows
 
