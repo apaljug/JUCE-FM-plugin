@@ -60,7 +60,9 @@ Step 1: Installations
 
 Step 2: Download Code
 
-- Download this repository
+```
+git clone https://github.com/rayxke/JUCE-FM-plugin
+```
 
 Step 3: Creating Project
 
