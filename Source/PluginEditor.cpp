@@ -26,9 +26,12 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
        mreleaseAttachment (owner.state, "mrelease", mreleaseSlider),
        iEnvAttachment   (owner.state, "expLineEnv", iEnvBox),
        iModEnvAttachment   (owner.state, "expLinModEnv", iModBox),
-    presetsAttachment   (owner.state, "presets", presetsBox)
+    presetsAttachment   (owner.state, "presets", presetsBox),
+    chebyshevAttachment   (owner.state, "chebyshev", chebyshevBox)
+
 
    {
+       //TODO: Is it possible to convert this to a for loop?
        // add some sliders..
        addAndMakeVisible (gainSlider);
        gainSlider.setSliderStyle (Slider::Rotary);
@@ -88,8 +91,15 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
        {
            iDenBox.addItem(std::to_string(i), i);
        }
+       addAndMakeVisible(chebyshevBox);
+       for (int i = 2; i <= 10; i++)
+       {
+           chebyshevBox.addItem(std::to_string(i), i);
+       }
+       
        iDenBox.setSelectedId(2);
        iNumBox.setSelectedId(2);
+       chebyshevBox.setSelectedId(2);
 
        
        addAndMakeVisible(iEnvBox);
@@ -145,6 +155,9 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
 
        presetsLabel.attachToComponent(&presetsBox, false);
        presetsLabel.setFont(Font(11.0f));
+       
+       chebyshevLabel.attachToComponent(&chebyshevBox, false);
+       chebyshevLabel.setFont(Font(11.0f));
 
        // add the midi keyboard component..
        addAndMakeVisible (midiKeyboard);
@@ -224,7 +237,7 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
        gainSlider.setBounds  (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth() / 2)));
        delaySlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
        modSlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
-       iNumBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+       iNumBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth()/2)));
        auto boxSpacer_1a = sliderArea.removeFromLeft(20);
        iDenBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
        auto boxSpacer_1b = sliderArea.removeFromLeft(20);
@@ -233,7 +246,7 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
        attackSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
        sustainSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
        releaseSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
-       resetEnvelope.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
+       resetEnvelope.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth() /2)));
        auto boxSpacer_2a = sliderArea2.removeFromLeft(20);
        iEnvBox.setBounds (sliderArea2.removeFromLeft (jmin (180, sliderArea2.getWidth())));
        auto boxSpacer_2b = sliderArea2.removeFromLeft(20);
@@ -243,8 +256,10 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
        msustainSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
        mreleaseSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
        resetModEnvelope.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
-       auto boxSpacer3 = sliderArea3.removeFromLeft(20);
+       auto boxSpacer3a = sliderArea3.removeFromLeft(20);
        iModBox.setBounds (sliderArea3.removeFromLeft (jmin (180, sliderArea3.getWidth())));
+       auto boxSpacer3b = sliderArea3.removeFromLeft(20);
+       chebyshevBox.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
 
        
        lastUIWidth  = getWidth();

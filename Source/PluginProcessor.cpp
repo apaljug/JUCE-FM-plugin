@@ -88,7 +88,8 @@ JuceDemoPluginAudioProcessor::JuceDemoPluginAudioProcessor()
            //    std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 1.0f), 0.5f) })
 {
     // Add a sub-tree to store the state of our UI
-    state.state.addChild ({ "uiState", { { "width",  800 }, { "height", 400 } }, {} }, -1, nullptr);
+    //TODO: Dynamically change width and height?
+    state.state.addChild ({ "uiState", { { "width",  1200 }, { "height", 800 } }, {} }, -1, nullptr);
 
     initialiseSynth();
 }
@@ -232,6 +233,7 @@ void JuceDemoPluginAudioProcessor::process (AudioBuffer<FloatType>& buffer, Midi
     auto modParamValue = state.getParameter ("mod")->getValue();
     auto numParamValue = state.getParameter ("indexNum")->getValue();
     auto denParamValue = state.getParameter ("indexDen")->getValue();
+    //auto chebyshevParamValue = state.getParameter ("chebyshev")->getValue();
 
     auto att = state.getParameter ("attack")->getValue();
     auto sus = state.getParameter ("sustain")->getValue();
@@ -291,6 +293,8 @@ void JuceDemoPluginAudioProcessor::process (AudioBuffer<FloatType>& buffer, Midi
 
 
     }
+    
+    
     // and now get our synth to process these midi events and generate its output.
     synth.renderNextBlock (buffer, midiMessages, 0, numSamples);
 
@@ -299,6 +303,11 @@ void JuceDemoPluginAudioProcessor::process (AudioBuffer<FloatType>& buffer, Midi
 
     // Apply our gain change to the outgoing data..
     applyGain (buffer, delayBuffer, gainParamValue);
+    
+    
+    //TODO: Add Chebshev Waveshaper Output
+    //Apply Chebyshev to output
+    //applyChebyshev(buffer, delayBuffer, chebyshevParamValue)
 
     // Now ask the host for the current time so we can store it to be displayed later...
     updateCurrentTimeInfoFromHost();
@@ -338,6 +347,12 @@ void JuceDemoPluginAudioProcessor::applyDelay (AudioBuffer<FloatType>& buffer, A
     }
     delayPosition = delayPos;
 }
+
+/*template <typename FloatType>
+void JuceDemoPluginAudioProcessor::applyChebyshev (AudioBuffer<FloatType>& buffer, AudioBuffer<FloatType>& delayBuffer, float chebyshevLevel)
+{
+    //TODO: Fill in Chebyshev functionality
+}*/
 
 void JuceDemoPluginAudioProcessor::initialiseSynth()
 {

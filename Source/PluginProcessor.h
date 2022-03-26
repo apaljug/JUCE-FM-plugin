@@ -63,7 +63,7 @@ public:
 
     TrackProperties getTrackProperties() const;
     
-    //==============================================================================
+//==============================================================================
     template <typename FloatType>
     void process (AudioBuffer<FloatType>& buffer, MidiBuffer& midiMessages, AudioBuffer<FloatType>& delayBuffer);
     
@@ -72,6 +72,9 @@ public:
 
     template <typename FloatType>
     void applyDelay (AudioBuffer<FloatType>& buffer, AudioBuffer<FloatType>& delayBuffer, float delayLevel);
+    /*template <typename FloatType>
+    
+    void applyChebyshev (AudioBuffer<FloatType>& buffer, AudioBuffer<FloatType>& delayBuffer, float chebyshevLevel);*/
     
 
     void initialiseSynth();

@@ -40,23 +40,21 @@ public:
             attackLabel{ {}, "Attack Speed:" },
             sustainLabel{ {}, "Sustain Magnitude:" },
             releaseLabel{ {}, "Release Speed:" },
-        mattackLabel{ {}, "Mod Attack Speed:" },
-        msustainLabel{ {}, "Mod Sustain Magnitude:" },
+            mattackLabel{ {}, "Mod Attack Speed:" },
+            msustainLabel{ {}, "Mod Sustain Magnitude:" },
+            mreleaseLabel{ {}, "Mod Release Speed:" },
+            presetsLabel{ {}, "Presets" },
+            chebyshevLabel{ {}, "Chebyshev Wave Shaper" };
 
-        mreleaseLabel{ {}, "Mod Release Speed:" },
+        Slider gainSlider, delaySlider, modSlider, attackSlider, sustainSlider, releaseSlider, mattackSlider, msustainSlider, mreleaseSlider;
         
-        presetsLabel{ {}, "Presets" };
-
-        Slider gainSlider, delaySlider, modSlider, attackSlider, sustainSlider, releaseSlider, mattackSlider, msustainSlider, mreleaseSlider/*, iNumSlider, iDenSlider*/;
-        
-        ComboBox iNumBox, iDenBox, iEnvBox, iModBox, presetsBox;
+        ComboBox iNumBox, iDenBox, iEnvBox, iModBox, presetsBox, chebyshevBox;
         
         juce::TextButton resetEnvelope, resetModEnvelope, savePreset;
         
         AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment, attackAttachment, sustainAttachment, releaseAttachment, mattackAttachment, msustainAttachment, mreleaseAttachment ;
-        /*,indexNumAttachment, indexDenAttachment;*/
         
-        AudioProcessorValueTreeState::ComboBoxAttachment iNumAttachment, iDenAttachment, iEnvAttachment, iModEnvAttachment, presetsAttachment;
+        AudioProcessorValueTreeState::ComboBoxAttachment iNumAttachment, iDenAttachment, iEnvAttachment, iModEnvAttachment, presetsAttachment, chebyshevAttachment;
         Colour backgroundColour;
 
         // these are used to persist the UI's size - the values are stored along with the
