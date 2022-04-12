@@ -44,15 +44,16 @@ public:
             msustainLabel{ {}, "Mod Sustain Magnitude:" },
             mreleaseLabel{ {}, "Mod Release Speed:" },
             presetsLabel{ {}, "Presets" },
-            chebyshevLabel{ {}, "Chebyshev Wave Shaper" };
+            chebyshevLabel{ {}, "Chebyshev Wave Shaper" },
+            chebyshevAmpLabel{ {}, "Chebyshev Amplitude" };
 
-        Slider gainSlider, delaySlider, modSlider, attackSlider, sustainSlider, releaseSlider, mattackSlider, msustainSlider, mreleaseSlider;
+        Slider gainSlider, delaySlider, modSlider, attackSlider, sustainSlider, releaseSlider, mattackSlider, msustainSlider, mreleaseSlider, chebyshevAmpSlider;
         
         ComboBox iNumBox, iDenBox, iEnvBox, iModBox, presetsBox, chebyshevBox;
         
         juce::TextButton resetEnvelope, resetModEnvelope, savePreset;
         
-        AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment, attackAttachment, sustainAttachment, releaseAttachment, mattackAttachment, msustainAttachment, mreleaseAttachment ;
+        AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment, attackAttachment, sustainAttachment, releaseAttachment, mattackAttachment, msustainAttachment, mreleaseAttachment, chebyshevAmpAttachment;
         
         AudioProcessorValueTreeState::ComboBoxAttachment iNumAttachment, iDenAttachment, iEnvAttachment, iModEnvAttachment, presetsAttachment, chebyshevAttachment;
         Colour backgroundColour;

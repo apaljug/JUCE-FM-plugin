@@ -27,7 +27,8 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
        iEnvAttachment   (owner.state, "expLineEnv", iEnvBox),
        iModEnvAttachment   (owner.state, "expLinModEnv", iModBox),
     presetsAttachment   (owner.state, "presets", presetsBox),
-    chebyshevAttachment   (owner.state, "chebyshev", chebyshevBox)
+    chebyshevAttachment   (owner.state, "chebyshev", chebyshevBox),
+    chebyshevAmpAttachment   (owner.state, "chebyshevAmp", chebyshevAmpSlider)
 
 
    {
@@ -59,6 +60,9 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
 
        addAndMakeVisible(mreleaseSlider);
        mreleaseSlider.setSliderStyle(Slider::Rotary);
+       
+       addAndMakeVisible(chebyshevAmpSlider);
+       chebyshevAmpSlider.setSliderStyle(Slider::Rotary);
        
        addAndMakeVisible (resetEnvelope);
        resetEnvelope.setButtonText ("Reset Envelope.");
@@ -92,14 +96,14 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
            iDenBox.addItem(std::to_string(i), i);
        }
        addAndMakeVisible(chebyshevBox);
-       for (int i = 0; i <= 10; i++)
+       for (int i = 1; i <= 10; i++)
        {
            chebyshevBox.addItem(std::to_string(i), i);
        }
        
        iDenBox.setSelectedId(2);
        iNumBox.setSelectedId(2);
-       chebyshevBox.setSelectedId(0);
+       chebyshevBox.setSelectedId(1);
 
        
        addAndMakeVisible(iEnvBox);
@@ -158,6 +162,9 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
        
        chebyshevLabel.attachToComponent(&chebyshevBox, false);
        chebyshevLabel.setFont(Font(11.0f));
+       
+       chebyshevAmpLabel.attachToComponent(&chebyshevAmpSlider, false);
+       chebyshevAmpLabel.setFont(Font(11.0f));
 
        // add the midi keyboard component..
        addAndMakeVisible (midiKeyboard);
@@ -260,6 +267,7 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
        iModBox.setBounds (sliderArea3.removeFromLeft (jmin (180, sliderArea3.getWidth())));
        auto boxSpacer3b = sliderArea3.removeFromLeft(20);
        chebyshevBox.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
+       chebyshevAmpSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
 
        
        lastUIWidth  = getWidth();

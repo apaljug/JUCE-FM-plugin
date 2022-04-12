@@ -56,7 +56,8 @@ private:
       double modAngleDelta = 0.0;
       double modIndex = 0.0;
       int freqDev = 50;
-      int chebyshevLevel = 0;
+      int chebyshevLevel;
+      float chebyshevAmp;
       int modRatioNum = 1;
       int modRatioDen = 1;
       double modRatio = 1.0;

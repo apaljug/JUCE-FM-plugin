@@ -52,6 +52,7 @@ SineWaveVoice::SineWaveVoice() {}
       
       auto modCyclesPerSample = modFreq / getSampleRate(); //new
       modAngleDelta = modCyclesPerSample * MathConstants<double>::twoPi;//new
+      std::cout << chebyshevLevel << std::endl;
       modIndex = freqDev / float(modFreq); //new
       adsr.noteOn();
       
@@ -121,8 +122,10 @@ float SineWaveVoice::chebyshevCalulation(int chebyshev, float x)
          modAdsrParams.sustain = float(value / 100.0f) ;
      } else if (paramNum == 8) {
          modAdsrParams.release    = float(value / 100.0f);
-     } else if (paramNum == 9) {
+     } else if (paramNum == 13) {
          chebyshevLevel = value;
+     } else if (paramNum == 14) {
+         chebyshevAmp = float(value / 100.0f);
      }
       /*else if (paramNum == 9) {
          if (value == 0) {
@@ -184,8 +187,8 @@ float SineWaveVoice::chebyshevCalulation(int chebyshev, float x)
               while (--numSamples >= 0)
               {
                   // auto currentSample = (float) (sin (currentAngle) * level * release);
-                  auto currentSample = (float) (sin (currentAngle + mrelease * mattack * modAdsrParams.sustain * modIndex * sin( modCurrentAngle ) + sin( chebyshevCalulation(chebyshevLevel, currentAngle) ) ) * level * release * attack);
-                  //currentSample = currentSample + chebyshevCalulation(chebyshevLevel, currentSample);
+                  auto currentSample = (float) (sin (currentAngle + mrelease * mattack * modAdsrParams.sustain * modIndex * sin( modCurrentAngle ) ) * level * release * attack);
+                  currentSample = (float) (chebyshevAmp * sin (chebyshevCalulation(chebyshevLevel, currentSample)));
 
                   for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
                       outputBuffer.addSample (i, startSample, currentSample);
@@ -248,8 +251,8 @@ float SineWaveVoice::chebyshevCalulation(int chebyshev, float x)
                   
                   
                   //auto currentSample = (float) (sin (currentAngle )) * level);
-                  auto currentSample = (float) (sin (currentAngle  +  mattack * modAdsrParams.sustain * modIndex * sin( modCurrentAngle ) + sin( chebyshevCalulation(chebyshevLevel, currentAngle) ) ) * level * attack);
-                  //currentSample = currentSample + chebyshevCalulation(chebyshevLevel, currentSample);
+                  auto currentSample = (float) (sin (currentAngle  +  mattack * modAdsrParams.sustain * modIndex * sin( modCurrentAngle ) ) * level * attack);
+                  currentSample = (float) (chebyshevAmp * sin (chebyshevCalulation(chebyshevLevel, currentSample)));
                   
                   for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
                       outputBuffer.addSample (i, startSample, currentSample);

@@ -83,8 +83,8 @@ JuceDemoPluginAudioProcessor::JuceDemoPluginAudioProcessor()
           std::make_unique<AudioParameterFloat>("mrelease", "mRelease", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
           std::make_unique<AudioParameterInt> ("expLineEnv", "Index Numerator", 0, 3, 0),
           std::make_unique<AudioParameterInt> ("expLinModEnv", "Index Denominator", 0, 3, 0),
-          std::make_unique<AudioParameterInt> ("chebyshev", "Chebyshev Polynomial", 0, 10, 0),
-          std::make_unique<AudioParameterFloat>("chebyshev level", "Chebyshev Level", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
+          std::make_unique<AudioParameterInt> ("chebyshev", "Chebyshev Polynomial", 1, 10, 1),
+          std::make_unique<AudioParameterFloat>("chebyshevAmp", "Chebyshev Amplitude", NormalisableRange<float>(0.0f, 100.0f), 0.5f)
           //min, max, default
           })
 
@@ -237,7 +237,7 @@ void JuceDemoPluginAudioProcessor::process (AudioBuffer<FloatType>& buffer, Midi
     auto numParamValue = state.getParameter ("indexNum")->getValue();
     auto denParamValue = state.getParameter ("indexDen")->getValue();
     auto chebyshevParamValue = state.getParameter ("chebyshev")->getValue();
-    //auto chebyshevLevelParamValue = state.getParameter ("chebyshev Level")->getValue();
+    auto chebyshevAmpParamValue = state.getParameter ("chebyshevAmp")->getValue();
 
     auto att = state.getParameter ("attack")->getValue();
     auto sus = state.getParameter ("sustain")->getValue();
@@ -278,7 +278,9 @@ void JuceDemoPluginAudioProcessor::process (AudioBuffer<FloatType>& buffer, Midi
         (synth.getVoice(i))->controllerMoved(6, 100 * matt);
         (synth.getVoice(i))->controllerMoved(7, 100 * msus);
         (synth.getVoice(i))->controllerMoved(8, 65 + 35 * (mrel));
-        (synth.getVoice(i))->controllerMoved(9, chebyshevParamValue);
+        (synth.getVoice(i))->controllerMoved(13, 10 * chebyshevParamValue);
+        (synth.getVoice(i))->controllerMoved(14, 100 * chebyshevAmpParamValue);
+        
         
         //This warrants an explanation....
         for (int j = 9; j < 13; j++){
