@@ -92,14 +92,14 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
            iDenBox.addItem(std::to_string(i), i);
        }
        addAndMakeVisible(chebyshevBox);
-       for (int i = 2; i <= 10; i++)
+       for (int i = 0; i <= 10; i++)
        {
            chebyshevBox.addItem(std::to_string(i), i);
        }
        
        iDenBox.setSelectedId(2);
        iNumBox.setSelectedId(2);
-       chebyshevBox.setSelectedId(2);
+       chebyshevBox.setSelectedId(0);
 
        
        addAndMakeVisible(iEnvBox);

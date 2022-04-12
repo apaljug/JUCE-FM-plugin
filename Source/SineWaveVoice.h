@@ -19,6 +19,7 @@ public:
     void startNote (int midiNoteNumber, float velocity,
                     SynthesiserSound* /*sound*/, int) override;
     void stopNote (float /*velocity*/, bool allowTailOff) override;
+    float chebyshevCalulation(int chebyshev, float x);
     void pitchWheelMoved (int /*newValue*/) override;
     void controllerMoved (int paramNum, int value) override;
     void renderNextBlock (AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
@@ -55,6 +56,7 @@ private:
       double modAngleDelta = 0.0;
       double modIndex = 0.0;
       int freqDev = 50;
+      int chebyshevLevel = 0;
       int modRatioNum = 1;
       int modRatioDen = 1;
       double modRatio = 1.0;

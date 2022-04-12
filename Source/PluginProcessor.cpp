@@ -82,7 +82,10 @@ JuceDemoPluginAudioProcessor::JuceDemoPluginAudioProcessor()
           std::make_unique<AudioParameterFloat>("msustain", "mSustain", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
           std::make_unique<AudioParameterFloat>("mrelease", "mRelease", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
           std::make_unique<AudioParameterInt> ("expLineEnv", "Index Numerator", 0, 3, 0),
-          std::make_unique<AudioParameterInt> ("expLinModEnv", "Index Denominator", 0, 3, 0), //min, max, default
+          std::make_unique<AudioParameterInt> ("expLinModEnv", "Index Denominator", 0, 3, 0),
+          std::make_unique<AudioParameterInt> ("chebyshev", "Chebyshev Polynomial", 0, 10, 0),
+          std::make_unique<AudioParameterFloat>("chebyshev level", "Chebyshev Level", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
+          //min, max, default
           })
 
            //    std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 1.0f), 0.5f) })
@@ -233,7 +236,8 @@ void JuceDemoPluginAudioProcessor::process (AudioBuffer<FloatType>& buffer, Midi
     auto modParamValue = state.getParameter ("mod")->getValue();
     auto numParamValue = state.getParameter ("indexNum")->getValue();
     auto denParamValue = state.getParameter ("indexDen")->getValue();
-    //auto chebyshevParamValue = state.getParameter ("chebyshev")->getValue();
+    auto chebyshevParamValue = state.getParameter ("chebyshev")->getValue();
+    //auto chebyshevLevelParamValue = state.getParameter ("chebyshev Level")->getValue();
 
     auto att = state.getParameter ("attack")->getValue();
     auto sus = state.getParameter ("sustain")->getValue();
@@ -274,7 +278,9 @@ void JuceDemoPluginAudioProcessor::process (AudioBuffer<FloatType>& buffer, Midi
         (synth.getVoice(i))->controllerMoved(6, 100 * matt);
         (synth.getVoice(i))->controllerMoved(7, 100 * msus);
         (synth.getVoice(i))->controllerMoved(8, 65 + 35 * (mrel));
+        (synth.getVoice(i))->controllerMoved(9, chebyshevParamValue);
         
+        //This warrants an explanation....
         for (int j = 9; j < 13; j++){
             if (lexenv < 2) {
                 if (j % 2== lexenv) {
@@ -304,10 +310,6 @@ void JuceDemoPluginAudioProcessor::process (AudioBuffer<FloatType>& buffer, Midi
     // Apply our gain change to the outgoing data..
     applyGain (buffer, delayBuffer, gainParamValue);
     
-    
-    //TODO: Add Chebshev Waveshaper Output
-    //Apply Chebyshev to output
-    //applyChebyshev(buffer, delayBuffer, chebyshevParamValue)
 
     // Now ask the host for the current time so we can store it to be displayed later...
     updateCurrentTimeInfoFromHost();
@@ -347,12 +349,6 @@ void JuceDemoPluginAudioProcessor::applyDelay (AudioBuffer<FloatType>& buffer, A
     }
     delayPosition = delayPos;
 }
-
-/*template <typename FloatType>
-void JuceDemoPluginAudioProcessor::applyChebyshev (AudioBuffer<FloatType>& buffer, AudioBuffer<FloatType>& delayBuffer, float chebyshevLevel)
-{
-    //TODO: Fill in Chebyshev functionality
-}*/
 
 void JuceDemoPluginAudioProcessor::initialiseSynth()
 {
