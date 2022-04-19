@@ -56,7 +56,22 @@ SineWaveVoice::SineWaveVoice() {}
       adsr.noteOn();
       
   }
-
+float SineWaveVoice::chebyshevCalulation(int chebyshev, float x)
+{
+    if (chebyshev == chebyshevLevel0)
+    {
+        return 1;
+    }
+    if (chebyshev == chebyshevLevel1)
+    {
+        return x;
+    }
+    else
+    {
+        return 2 * x * chebyshevCalulation(chebyshev-1, x) - chebyshevCalulation(chebyshev-2, x);
+        
+    }
+}
   void SineWaveVoice::stopNote (float /*velocity*/, bool allowTailOff)
   {
       if (allowTailOff)
@@ -106,7 +121,27 @@ SineWaveVoice::SineWaveVoice() {}
          modAdsrParams.sustain = float(value / 100.0f) ;
      } else if (paramNum == 8) {
          modAdsrParams.release    = float(value / 100.0f);
-     } /*else if (paramNum == 9) {
+     } else if (paramNum == 14) {
+         chebyshevAmplitudes[chebyshevLevel1] = float(value / 100.0f);
+     } else if (paramNum == 15) {
+         chebyshevAmplitudes[chebyshevLevel2] = float(value / 100.0f);
+     } else if (paramNum == 16) {
+         chebyshevAmplitudes[chebyshevLevel3] = float(value / 100.0f);
+     } else if (paramNum == 17) {
+         chebyshevAmplitudes[chebyshevLevel4] = float(value / 100.0f);
+     } else if (paramNum == 18) {
+         chebyshevAmplitudes[chebyshevLevel5] = float(value / 100.0f);
+     }  else if (paramNum == 19) {
+         chebyshevAmplitudes[chebyshevLevel6] = float(value / 100.0f);
+     }  else if (paramNum == 20) {
+         chebyshevAmplitudes[chebyshevLevel7] = float(value / 100.0f);
+     }  else if (paramNum == 21) {
+         chebyshevAmplitudes[chebyshevLevel8] = float(value / 100.0f);
+     }  else if (paramNum == 22) {
+         chebyshevAmplitudes[chebyshevLevel9] = float(value / 100.0f);
+     }
+      
+      /*else if (paramNum == 9) {
          if (value == 0) {
              att_is_exp = 1;
          } else {
@@ -166,7 +201,16 @@ SineWaveVoice::SineWaveVoice() {}
               while (--numSamples >= 0)
               {
                   // auto currentSample = (float) (sin (currentAngle) * level * release);
-                  auto currentSample = (float) (sin (currentAngle + mrelease * mattack * modAdsrParams.sustain * modIndex * sin( modCurrentAngle ) ) * level * release * attack);
+                  auto currentSample = (float) (sin (currentAngle + mrelease * mattack * modAdsrParams.sustain * modIndex * sin( modCurrentAngle ) ) );
+                  
+                  //Add Chebyshev Polynomials to the Signal
+                  auto chebyshevSignal = (float) 0.0;
+                  for (auto chebyshevLevel = (int) chebyshevLevel1; chebyshevLevel < chebyshevLevelEnd; chebyshevLevel++)
+                  {
+                      chebyshevSignal += chebyshevAmplitudes[chebyshevLevel] * chebyshevCalulation(chebyshevLevel, currentSample);
+                  }
+                  
+                  currentSample = (float) ( level * release * attack *  chebyshevSignal);
 
                   for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
                       outputBuffer.addSample (i, startSample, currentSample);
@@ -229,7 +273,16 @@ SineWaveVoice::SineWaveVoice() {}
                   
                   
                   //auto currentSample = (float) (sin (currentAngle )) * level);
-                  auto currentSample = (float) (sin (currentAngle  +  mattack * modAdsrParams.sustain * modIndex * sin( modCurrentAngle )) * level * attack);
+                  auto currentSample = (float) (sin (currentAngle  +  mattack * modAdsrParams.sustain * modIndex * sin( modCurrentAngle ) ) );
+                  
+                  //Add Chebyshev Polynomials to the Signal
+                  auto chebyshevSignal = (float) 0.0;
+                  for (auto chebyshevLevel = (int) chebyshevLevel1; chebyshevLevel < chebyshevLevelEnd; chebyshevLevel++)
+                  {
+                      chebyshevSignal += chebyshevAmplitudes[chebyshevLevel] * chebyshevCalulation(chebyshevLevel, currentSample);
+                  }
+                  
+                  currentSample = (float) ( level * release * attack *  chebyshevSignal);
                   
                   for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
                       outputBuffer.addSample (i, startSample, currentSample);
@@ -238,7 +291,7 @@ SineWaveVoice::SineWaveVoice() {}
                   modCurrentAngle += modAngleDelta;
 
                   ++startSample;
-                  
+
                   
               }
           }
