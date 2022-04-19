@@ -52,7 +52,6 @@ SineWaveVoice::SineWaveVoice() {}
       
       auto modCyclesPerSample = modFreq / getSampleRate(); //new
       modAngleDelta = modCyclesPerSample * MathConstants<double>::twoPi;//new
-      std::cout << chebyshevLevel << std::endl;
       modIndex = freqDev / float(modFreq); //new
       adsr.noteOn();
       
@@ -122,8 +121,6 @@ float SineWaveVoice::chebyshevCalulation(int chebyshev, float x)
          modAdsrParams.sustain = float(value / 100.0f) ;
      } else if (paramNum == 8) {
          modAdsrParams.release    = float(value / 100.0f);
-     } else if (paramNum == 13) {
-         chebyshevLevel = value;
      } else if (paramNum == 14) {
          chebyshevAmp1 = float(value / 100.0f);
      } else if (paramNum == 15) {
@@ -138,6 +135,10 @@ float SineWaveVoice::chebyshevCalulation(int chebyshev, float x)
          chebyshevAmp6 = float(value / 100.0f);
      }  else if (paramNum == 20) {
          chebyshevAmp7 = float(value / 100.0f);
+     }  else if (paramNum == 21) {
+        chebyshevAmp8 = float(value / 100.0f);
+     }  else if (paramNum == 22) {
+            chebyshevAmp9 = float(value / 100.0f);
      }
       
       /*else if (paramNum == 9) {
@@ -201,7 +202,7 @@ float SineWaveVoice::chebyshevCalulation(int chebyshev, float x)
               {
                   // auto currentSample = (float) (sin (currentAngle) * level * release);
                   auto currentSample = (float) (sin (currentAngle + mrelease * mattack * modAdsrParams.sustain * modIndex * sin( modCurrentAngle ) ) );
-                  auto chebyshevsignal = (float)(chebyshevAmp1 * currentSample) + (chebyshevAmp2 * chebyshevCalulation(2, currentSample)) + (chebyshevAmp3 * chebyshevCalulation(3, currentSample)) + (chebyshevAmp4 * chebyshevCalulation(4, currentSample)) + (chebyshevAmp5 * chebyshevCalulation(5, currentSample)) + (chebyshevAmp6 * chebyshevCalulation(6, currentSample)) + (chebyshevAmp7 * chebyshevCalulation(7, currentSample));
+                  auto chebyshevsignal = (float) (chebyshevAmp1 * currentSample) + (chebyshevAmp2 * chebyshevCalulation(2, currentSample)) + (chebyshevAmp3 * chebyshevCalulation(3, currentSample)) + (chebyshevAmp4 * chebyshevCalulation(4, currentSample)) + (chebyshevAmp5 * chebyshevCalulation(5, currentSample)) + (chebyshevAmp6 * chebyshevCalulation(6, currentSample)) + (chebyshevAmp7 * chebyshevCalulation(7, currentSample)) + (chebyshevAmp8 * chebyshevCalulation(8, currentSample)) + (chebyshevAmp9 * chebyshevCalulation(9, currentSample));
                   currentSample = (float) ( level * release * attack *  chebyshevsignal);
 
                   for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
@@ -266,7 +267,7 @@ float SineWaveVoice::chebyshevCalulation(int chebyshev, float x)
                   
                   //auto currentSample = (float) (sin (currentAngle )) * level);
                   auto currentSample = (float) (sin (currentAngle  +  mattack * modAdsrParams.sustain * modIndex * sin( modCurrentAngle ) ) );
-                  auto chebyshevsignal = (float) (chebyshevAmp1 * currentSample) + (chebyshevAmp2 * chebyshevCalulation(2, currentSample)) + (chebyshevAmp3 * chebyshevCalulation(3, currentSample)) + (chebyshevAmp4 * chebyshevCalulation(4, currentSample)) + (chebyshevAmp5 * chebyshevCalulation(5, currentSample)) + (chebyshevAmp6 * chebyshevCalulation(6, currentSample)) + (chebyshevAmp7 * chebyshevCalulation(7, currentSample));
+                  auto chebyshevsignal = (float) (chebyshevAmp1 * currentSample) + (chebyshevAmp2 * chebyshevCalulation(2, currentSample)) + (chebyshevAmp3 * chebyshevCalulation(3, currentSample)) + (chebyshevAmp4 * chebyshevCalulation(4, currentSample)) + (chebyshevAmp5 * chebyshevCalulation(5, currentSample)) + (chebyshevAmp6 * chebyshevCalulation(6, currentSample)) + (chebyshevAmp7 * chebyshevCalulation(7, currentSample)) + (chebyshevAmp8 * chebyshevCalulation(8, currentSample)) + (chebyshevAmp9 * chebyshevCalulation(9, currentSample));
                   currentSample = (float) ( level * release * attack *  chebyshevsignal);
                   
                   for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
