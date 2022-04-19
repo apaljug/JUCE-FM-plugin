@@ -57,7 +57,15 @@ private:
       double modIndex = 0.0;
       int freqDev = 50;
       int chebyshevLevel;
-      float chebyshevAmp;
+      float chebyshevAmp1;
+      float chebyshevAmp2;
+      float chebyshevAmp3;
+      float chebyshevAmp4;
+      float chebyshevAmp5;
+      float chebyshevAmp6;
+      float chebyshevAmp7;
+      float chebyshevAmp8;
+      float chebyshevAmp9;
       int modRatioNum = 1;
       int modRatioDen = 1;
       double modRatio = 1.0;

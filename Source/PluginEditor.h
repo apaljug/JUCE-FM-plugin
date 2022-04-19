@@ -45,15 +45,21 @@ public:
             mreleaseLabel{ {}, "Mod Release Speed:" },
             presetsLabel{ {}, "Presets" },
             chebyshevLabel{ {}, "Chebyshev Wave Shaper" },
-            chebyshevAmpLabel{ {}, "Chebyshev Amplitude" };
+            chebyshevAmpLabel1{ {}, "Chebyshev Amplitude 1" },
+            chebyshevAmpLabel2{ {}, "Chebyshev Amplitude 2" },
+            chebyshevAmpLabel3{ {}, "Chebyshev Amplitude 3" },
+            chebyshevAmpLabel4{ {}, "Chebyshev Amplitude 4" },
+            chebyshevAmpLabel5{ {}, "Chebyshev Amplitude 5" },
+            chebyshevAmpLabel6{ {}, "Chebyshev Amplitude 6" },
+            chebyshevAmpLabel7{ {}, "Chebyshev Amplitude 7" };
 
-        Slider gainSlider, delaySlider, modSlider, attackSlider, sustainSlider, releaseSlider, mattackSlider, msustainSlider, mreleaseSlider, chebyshevAmpSlider;
+        Slider gainSlider, delaySlider, modSlider, attackSlider, sustainSlider, releaseSlider, mattackSlider, msustainSlider, mreleaseSlider, chebyshevAmpSlider1, chebyshevAmpSlider2, chebyshevAmpSlider3, chebyshevAmpSlider4, chebyshevAmpSlider5, chebyshevAmpSlider6, chebyshevAmpSlider7;
         
         ComboBox iNumBox, iDenBox, iEnvBox, iModBox, presetsBox, chebyshevBox;
         
         juce::TextButton resetEnvelope, resetModEnvelope, savePreset;
         
-        AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment, attackAttachment, sustainAttachment, releaseAttachment, mattackAttachment, msustainAttachment, mreleaseAttachment, chebyshevAmpAttachment;
+        AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment, attackAttachment, sustainAttachment, releaseAttachment, mattackAttachment, msustainAttachment, mreleaseAttachment, chebyshevAmpAttachment1, chebyshevAmpAttachment2, chebyshevAmpAttachment3, chebyshevAmpAttachment4, chebyshevAmpAttachment5, chebyshevAmpAttachment6, chebyshevAmpAttachment7;
         
         AudioProcessorValueTreeState::ComboBoxAttachment iNumAttachment, iDenAttachment, iEnvAttachment, iModEnvAttachment, presetsAttachment, chebyshevAttachment;
         Colour backgroundColour;
