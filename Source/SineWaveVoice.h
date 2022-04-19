@@ -56,6 +56,17 @@ private:
       double modAngleDelta = 0.0;
       double modIndex = 0.0;
       int freqDev = 50;
+      enum ChebyshevLevels{
+        chebyshevLevel1,
+        chebyshevLevel2,
+        chebyshevLevel3,
+        chebyshevLevel4,
+        chebyshevLevel5,
+        chebyshevLevel6,
+        chebyshevLevel7,
+        chebyshevLevel8,
+        chebyshevLevel9
+      };
       float chebyshevAmp1;
       float chebyshevAmp2;
       float chebyshevAmp3;

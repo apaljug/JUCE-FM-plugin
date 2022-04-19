@@ -58,11 +58,11 @@ SineWaveVoice::SineWaveVoice() {}
   }
 float SineWaveVoice::chebyshevCalulation(int chebyshev, float x)
 {
-    if (chebyshev == 0)
+    if (chebyshev == chebyshevLevel1)
     {
         return 1;
     }
-    if (chebyshev == 1)
+    if (chebyshev == chebyshevLevel2)
     {
         return x;
     }
@@ -202,7 +202,7 @@ float SineWaveVoice::chebyshevCalulation(int chebyshev, float x)
               {
                   // auto currentSample = (float) (sin (currentAngle) * level * release);
                   auto currentSample = (float) (sin (currentAngle + mrelease * mattack * modAdsrParams.sustain * modIndex * sin( modCurrentAngle ) ) );
-                  auto chebyshevsignal = (float) (chebyshevAmp1 * currentSample) + (chebyshevAmp2 * chebyshevCalulation(2, currentSample)) + (chebyshevAmp3 * chebyshevCalulation(3, currentSample)) + (chebyshevAmp4 * chebyshevCalulation(4, currentSample)) + (chebyshevAmp5 * chebyshevCalulation(5, currentSample)) + (chebyshevAmp6 * chebyshevCalulation(6, currentSample)) + (chebyshevAmp7 * chebyshevCalulation(7, currentSample)) + (chebyshevAmp8 * chebyshevCalulation(8, currentSample)) + (chebyshevAmp9 * chebyshevCalulation(9, currentSample));
+                  auto chebyshevsignal = (float) (chebyshevAmp1 * currentSample) + (chebyshevAmp2 * chebyshevCalulation(chebyshevLevel2, currentSample)) + (chebyshevAmp3 * chebyshevCalulation(chebyshevLevel3, currentSample)) + (chebyshevAmp4 * chebyshevCalulation(chebyshevLevel4, currentSample)) + (chebyshevAmp5 * chebyshevCalulation(chebyshevLevel5, currentSample)) + (chebyshevAmp6 * chebyshevCalulation(chebyshevLevel6, currentSample)) + (chebyshevAmp7 * chebyshevCalulation(chebyshevLevel7, currentSample)) + (chebyshevAmp8 * chebyshevCalulation(chebyshevLevel8, currentSample)) + (chebyshevAmp9 * chebyshevCalulation(chebyshevLevel9, currentSample));
                   currentSample = (float) ( level * release * attack *  chebyshevsignal);
 
                   for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
@@ -267,7 +267,7 @@ float SineWaveVoice::chebyshevCalulation(int chebyshev, float x)
                   
                   //auto currentSample = (float) (sin (currentAngle )) * level);
                   auto currentSample = (float) (sin (currentAngle  +  mattack * modAdsrParams.sustain * modIndex * sin( modCurrentAngle ) ) );
-                  auto chebyshevsignal = (float) (chebyshevAmp1 * currentSample) + (chebyshevAmp2 * chebyshevCalulation(2, currentSample)) + (chebyshevAmp3 * chebyshevCalulation(3, currentSample)) + (chebyshevAmp4 * chebyshevCalulation(4, currentSample)) + (chebyshevAmp5 * chebyshevCalulation(5, currentSample)) + (chebyshevAmp6 * chebyshevCalulation(6, currentSample)) + (chebyshevAmp7 * chebyshevCalulation(7, currentSample)) + (chebyshevAmp8 * chebyshevCalulation(8, currentSample)) + (chebyshevAmp9 * chebyshevCalulation(9, currentSample));
+                  auto chebyshevsignal = (float) (chebyshevAmp1 * currentSample) + (chebyshevAmp2 * chebyshevCalulation(chebyshevLevel2, currentSample)) + (chebyshevAmp3 * chebyshevCalulation(chebyshevLevel3, currentSample)) + (chebyshevAmp4 * chebyshevCalulation(chebyshevLevel4, currentSample)) + (chebyshevAmp5 * chebyshevCalulation(chebyshevLevel5, currentSample)) + (chebyshevAmp6 * chebyshevCalulation(chebyshevLevel6, currentSample)) + (chebyshevAmp7 * chebyshevCalulation(chebyshevLevel7, currentSample)) + (chebyshevAmp8 * chebyshevCalulation(chebyshevLevel8, currentSample)) + (chebyshevAmp9 * chebyshevCalulation(chebyshevLevel9, currentSample));
                   currentSample = (float) ( level * release * attack *  chebyshevsignal);
                   
                   for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
