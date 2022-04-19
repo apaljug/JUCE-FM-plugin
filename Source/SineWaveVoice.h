@@ -57,6 +57,7 @@ private:
       double modIndex = 0.0;
       int freqDev = 50;
       enum ChebyshevLevels{
+        chebyshevLevel0,
         chebyshevLevel1,
         chebyshevLevel2,
         chebyshevLevel3,
@@ -65,17 +66,10 @@ private:
         chebyshevLevel6,
         chebyshevLevel7,
         chebyshevLevel8,
-        chebyshevLevel9
+        chebyshevLevel9,
+        chebyshevLevelEnd
       };
-      float chebyshevAmp1;
-      float chebyshevAmp2;
-      float chebyshevAmp3;
-      float chebyshevAmp4;
-      float chebyshevAmp5;
-      float chebyshevAmp6;
-      float chebyshevAmp7;
-      float chebyshevAmp8;
-      float chebyshevAmp9;
+      float chebyshevAmplitudes[chebyshevLevelEnd];
       int modRatioNum = 1;
       int modRatioDen = 1;
       double modRatio = 1.0;
