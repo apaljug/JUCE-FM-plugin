@@ -11,9 +11,9 @@ This file has some small changes built on top of a JUCE tutorial to support some
  - [X] Envelope adjustment
     - [X] Signal
     - [X] ADSR adjustors
- - [ ] Chebyshev Waveshaper
+ - [X] Chebyshev Waveshaper
  - [ ] Preset Saving
- - [ ] Saw Wave Output
+ - [X] Saw Wave Output
  - [ ] Waveshape Display
     
     
