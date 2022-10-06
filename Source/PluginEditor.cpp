@@ -279,17 +279,17 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
        auto boxSpacer3b = sliderArea3.removeFromLeft(20);
        
        
-       chebyshevAmpSliders[0].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
-       chebyshevAmpSliders[1].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
-       chebyshevAmpSliders[2].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
+       chebyshevAmpSliders[chebyshev1].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
+       chebyshevAmpSliders[chebyshev2].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
+       chebyshevAmpSliders[chebyshev3].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
        
-       chebyshevAmpSliders[3].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
-       chebyshevAmpSliders[4].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
-       chebyshevAmpSliders[5].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
+       chebyshevAmpSliders[chebyshev4].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
+       chebyshevAmpSliders[chebyshev5].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
+       chebyshevAmpSliders[chebyshev6].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
        
-       chebyshevAmpSliders[6].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
-       chebyshevAmpSliders[7].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
-       chebyshevAmpSliders[8].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
+       chebyshevAmpSliders[chebyshev7].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
+       chebyshevAmpSliders[chebyshev8].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
+       chebyshevAmpSliders[chebyshev9].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
 
        
        lastUIWidth  = getWidth();
