@@ -30,6 +30,9 @@ public:
 
     private:
         MidiKeyboardComponent midiKeyboard;
+    enum chebyshevSliders {
+        chebyshev1, chebyshev2, chebyshev3, chebyshev4, chebyshev5, chebyshev6, chebyshev7, chebyshev8, chebyshev9, numberOfChebyshevs
+    };
 
         Label timecodeDisplayLabel,
             gainLabel{ {}, "Throughput level:" },
@@ -43,18 +46,12 @@ public:
             mattackLabel{ {}, "Mod Attack Speed:" },
             msustainLabel{ {}, "Mod Sustain Magnitude:" },
             mreleaseLabel{ {}, "Mod Release Speed:" },
-            presetsLabel{ {}, "Presets" },
-            chebyshevAmpLabel1{ {}, "Chebyshev Amplitude 1" },
-            chebyshevAmpLabel2{ {}, "Chebyshev Amplitude 2" },
-            chebyshevAmpLabel3{ {}, "Chebyshev Amplitude 3" },
-            chebyshevAmpLabel4{ {}, "Chebyshev Amplitude 4" },
-            chebyshevAmpLabel5{ {}, "Chebyshev Amplitude 5" },
-            chebyshevAmpLabel6{ {}, "Chebyshev Amplitude 6" },
-            chebyshevAmpLabel7{ {}, "Chebyshev Amplitude 7" },
-            chebyshevAmpLabel8{ {}, "Chebyshev Amplitude 8" },
-            chebyshevAmpLabel9{ {}, "Chebyshev Amplitude 9" };
+    presetsLabel{ {}, "Presets" };
 
-        Slider gainSlider, delaySlider, modSlider, attackSlider, sustainSlider, releaseSlider, mattackSlider, msustainSlider, mreleaseSlider, chebyshevAmpSlider1, chebyshevAmpSlider2, chebyshevAmpSlider3, chebyshevAmpSlider4, chebyshevAmpSlider5, chebyshevAmpSlider6, chebyshevAmpSlider7, chebyshevAmpSlider8, chebyshevAmpSlider9;
+    Label chebyshevLabels[numberOfChebyshevs];
+
+    Slider gainSlider, delaySlider, modSlider, attackSlider, sustainSlider, releaseSlider, mattackSlider, msustainSlider, mreleaseSlider;
+    Slider chebyshevAmpSliders[numberOfChebyshevs];
         
         ComboBox iNumBox, iDenBox, iEnvBox, iModBox, presetsBox;
         

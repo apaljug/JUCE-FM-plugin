@@ -27,15 +27,15 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
      iEnvAttachment       (owner.state, "expLineEnv", iEnvBox),
      iModEnvAttachment    (owner.state, "expLinModEnv", iModBox),
      presetsAttachment    (owner.state, "presets", presetsBox),
-     chebyshevAmpAttachment1   (owner.state, "chebyshevAmp1", chebyshevAmpSlider1),
-     chebyshevAmpAttachment2   (owner.state, "chebyshevAmp2", chebyshevAmpSlider2),
-     chebyshevAmpAttachment3   (owner.state, "chebyshevAmp3", chebyshevAmpSlider3),
-     chebyshevAmpAttachment4   (owner.state, "chebyshevAmp4", chebyshevAmpSlider4),
-     chebyshevAmpAttachment5   (owner.state, "chebyshevAmp5", chebyshevAmpSlider5),
-     chebyshevAmpAttachment6   (owner.state, "chebyshevAmp6", chebyshevAmpSlider6),
-     chebyshevAmpAttachment7   (owner.state, "chebyshevAmp7", chebyshevAmpSlider7),
-     chebyshevAmpAttachment8   (owner.state, "chebyshevAmp8", chebyshevAmpSlider8),
-     chebyshevAmpAttachment9   (owner.state, "chebyshevAmp9", chebyshevAmpSlider9)
+     chebyshevAmpAttachment1   (owner.state, "chebyshevAmp1", chebyshevAmpSliders[chebyshev1]),
+     chebyshevAmpAttachment2   (owner.state, "chebyshevAmp2", chebyshevAmpSliders[chebyshev2]),
+     chebyshevAmpAttachment3   (owner.state, "chebyshevAmp3", chebyshevAmpSliders[chebyshev3]),
+     chebyshevAmpAttachment4   (owner.state, "chebyshevAmp4", chebyshevAmpSliders[chebyshev4]),
+     chebyshevAmpAttachment5   (owner.state, "chebyshevAmp5", chebyshevAmpSliders[chebyshev5]),
+     chebyshevAmpAttachment6   (owner.state, "chebyshevAmp6", chebyshevAmpSliders[chebyshev6]),
+     chebyshevAmpAttachment7   (owner.state, "chebyshevAmp7", chebyshevAmpSliders[chebyshev7]),
+     chebyshevAmpAttachment8   (owner.state, "chebyshevAmp8", chebyshevAmpSliders[chebyshev8]),
+     chebyshevAmpAttachment9   (owner.state, "chebyshevAmp9", chebyshevAmpSliders[chebyshev9])
 
 
    {
@@ -68,35 +68,13 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
        addAndMakeVisible(mreleaseSlider);
        mreleaseSlider.setSliderStyle(Slider::Rotary);
        
-       addAndMakeVisible(chebyshevAmpSlider1);
-       chebyshevAmpSlider1.setSliderStyle(Slider::Rotary);
        
-       addAndMakeVisible(chebyshevAmpSlider2);
-       chebyshevAmpSlider2.setSliderStyle(Slider::Rotary);
-       
-       addAndMakeVisible(chebyshevAmpSlider3);
-       chebyshevAmpSlider3.setSliderStyle(Slider::Rotary);
-       
-       addAndMakeVisible(chebyshevAmpSlider3);
-       chebyshevAmpSlider3.setSliderStyle(Slider::Rotary);
-       
-       addAndMakeVisible(chebyshevAmpSlider4);
-       chebyshevAmpSlider4.setSliderStyle(Slider::Rotary);
-       
-       addAndMakeVisible(chebyshevAmpSlider5);
-       chebyshevAmpSlider5.setSliderStyle(Slider::Rotary);
-       
-       addAndMakeVisible(chebyshevAmpSlider6);
-       chebyshevAmpSlider6.setSliderStyle(Slider::Rotary);
-       
-       addAndMakeVisible(chebyshevAmpSlider7);
-       chebyshevAmpSlider7.setSliderStyle(Slider::Rotary);
-       
-       addAndMakeVisible(chebyshevAmpSlider8);
-       chebyshevAmpSlider8.setSliderStyle(Slider::Rotary);
-       
-       addAndMakeVisible(chebyshevAmpSlider9);
-       chebyshevAmpSlider9.setSliderStyle(Slider::Rotary);
+       for (int i = (int) chebyshev1; i < numberOfChebyshevs; i++)
+       {
+           addAndMakeVisible(chebyshevAmpSliders[i]);
+           chebyshevAmpSliders[i].setSliderStyle(Slider::LinearVertical);
+           chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::NoTextBox, true, 20, 20);
+       }
        
        addAndMakeVisible (resetEnvelope);
        resetEnvelope.setButtonText ("Reset Envelope.");
@@ -188,35 +166,13 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
        presetsLabel.attachToComponent(&presetsBox, false);
        presetsLabel.setFont(Font(11.0f));
        
-       chebyshevAmpLabel1.attachToComponent(&chebyshevAmpSlider1, false);
-       chebyshevAmpLabel1.setFont(Font(11.0f));
-       
-       chebyshevAmpLabel2.attachToComponent(&chebyshevAmpSlider2, false);
-       chebyshevAmpLabel2.setFont(Font(11.0f));
-       
-       chebyshevAmpLabel3.attachToComponent(&chebyshevAmpSlider3, false);
-       chebyshevAmpLabel3.setFont(Font(11.0f));
-       
-       chebyshevAmpLabel3.attachToComponent(&chebyshevAmpSlider3, false);
-       chebyshevAmpLabel3.setFont(Font(11.0f));
-       
-       chebyshevAmpLabel4.attachToComponent(&chebyshevAmpSlider4, false);
-       chebyshevAmpLabel4.setFont(Font(11.0f));
-       
-       chebyshevAmpLabel5.attachToComponent(&chebyshevAmpSlider5, false);
-       chebyshevAmpLabel5.setFont(Font(11.0f));
-       
-       chebyshevAmpLabel6.attachToComponent(&chebyshevAmpSlider6, false);
-       chebyshevAmpLabel6.setFont(Font(11.0f));
-       
-       chebyshevAmpLabel7.attachToComponent(&chebyshevAmpSlider7, false);
-       chebyshevAmpLabel7.setFont(Font(11.0f));
-       
-       chebyshevAmpLabel8.attachToComponent(&chebyshevAmpSlider8, false);
-       chebyshevAmpLabel8.setFont(Font(11.0f));
-       
-       chebyshevAmpLabel9.attachToComponent(&chebyshevAmpSlider9, false);
-       chebyshevAmpLabel9.setFont(Font(11.0f));
+       //Add Chebyshev Labels
+       for (int i = (int) chebyshev1; i < numberOfChebyshevs; i++)
+       {
+           chebyshevLabels[i].setText("Chebyshev Amplitude " + std::to_string(i), {});
+           chebyshevLabels[i].attachToComponent(&chebyshevAmpSliders[i], false);
+           chebyshevLabels[i].setFont(Font(11.0f));
+       }
 
        // add the midi keyboard component..
        addAndMakeVisible (midiKeyboard);
@@ -323,17 +279,17 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
        auto boxSpacer3b = sliderArea3.removeFromLeft(20);
        
        
-       chebyshevAmpSlider1.setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
-       chebyshevAmpSlider2.setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
-       chebyshevAmpSlider3.setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
+       chebyshevAmpSliders[0].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
+       chebyshevAmpSliders[1].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
+       chebyshevAmpSliders[2].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
        
-       chebyshevAmpSlider4.setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
-       chebyshevAmpSlider5.setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
-       chebyshevAmpSlider6.setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
+       chebyshevAmpSliders[3].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
+       chebyshevAmpSliders[4].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
+       chebyshevAmpSliders[5].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
        
-       chebyshevAmpSlider7.setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
-       chebyshevAmpSlider8.setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
-       chebyshevAmpSlider9.setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
+       chebyshevAmpSliders[6].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
+       chebyshevAmpSliders[7].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
+       chebyshevAmpSliders[8].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
 
        
        lastUIWidth  = getWidth();
