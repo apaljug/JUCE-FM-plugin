@@ -11,9 +11,9 @@ This file has some small changes built on top of a JUCE tutorial to support some
  - [X] Envelope adjustment
     - [X] Signal
     - [X] ADSR adjustors
- - [ ] Chebyshev Waveshaper
+ - [X] Chebyshev Waveshaper
  - [ ] Preset Saving
- - [ ] Saw Wave Output
+ - [X] Saw Wave Output
  - [ ] Waveshape Display
     
     
@@ -42,7 +42,8 @@ Step 6: Find the build file
 ```
 cd JUCE\ Projects/JUCE-FM-plugin/Builds/MacOSX/build/Debug/
 ```
-- The file should be named "FM Plugin.component"
+- The file should be named "FM Plugin.component" (AU Format for DAWS)
+- "FM Plugin.app" is the standalone version of the app
 
 Step 7: Copy this file into:
 ```
