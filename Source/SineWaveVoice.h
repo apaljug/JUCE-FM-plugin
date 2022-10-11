@@ -20,10 +20,12 @@ public:
                     SynthesiserSound* /*sound*/, int) override;
     void stopNote (float /*velocity*/, bool allowTailOff) override;
     float chebyshevCalulation(int chebyshev, float x);
+    float getChebyshevSignal(float currentSample);
     void pitchWheelMoved (int /*newValue*/) override;
     void controllerMoved (int paramNum, int value) override;
     void renderNextBlock (AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
-    
+    void setRelease();
+    void setAttack();
     using SynthesiserVoice::renderNextBlock;
 
 private:
