@@ -30,9 +30,11 @@ public:
 
     private:
         MidiKeyboardComponent midiKeyboard;
-    enum chebyshevSliders {
-        chebyshev1, chebyshev2, chebyshev3, chebyshev4, chebyshev5, chebyshev6, chebyshev7, chebyshev8, chebyshev9, numberOfChebyshevs
-    };
+        enum chebyshevSliders {
+            chebyshev1, chebyshev2, chebyshev3,
+            chebyshev4, chebyshev5, chebyshev6,
+            chebyshev7, chebyshev8, chebyshev9,
+            numberOfChebyshevs};
 
         Label timecodeDisplayLabel,
             gainLabel{ {}, "Throughput level:" },
@@ -46,12 +48,12 @@ public:
             mattackLabel{ {}, "Mod Attack Speed:" },
             msustainLabel{ {}, "Mod Sustain Magnitude:" },
             mreleaseLabel{ {}, "Mod Release Speed:" },
-    presetsLabel{ {}, "Presets" };
+        presetsLabel{ {}, "Presets" };
 
-    Label chebyshevLabels[numberOfChebyshevs];
+        Label chebyshevLabels[numberOfChebyshevs];
 
-    Slider gainSlider, delaySlider, modSlider, attackSlider, sustainSlider, releaseSlider, mattackSlider, msustainSlider, mreleaseSlider;
-    Slider chebyshevAmpSliders[numberOfChebyshevs];
+        Slider gainSlider, delaySlider, modSlider, attackSlider, sustainSlider, releaseSlider, mattackSlider, msustainSlider, mreleaseSlider;
+        Slider chebyshevAmpSliders[numberOfChebyshevs];
         
         ComboBox iNumBox, iDenBox, iEnvBox, iModBox, presetsBox;
         
@@ -68,23 +70,21 @@ public:
         Value lastUIWidth, lastUIHeight;
 
         //==============================================================================
-    JuceDemoPluginAudioProcessor& getProcessor() const;
+        JuceDemoPluginAudioProcessor& getProcessor() const;
 
         //==============================================================================
         // quick-and-dirty function to format a timecode string
-    static String timeToTimecodeString (double seconds);
+        static String timeToTimecodeString (double seconds);
 
         // quick-and-dirty function to format a bars/beats string
-    static String quarterNotePositionToBarsBeatsString (double quarterNotes, int numerator, int denominator);
+        static String quarterNotePositionToBarsBeatsString (double quarterNotes, int numerator, int denominator);
 
         // Updates the text in our position label.
-    void updateTimecodeDisplay (AudioPlayHead::CurrentPositionInfo pos);
+        void updateTimecodeDisplay (AudioPlayHead::CurrentPositionInfo pos);
 
         // called when the stored window size ;
-
-
-    void updateCurrentTimeInfoFromHost();
-    void valueChanged (Value&) override;
+        void updateCurrentTimeInfoFromHost();
+        void valueChanged (Value&) override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JuceDemoPluginAudioProcessorEditor)
 };

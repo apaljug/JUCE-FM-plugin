@@ -38,355 +38,363 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
      chebyshevAmpAttachment9   (owner.state, "chebyshevAmp9", chebyshevAmpSliders[chebyshev9])
 
 
-   {
-       //TODO: Is it possible to convert this to a for loop?
-       // add some sliders..
-       addAndMakeVisible (gainSlider);
-       gainSlider.setSliderStyle (Slider::Rotary);
+{
+    //TODO: Is it possible to convert this to a for loop?
+    // add some sliders..
+    addAndMakeVisible (gainSlider);
+    gainSlider.setSliderStyle (Slider::Rotary);
+    
+    addAndMakeVisible (delaySlider);
+    delaySlider.setSliderStyle (Slider::Rotary);
+    
+    addAndMakeVisible (modSlider);
+    modSlider.setSliderStyle (Slider::Rotary);
 
-       addAndMakeVisible (delaySlider);
-       delaySlider.setSliderStyle (Slider::Rotary);
-       
-       addAndMakeVisible (modSlider);
-       modSlider.setSliderStyle (Slider::Rotary);
+    addAndMakeVisible(attackSlider);
+    attackSlider.setSliderStyle(Slider::Rotary);
 
-       addAndMakeVisible(attackSlider);
-       attackSlider.setSliderStyle(Slider::Rotary);
+    addAndMakeVisible(sustainSlider);
+    sustainSlider.setSliderStyle(Slider::Rotary);
 
-       addAndMakeVisible(sustainSlider);
-       sustainSlider.setSliderStyle(Slider::Rotary);
+    addAndMakeVisible(releaseSlider);
+    releaseSlider.setSliderStyle(Slider::Rotary);
+   
+    addAndMakeVisible(mattackSlider);
+    mattackSlider.setSliderStyle(Slider::Rotary);
 
-       addAndMakeVisible(releaseSlider);
-       releaseSlider.setSliderStyle(Slider::Rotary);
-       
-       addAndMakeVisible(mattackSlider);
-       mattackSlider.setSliderStyle(Slider::Rotary);
+    addAndMakeVisible(msustainSlider);
+    msustainSlider.setSliderStyle(Slider::Rotary);
 
-       addAndMakeVisible(msustainSlider);
-       msustainSlider.setSliderStyle(Slider::Rotary);
+    addAndMakeVisible(mreleaseSlider);
+    mreleaseSlider.setSliderStyle(Slider::Rotary);
+   
+   
+    for (int i = (int) chebyshev1; i < numberOfChebyshevs; i++)
+    {
+        addAndMakeVisible(chebyshevAmpSliders[i]);
+        chebyshevAmpSliders[i].setSliderStyle(Slider::LinearVertical);
+        chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::NoTextBox, true, 20, 20);
+    }
+   
+    addAndMakeVisible (resetEnvelope);
+    resetEnvelope.setButtonText ("Reset Envelope.");
+    resetEnvelope.addListener (this);
+   
+    addAndMakeVisible(resetModEnvelope);
+    resetModEnvelope.setButtonText ("Reset Modulation Envelope.");
+    resetModEnvelope.addListener (this);
+   
+    addAndMakeVisible(savePreset);
+    savePreset.setButtonText("Save Preset");
+    savePreset.addListener(this);
+   
+    addAndMakeVisible(presetsBox);
 
-       addAndMakeVisible(mreleaseSlider);
-       mreleaseSlider.setSliderStyle(Slider::Rotary);
-       
-       
-       for (int i = (int) chebyshev1; i < numberOfChebyshevs; i++)
-       {
-           addAndMakeVisible(chebyshevAmpSliders[i]);
-           chebyshevAmpSliders[i].setSliderStyle(Slider::LinearVertical);
-           chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::NoTextBox, true, 20, 20);
-       }
-       
-       addAndMakeVisible (resetEnvelope);
-       resetEnvelope.setButtonText ("Reset Envelope.");
-       resetEnvelope.addListener (this);
-       
-       addAndMakeVisible(resetModEnvelope);
-       resetModEnvelope.setButtonText ("Reset Modulation Envelope.");
-       resetModEnvelope.addListener (this);      
-       
-       addAndMakeVisible(savePreset);
-       savePreset.setButtonText("Save Preset");
-       savePreset.addListener(this);
-       
-       /*addAndMakeVisible (iNumSlider);
-       iNumSlider.setSliderStyle (Slider::Rotary);
-       
-       addAndMakeVisible (iDenSlider);
-       iDenSlider.setSliderStyle (Slider::Rotary);*/
-       
-       addAndMakeVisible(presetsBox);
+    addAndMakeVisible(iNumBox);
+   
+    for (int i = 2; i < 100; i++)
+    {
+        iNumBox.addItem(std::to_string(i), i);
+    }
+   
+    addAndMakeVisible(iDenBox);
+    for (int i = 2; i <= 20; i++)
+    {
+        iDenBox.addItem(std::to_string(i), i);
+    }
+   
+    iDenBox.setSelectedId(2);
+    iNumBox.setSelectedId(2);
 
-       addAndMakeVisible(iNumBox);
-       
-       for (int i = 2; i < 100; i++)
-       { iNumBox.addItem(std::to_string(i), i);
-       }
-       
-       addAndMakeVisible(iDenBox);
-       for (int i = 2; i <= 20; i++)
-       {
-           iDenBox.addItem(std::to_string(i), i);
-       }
-       
-       iDenBox.setSelectedId(2);
-       iNumBox.setSelectedId(2);
+   
+    addAndMakeVisible(iEnvBox);
+    iEnvBox.addItem("Lin Att. - Lin Dec.", 0);
+    iEnvBox.addItem("Exp Att.. - Lin Dec.", 1);
+    iEnvBox.addItem("Lin Att.. - Exp Dec.", 2);
 
-       
-       addAndMakeVisible(iEnvBox);
-       iEnvBox.addItem("Lin Att. - Lin Dec.", 0);
-       iEnvBox.addItem("Exp Att.. - Lin Dec.", 1);
-       iEnvBox.addItem("Lin Att.. - Exp Dec.", 2);
+    iEnvBox.addItem("Exp Att.. - Exp Dec.", 3);
+   
+    addAndMakeVisible(iModBox);
+    iModBox.addItem("Lin Att. - Lin Dec.", 0);
+    iModBox.addItem("Exp Att.. - Lin Dec.", 1);
+    iModBox.addItem("Lin Att.. - Exp Dec.", 2);
 
-       iEnvBox.addItem("Exp Att.. - Exp Dec.", 3);
-       
-       addAndMakeVisible(iModBox);
-       iModBox.addItem("Lin Att. - Lin Dec.", 0);
-       iModBox.addItem("Exp Att.. - Lin Dec.", 1);
-       iModBox.addItem("Lin Att.. - Exp Dec.", 2);
-
-       iModBox.addItem("Exp Att.. - Exp Dec.", 3);
+    iModBox.addItem("Exp Att.. - Exp Dec.", 3);
 
 
-               
+           
 
-       // add some labels for the sliders..
-       gainLabel.attachToComponent (&gainSlider, false);
-       gainLabel.setFont (Font (11.0f));
+    // add some labels for the sliders..
+    gainLabel.attachToComponent (&gainSlider, false);
+    gainLabel.setFont (Font (11.0f));
 
-       delayLabel.attachToComponent (&delaySlider, false);
-       delayLabel.setFont (Font (11.0f));
-       
-       modLabel.attachToComponent (&modSlider, false);
-       modLabel.setFont (Font (11.0f));
-       
-       numLabel.attachToComponent (&iNumBox, false);
-       numLabel.setFont (Font (11.0f));
-       
-       denLabel.attachToComponent (&iDenBox, false);
-       denLabel.setFont (Font (11.0f));
+    delayLabel.attachToComponent (&delaySlider, false);
+    delayLabel.setFont (Font (11.0f));
+   
+    modLabel.attachToComponent (&modSlider, false);
+    modLabel.setFont (Font (11.0f));
+   
+    numLabel.attachToComponent (&iNumBox, false);
+    numLabel.setFont (Font (11.0f));
+   
+    denLabel.attachToComponent (&iDenBox, false);
+    denLabel.setFont (Font (11.0f));
 
-       attackLabel.attachToComponent(&attackSlider, false);
-       attackLabel.setFont(Font(11.0f));
+    attackLabel.attachToComponent(&attackSlider, false);
+    attackLabel.setFont(Font(11.0f));
 
-       sustainLabel.attachToComponent(&sustainSlider, false);
-       sustainLabel.setFont(Font(11.0f));
+    sustainLabel.attachToComponent(&sustainSlider, false);
+    sustainLabel.setFont(Font(11.0f));
 
-       releaseLabel.attachToComponent(&releaseSlider, false);
-       releaseLabel.setFont(Font(11.0f));
-       
-       mattackLabel.attachToComponent(&mattackSlider, false);
-       attackLabel.setFont(Font(11.0f));
+    releaseLabel.attachToComponent(&releaseSlider, false);
+    releaseLabel.setFont(Font(11.0f));
+   
+    mattackLabel.attachToComponent(&mattackSlider, false);
+    attackLabel.setFont(Font(11.0f));
 
-       msustainLabel.attachToComponent(&msustainSlider, false);
-       msustainLabel.setFont(Font(11.0f));
+    msustainLabel.attachToComponent(&msustainSlider, false);
+    msustainLabel.setFont(Font(11.0f));
 
-       mreleaseLabel.attachToComponent(&mreleaseSlider, false);
-       mreleaseLabel.setFont(Font(11.0f));
+    mreleaseLabel.attachToComponent(&mreleaseSlider, false);
+    mreleaseLabel.setFont(Font(11.0f));
 
-       presetsLabel.attachToComponent(&presetsBox, false);
-       presetsLabel.setFont(Font(11.0f));
-       
-       //Add Chebyshev Labels
-       for (int i = (int) chebyshev1; i < numberOfChebyshevs; i++)
-       {
-           chebyshevLabels[i].setText("Chebyshev Amplitude " + std::to_string(i), {});
-           chebyshevLabels[i].attachToComponent(&chebyshevAmpSliders[i], false);
-           chebyshevLabels[i].setFont(Font(11.0f));
-       }
+    presetsLabel.attachToComponent(&presetsBox, false);
+    presetsLabel.setFont(Font(11.0f));
+   
+    //Add Chebyshev Labels
+    for (int i = (int) chebyshev1; i < numberOfChebyshevs; i++)
+    {
+        chebyshevLabels[i].setText("Chebyshev Amplitude " + std::to_string(i+1), {});
+        chebyshevLabels[i].attachToComponent(&chebyshevAmpSliders[i], false);
+        chebyshevLabels[i].setFont(Font(11.0f));
+    }
 
-       // add the midi keyboard component..
-       addAndMakeVisible (midiKeyboard);
+    // add the midi keyboard component..
+    addAndMakeVisible (midiKeyboard);
 
-       // add a label that will display the current timecode and status..
-       addAndMakeVisible (timecodeDisplayLabel);
-       timecodeDisplayLabel.setFont (Font (Font::getDefaultMonospacedFontName(), 15.0f, Font::plain));
+    // add a label that will display the current timecode and status..
+    addAndMakeVisible (timecodeDisplayLabel);
+    timecodeDisplayLabel.setFont (Font (Font::getDefaultMonospacedFontName(), 15.0f, Font::plain));
 
-       // set resize limits for this plug-in
-       setResizeLimits (800, 400, 1024, 700);
+    setResizable(true, true);
 
-       lastUIWidth .referTo (owner.state.state.getChildWithName ("uiState").getPropertyAsValue ("width",  nullptr));
-       lastUIHeight.referTo (owner.state.state.getChildWithName ("uiState").getPropertyAsValue ("height", nullptr));
+    lastUIWidth .referTo (owner.state.state.getChildWithName ("uiState").getPropertyAsValue ("width",  nullptr));
+    lastUIHeight.referTo (owner.state.state.getChildWithName ("uiState").getPropertyAsValue ("height", nullptr));
 
-       // set our component's initial size to be the last one that was stored in the filter's settings
-       setSize (lastUIWidth.getValue(), lastUIHeight.getValue());
+    // set our component's initial size to be the last one that was stored in the filter's settings
+    setSize (lastUIWidth.getValue(), lastUIHeight.getValue());
 
-       lastUIWidth. addListener (this);
-       lastUIHeight.addListener (this);
+    lastUIWidth. addListener (this);
+    lastUIHeight.addListener (this);
 
-       updateTrackProperties();
+    updateTrackProperties();
 
-       // start a timer which will keep our timecode display updated
-       startTimerHz (30);
-   }
+    // start a timer which will keep our timecode display updated
+    startTimerHz (30);
+}
    
    
 
-   JuceDemoPluginAudioProcessorEditor::~JuceDemoPluginAudioProcessorEditor(){}
-   void JuceDemoPluginAudioProcessorEditor::buttonClicked (juce::Button* button)  // [2]
-   {
-       if (button == &resetEnvelope)                                                      // [3]
-       {
-         
-            
-         
-              // [6]
-              releaseSlider.setValue(0.0);
-              sustainSlider.setValue(100.0);
-              attackSlider.setValue(0.0);
+JuceDemoPluginAudioProcessorEditor::~JuceDemoPluginAudioProcessorEditor(){}
+void JuceDemoPluginAudioProcessorEditor::buttonClicked (juce::Button* button)  // [2]
+{
+    if (button == &resetEnvelope)                                                      // [3]
+    {
+        // [6]
+        releaseSlider.setValue(0.0);
+        sustainSlider.setValue(100.0);
+        attackSlider.setValue(0.0);
+   }else  if (button == &resetModEnvelope)  {                                                    // [3]
+       // [6]
+       mreleaseSlider.setValue(0.0);
+       msustainSlider.setValue(100.0);
+       mattackSlider.setValue(0.0);
+  }
+}
 
-       }else  if (button == &resetModEnvelope)  {                                                    // [3]
-         
-      
-         
-              // [6]
-              mreleaseSlider.setValue(0.0);
-              msustainSlider.setValue(100.0);
-              mattackSlider.setValue(0.0);
-
-      }
-   }
-
-   //============ ==================================================================
+   //===============================================================================
    void JuceDemoPluginAudioProcessorEditor::paint (Graphics& g)
    {
+       //auto numSamples = buffer.getNumSamples();
        g.setColour (backgroundColour);
        g.fillAll();
-   }
-
-   void JuceDemoPluginAudioProcessorEditor::resized()
-   {
-       // This lays out our child components...
-
-       auto r = getLocalBounds().reduced (8);
-
-       timecodeDisplayLabel.setBounds (r.removeFromTop (26));
-       midiKeyboard        .setBounds (r.removeFromBottom (70));
-
-       r.removeFromTop (20);
-       auto sliderArea = r.removeFromTop (60);
-       auto spacer = r.removeFromTop(20);
-       auto sliderArea2 = r.removeFromTop (60);
-       auto spacer2 = r.removeFromTop(20);
-       auto sliderArea3 = r.removeFromTop (60);
-       auto sliderArea4 = r.removeFromTop (60);
-       auto sliderArea5 = r.removeFromTop (60);
-       auto sliderArea6 = r.removeFromTop (60);
-
-       gainSlider.setBounds  (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth() / 2)));
-       delaySlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
-       modSlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
-       iNumBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth()/2)));
-       auto boxSpacer_1a = sliderArea.removeFromLeft(20);
-       iDenBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
-       auto boxSpacer_1b = sliderArea.removeFromLeft(20);
-       savePreset.setBounds(sliderArea.removeFromLeft(jmin(180, sliderArea.getWidth())));
-
-       attackSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
-       sustainSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
-       releaseSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
-       resetEnvelope.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth() /2)));
-       auto boxSpacer_2a = sliderArea2.removeFromLeft(20);
-       iEnvBox.setBounds (sliderArea2.removeFromLeft (jmin (180, sliderArea2.getWidth())));
-       auto boxSpacer_2b = sliderArea2.removeFromLeft(20);
-       presetsBox.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
-
-       mattackSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
-       msustainSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
-       mreleaseSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
-       resetModEnvelope.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
-       auto boxSpacer3a = sliderArea3.removeFromLeft(20);
-       iModBox.setBounds (sliderArea3.removeFromLeft (jmin (180, sliderArea3.getWidth())));
-       auto boxSpacer3b = sliderArea3.removeFromLeft(20);
        
        
-       chebyshevAmpSliders[chebyshev1].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
-       chebyshevAmpSliders[chebyshev2].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
-       chebyshevAmpSliders[chebyshev3].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
        
-       chebyshevAmpSliders[chebyshev4].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
-       chebyshevAmpSliders[chebyshev5].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
-       chebyshevAmpSliders[chebyshev6].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
+       //Chart 1
        
-       chebyshevAmpSliders[chebyshev7].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
-       chebyshevAmpSliders[chebyshev8].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
-       chebyshevAmpSliders[chebyshev9].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
+       g.setColour(juce::Colours::skyblue);
+       juce::Rectangle<int> chart1 (550, 300, 200, 170);
+       g.drawRect (chart1);
+       g.setColour(juce::Colours::peachpuff);
+       Path wavePath;
+       wavePath.startNewSubPath (550, 300);
 
-       
-       lastUIWidth  = getWidth();
-       lastUIHeight = getHeight();
+       for (auto x = 1.0f; x < (float) 200; ++x)
+           wavePath.lineTo (550 + x, 385 + .1 * (float) 170 * 2.0f
+                                           * std::sin (x * 2000 * 0.0001f));
+       g.setColour (getLookAndFeel().findColour (Slider::thumbColourId));
+       g.strokePath (wavePath, PathStrokeType (2.0f));
+       /*for (int i =0; i < numSamples; i++)
+       {
+           g.drawPoint(550 + i, 470+buffer[i]);
+           g.drawLine(550 + i, 470 + i, 550+i+1, 470+buffer[i]);
+       }*/
+       g.drawLine(550, 470, 750, 300);
+       //Chart 2
+       g.setColour(juce::Colours::sandybrown);
+       g.drawRect (800, 300, 200, 170);
    }
 
-   void JuceDemoPluginAudioProcessorEditor::timerCallback()
-   {
-       updateTimecodeDisplay (getProcessor().lastPosInfo.get());
-   }
+void JuceDemoPluginAudioProcessorEditor::resized()
+{
+    // This lays out our child components...
+    
+    auto r = getLocalBounds().reduced (8);
 
-   void JuceDemoPluginAudioProcessorEditor::hostMIDIControllerIsAvailable (bool controllerIsAvailable)
-   {
-       midiKeyboard.setVisible (! controllerIsAvailable);
-   }
+    timecodeDisplayLabel.setBounds (r.removeFromTop (26));
+    midiKeyboard        .setBounds (r.removeFromBottom (70));
 
-   int JuceDemoPluginAudioProcessorEditor::getControlParameterIndex (Component& control)
-   {
-       if (&control == &gainSlider)
-           return 0;
+    r.removeFromTop (20);
+    auto sliderArea = r.removeFromTop (60);
+    auto spacer = r.removeFromTop(20);
+    auto sliderArea2 = r.removeFromTop (60);
+    auto spacer2 = r.removeFromTop(20);
+    auto sliderArea3 = r.removeFromTop (60);
+    auto sliderArea4 = r.removeFromTop (60);
+    auto sliderArea5 = r.removeFromTop (60);
+    auto sliderArea6 = r.removeFromTop (60);
 
-       if (&control == &delaySlider)
-           return 1;
+    gainSlider.setBounds  (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth() / 2)));
+    delaySlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+    modSlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+    iNumBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth()/2)));
+    auto boxSpacer_1a = sliderArea.removeFromLeft(20);
+    iDenBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+    auto boxSpacer_1b = sliderArea.removeFromLeft(20);
+    savePreset.setBounds(sliderArea.removeFromLeft(jmin(180, sliderArea.getWidth())));
 
-       return -1;
-   }
+    attackSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
+    sustainSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
+    releaseSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
+    resetEnvelope.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth() /2)));
+    auto boxSpacer_2a = sliderArea2.removeFromLeft(20);
+    iEnvBox.setBounds (sliderArea2.removeFromLeft (jmin (180, sliderArea2.getWidth())));
+    auto boxSpacer_2b = sliderArea2.removeFromLeft(20);
+    presetsBox.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
 
-   void JuceDemoPluginAudioProcessorEditor::updateTrackProperties()
-   {
-       auto trackColour = getProcessor().getTrackProperties().colour;
-       auto& lf = getLookAndFeel();
+    mattackSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
+    msustainSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
+    mreleaseSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
+    resetModEnvelope.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
+    auto boxSpacer3a = sliderArea3.removeFromLeft(20);
+    iModBox.setBounds (sliderArea3.removeFromLeft (jmin (180, sliderArea3.getWidth())));
+    auto boxSpacer3b = sliderArea3.removeFromLeft(20);
+      
+    chebyshevAmpSliders[chebyshev1].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
+    chebyshevAmpSliders[chebyshev2].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
+    chebyshevAmpSliders[chebyshev3].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
+   
+    chebyshevAmpSliders[chebyshev4].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
+    chebyshevAmpSliders[chebyshev5].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
+    chebyshevAmpSliders[chebyshev6].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
+   
+    chebyshevAmpSliders[chebyshev7].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
+    chebyshevAmpSliders[chebyshev8].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
+    chebyshevAmpSliders[chebyshev9].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
 
-       backgroundColour = (trackColour == Colour() ? lf.findColour (ResizableWindow::backgroundColourId)
-                                                   : trackColour.withAlpha (1.0f).withBrightness (0.266f));
-       repaint();
-   }
+    lastUIWidth  = getWidth();
+    lastUIHeight = getHeight();
+}
+
+void JuceDemoPluginAudioProcessorEditor::timerCallback()
+{
+    updateTimecodeDisplay (getProcessor().lastPosInfo.get());
+}
+
+void JuceDemoPluginAudioProcessorEditor::hostMIDIControllerIsAvailable (bool controllerIsAvailable)
+{
+    midiKeyboard.setVisible (! controllerIsAvailable);
+}
+
+int JuceDemoPluginAudioProcessorEditor::getControlParameterIndex (Component& control)
+{
+    if (&control == &gainSlider)
+        return 0;
+    if (&control == &delaySlider)
+        return 1;
+    return -1;
+}
+
+void JuceDemoPluginAudioProcessorEditor::updateTrackProperties()
+{
+    auto trackColour = getProcessor().getTrackProperties().colour;
+    auto& lf = getLookAndFeel();
+    
+    backgroundColour = (trackColour == Colour() ? lf.findColour (ResizableWindow::backgroundColourId)
+                                               : trackColour.withAlpha (1.0f).withBrightness (0.266f));
+    repaint();
+}
 
 
-   //==============================================================================
-   JuceDemoPluginAudioProcessor& JuceDemoPluginAudioProcessorEditor::getProcessor() const
-   {
-       return static_cast<JuceDemoPluginAudioProcessor&> (processor);
-   }
+//==============================================================================
+JuceDemoPluginAudioProcessor& JuceDemoPluginAudioProcessorEditor::getProcessor() const
+{
+    return static_cast<JuceDemoPluginAudioProcessor&> (processor);
+}
 
-   //==============================================================================
-   // quick-and-dirty function to format a timecode string
-   String JuceDemoPluginAudioProcessorEditor::timeToTimecodeString (double seconds)
-   {
-       auto millisecs = roundToInt (seconds * 1000.0);
-       auto absMillisecs = std::abs (millisecs);
+//==============================================================================
+// quick-and-dirty function to format a timecode string
+String JuceDemoPluginAudioProcessorEditor::timeToTimecodeString (double seconds)
+{
+    auto millisecs = roundToInt (seconds * 1000.0);
+    auto absMillisecs = std::abs (millisecs);
 
-       return String::formatted ("%02d:%02d:%02d.%03d",
-                                 millisecs / 3600000,
-                                 (absMillisecs / 60000) % 60,
-                                 (absMillisecs / 1000)  % 60,
-                                 absMillisecs % 1000);
-   }
+    return String::formatted ("%02d:%02d:%02d.%03d",
+                              millisecs / 3600000,
+                              (absMillisecs / 60000) % 60,
+                              (absMillisecs / 1000)  % 60,
+                              absMillisecs % 1000);
+}
 
-   // quick-and-dirty function to format a bars/beats string
-   String JuceDemoPluginAudioProcessorEditor::quarterNotePositionToBarsBeatsString (double quarterNotes, int numerator, int denominator)
-   {
-       if (numerator == 0 || denominator == 0)
-           return "1|1|000";
+// quick-and-dirty function to format a bars/beats string
+String JuceDemoPluginAudioProcessorEditor::quarterNotePositionToBarsBeatsString (double quarterNotes, int numerator, int denominator)
+{
+    if (numerator == 0 || denominator == 0)
+        return "1|1|000";
+    
+    auto quarterNotesPerBar = (numerator * 4 / denominator);
+    auto beats  = (fmod (quarterNotes, quarterNotesPerBar) / quarterNotesPerBar) * numerator;
 
-       auto quarterNotesPerBar = (numerator * 4 / denominator);
-       auto beats  = (fmod (quarterNotes, quarterNotesPerBar) / quarterNotesPerBar) * numerator;
+    auto bar    = ((int) quarterNotes) / quarterNotesPerBar + 1;
+    auto beat   = ((int) beats) + 1;
+    auto ticks  = ((int) (fmod (beats, 1.0) * 960.0 + 0.5));
 
-       auto bar    = ((int) quarterNotes) / quarterNotesPerBar + 1;
-       auto beat   = ((int) beats) + 1;
-       auto ticks  = ((int) (fmod (beats, 1.0) * 960.0 + 0.5));
+    return String::formatted ("%d|%d|%03d", bar, beat, ticks);
+}
 
-       return String::formatted ("%d|%d|%03d", bar, beat, ticks);
-   }
+// Updates the text in our position label.
+void JuceDemoPluginAudioProcessorEditor::updateTimecodeDisplay (AudioPlayHead::CurrentPositionInfo pos)
+{
+    MemoryOutputStream displayText;
 
-   // Updates the text in our position label.
-   void JuceDemoPluginAudioProcessorEditor::updateTimecodeDisplay (AudioPlayHead::CurrentPositionInfo pos)
-   {
-       MemoryOutputStream displayText;
+    displayText << "[" << SystemStats::getJUCEVersion() << "]   "
+    << String (pos.bpm, 2) << " bpm, "
+    << pos.timeSigNumerator << '/' << pos.timeSigDenominator
+    << "  -  " << timeToTimecodeString (pos.timeInSeconds)
+    << "  -  " << quarterNotePositionToBarsBeatsString (pos.ppqPosition,
+                                                        pos.timeSigNumerator,
+                                                        pos.timeSigDenominator);
 
-       displayText << "[" << SystemStats::getJUCEVersion() << "]   "
-       << String (pos.bpm, 2) << " bpm, "
-       << pos.timeSigNumerator << '/' << pos.timeSigDenominator
-       << "  -  " << timeToTimecodeString (pos.timeInSeconds)
-       << "  -  " << quarterNotePositionToBarsBeatsString (pos.ppqPosition,
-                                                           pos.timeSigNumerator,
-                                                           pos.timeSigDenominator);
+    if (pos.isRecording)
+        displayText << "  (recording)";
+    else if (pos.isPlaying)
+        displayText << "  (playing)";
+    timecodeDisplayLabel.setText (displayText.toString(), dontSendNotification);
+}
 
-       if (pos.isRecording)
-           displayText << "  (recording)";
-       else if (pos.isPlaying)
-           displayText << "  (playing)";
-
-       timecodeDisplayLabel.setText (displayText.toString(), dontSendNotification);
-   }
-
-   // called when the stored window size changes
-   void JuceDemoPluginAudioProcessorEditor::valueChanged (Value&)
-   {
-       setSize (lastUIWidth.getValue(), lastUIHeight.getValue());
-   }
+// called when the stored window size changes
+void JuceDemoPluginAudioProcessorEditor::valueChanged (Value&)
+{
+    setSize (lastUIWidth.getValue(), lastUIHeight.getValue());
+}
