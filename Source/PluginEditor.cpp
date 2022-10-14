@@ -212,39 +212,53 @@ void JuceDemoPluginAudioProcessorEditor::buttonClicked (juce::Button* button)  /
   }
 }
 
-   //===============================================================================
-   void JuceDemoPluginAudioProcessorEditor::paint (Graphics& g)
-   {
-       //auto numSamples = buffer.getNumSamples();
-       g.setColour (backgroundColour);
-       g.fillAll();
-       
-       
-       
-       //Chart 1
-       
-       g.setColour(juce::Colours::skyblue);
-       juce::Rectangle<int> chart1 (550, 300, 200, 170);
-       g.drawRect (chart1);
-       g.setColour(juce::Colours::peachpuff);
-       Path wavePath;
-       wavePath.startNewSubPath (550, 300);
-
-       for (auto x = 1.0f; x < (float) 200; ++x)
-           wavePath.lineTo (550 + x, 385 + .1 * (float) 170 * 2.0f
-                                           * std::sin (x * 2000 * 0.0001f));
-       g.setColour (getLookAndFeel().findColour (Slider::thumbColourId));
-       g.strokePath (wavePath, PathStrokeType (2.0f));
-       /*for (int i =0; i < numSamples; i++)
-       {
-           g.drawPoint(550 + i, 470+buffer[i]);
-           g.drawLine(550 + i, 470 + i, 550+i+1, 470+buffer[i]);
-       }*/
-       g.drawLine(550, 470, 750, 300);
-       //Chart 2
-       g.setColour(juce::Colours::sandybrown);
-       g.drawRect (800, 300, 200, 170);
-   }
+//===============================================================================
+void JuceDemoPluginAudioProcessorEditor::paint (Graphics& g)
+{
+    //auto numSamples = buffer.getNumSamples();
+    g.setColour (backgroundColour);
+    g.fillAll();
+    
+    auto mattack = getProcessor().state.getParameter("mattack");
+   
+    //Chart 1
+    g.setColour(juce::Colours::skyblue);
+    juce::Rectangle<int> chart1 (550, 300, 200, 170);
+    g.drawRect (chart1);
+    g.setColour(juce::Colours::peachpuff);
+    Path wavePath;
+    
+    wavePath.startNewSubPath (550, 300);
+    auto w = chart1.getWidth();
+    auto h = chart1.getHeight();
+    auto startx = chart1.getX();
+    auto starty = chart1.getCentreY();
+    for (auto x = 0; x < w; ++x)
+    {
+        wavePath.lineTo (startx++ , starty+ h/2 * std::sin (x* .2f));
+    }
+        
+    g.setColour (getLookAndFeel().findColour (Slider::thumbColourId));
+    g.strokePath (wavePath, PathStrokeType (2.0f));
+    //g.drawLine(550, 470, 750, 300);
+    //Chart 2
+    g.setColour(juce::Colours::sandybrown);
+    juce::Rectangle<int> chart2 (800, 300, 200, 170);
+    g.drawRect (chart2);
+    w = chart2.getWidth();
+    h = chart2.getHeight();
+    startx = chart2.getX();
+    starty = chart2.getCentreY();
+    
+    Path wavePath2;
+    wavePath2.startNewSubPath (startx, starty);
+    for (auto x = 0; x < w; ++x)
+    {
+        wavePath2.lineTo (startx++ , starty+ h/2 * pow(-1,x)*std::sin (2*M_PI*x));
+    }
+    g.setColour (getLookAndFeel().findColour (Slider::thumbColourId));
+    g.strokePath (wavePath2, PathStrokeType (2.0f));
+}
 
 void JuceDemoPluginAudioProcessorEditor::resized()
 {
@@ -290,7 +304,7 @@ void JuceDemoPluginAudioProcessorEditor::resized()
     auto boxSpacer3a = sliderArea3.removeFromLeft(20);
     iModBox.setBounds (sliderArea3.removeFromLeft (jmin (180, sliderArea3.getWidth())));
     auto boxSpacer3b = sliderArea3.removeFromLeft(20);
-      
+    
     chebyshevAmpSliders[chebyshev1].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
     chebyshevAmpSliders[chebyshev2].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
     chebyshevAmpSliders[chebyshev3].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));

@@ -98,7 +98,6 @@ JuceDemoPluginAudioProcessor::JuceDemoPluginAudioProcessor()
            //    std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 1.0f), 0.5f) })
 {
     // Add a sub-tree to store the state of our UI
-    //TODO: Dynamically change width and height?
     state.state.addChild ({ "uiState", { { "width",  1200 }, { "height", 800 } }, {} }, -1, nullptr);
 
     initialiseSynth();
