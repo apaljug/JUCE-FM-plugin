@@ -11,93 +11,99 @@
 
 
 JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemoPluginAudioProcessor& owner)
-   : AudioProcessorEditor (owner),
-     midiKeyboard         (owner.keyboardState, MidiKeyboardComponent::horizontalKeyboard),
-     gainAttachment       (owner.state, "gain",  gainSlider),
-     delayAttachment      (owner.state, "delay", delaySlider),
-     modAttachment        (owner.state, "mod", modSlider),
-     iNumAttachment       (owner.state, "indexNum", iNumBox),
-     iDenAttachment       (owner.state, "indexDen", iDenBox),
-     attackAttachment     (owner.state, "attack", attackSlider),
-     sustainAttachment    (owner.state, "sustain", sustainSlider),
-     releaseAttachment    (owner.state, "release", releaseSlider),
-     mattackAttachment    (owner.state, "mattack", mattackSlider),
-     msustainAttachment   (owner.state, "msustain", msustainSlider),
-     mreleaseAttachment   (owner.state, "mrelease", mreleaseSlider),
-     iEnvAttachment       (owner.state, "expLineEnv", iEnvBox),
-     iModEnvAttachment    (owner.state, "expLinModEnv", iModBox),
-     presetsAttachment    (owner.state, "presets", presetsBox),
-     chebyshevAmpAttachment1   (owner.state, "chebyshevAmp1", chebyshevAmpSliders[chebyshev1]),
-     chebyshevAmpAttachment2   (owner.state, "chebyshevAmp2", chebyshevAmpSliders[chebyshev2]),
-     chebyshevAmpAttachment3   (owner.state, "chebyshevAmp3", chebyshevAmpSliders[chebyshev3]),
-     chebyshevAmpAttachment4   (owner.state, "chebyshevAmp4", chebyshevAmpSliders[chebyshev4]),
-     chebyshevAmpAttachment5   (owner.state, "chebyshevAmp5", chebyshevAmpSliders[chebyshev5]),
-     chebyshevAmpAttachment6   (owner.state, "chebyshevAmp6", chebyshevAmpSliders[chebyshev6]),
-     chebyshevAmpAttachment7   (owner.state, "chebyshevAmp7", chebyshevAmpSliders[chebyshev7]),
-     chebyshevAmpAttachment8   (owner.state, "chebyshevAmp8", chebyshevAmpSliders[chebyshev8]),
-     chebyshevAmpAttachment9   (owner.state, "chebyshevAmp9", chebyshevAmpSliders[chebyshev9])
+   : AudioProcessorEditor       (owner),
+     midiKeyboard               (owner.keyboardState, MidiKeyboardComponent::horizontalKeyboard),
+     gainAttachment             (owner.state, "gain",  gainSlider),
+     delayAttachment            (owner.state, "delay", delaySlider),
+     modAttachment              (owner.state, "mod", modSlider),
+     iNumAttachment             (owner.state, "indexNum", iNumBox),
+     iDenAttachment             (owner.state, "indexDen", iDenBox),
+     attackAttachment           (owner.state, "attack", attackSlider),
+     sustainAttachment          (owner.state, "sustain", sustainSlider),
+     releaseAttachment          (owner.state, "release", releaseSlider),
+     mattackAttachment          (owner.state, "mattack", mattackSlider),
+     msustainAttachment         (owner.state, "msustain", msustainSlider),
+     mreleaseAttachment         (owner.state, "mrelease", mreleaseSlider),
+     iEnvAttachment             (owner.state, "expLineEnv", iEnvBox),
+     iModEnvAttachment          (owner.state, "expLinModEnv", iModBox),
+     presetsAttachment          (owner.state, "presets", presetsBox),
+     chebyshevAmpAttachment1    (owner.state, "chebyshevAmp1", chebyshevAmpSliders[chebyshev1]),
+     chebyshevAmpAttachment2    (owner.state, "chebyshevAmp2", chebyshevAmpSliders[chebyshev2]),
+     chebyshevAmpAttachment3    (owner.state, "chebyshevAmp3", chebyshevAmpSliders[chebyshev3]),
+     chebyshevAmpAttachment4    (owner.state, "chebyshevAmp4", chebyshevAmpSliders[chebyshev4]),
+     chebyshevAmpAttachment5    (owner.state, "chebyshevAmp5", chebyshevAmpSliders[chebyshev5]),
+     chebyshevAmpAttachment6    (owner.state, "chebyshevAmp6", chebyshevAmpSliders[chebyshev6]),
+     chebyshevAmpAttachment7    (owner.state, "chebyshevAmp7", chebyshevAmpSliders[chebyshev7]),
+     chebyshevAmpAttachment8    (owner.state, "chebyshevAmp8", chebyshevAmpSliders[chebyshev8]),
+     chebyshevAmpAttachment9    (owner.state, "chebyshevAmp9", chebyshevAmpSliders[chebyshev9])
 
 
 {
     //TODO: Is it possible to convert this to a for loop?
     // add some sliders..
-    addAndMakeVisible (gainSlider);
+    int w = lastUIWidth.getValue();
+    int h = lastUIHeight.getValue();
+    
+    
+    
+    container.addAndMakeVisible (gainSlider);
     gainSlider.setSliderStyle (Slider::Rotary);
     
-    addAndMakeVisible (delaySlider);
+    container.addAndMakeVisible (delaySlider);
     delaySlider.setSliderStyle (Slider::Rotary);
     
-    addAndMakeVisible (modSlider);
+    container.addAndMakeVisible (modSlider);
     modSlider.setSliderStyle (Slider::Rotary);
-
-    addAndMakeVisible(attackSlider);
+    
+    
+    
+    container.addAndMakeVisible(attackSlider);
     attackSlider.setSliderStyle(Slider::Rotary);
 
-    addAndMakeVisible(sustainSlider);
+    container.addAndMakeVisible(sustainSlider);
     sustainSlider.setSliderStyle(Slider::Rotary);
 
-    addAndMakeVisible(releaseSlider);
+    container.addAndMakeVisible(releaseSlider);
     releaseSlider.setSliderStyle(Slider::Rotary);
    
-    addAndMakeVisible(mattackSlider);
+    container.addAndMakeVisible(mattackSlider);
     mattackSlider.setSliderStyle(Slider::Rotary);
 
-    addAndMakeVisible(msustainSlider);
+    container.addAndMakeVisible(msustainSlider);
     msustainSlider.setSliderStyle(Slider::Rotary);
 
-    addAndMakeVisible(mreleaseSlider);
+    container.addAndMakeVisible(mreleaseSlider);
     mreleaseSlider.setSliderStyle(Slider::Rotary);
    
    
     for (int i = (int) chebyshev1; i < numberOfChebyshevs; i++)
     {
-        addAndMakeVisible(chebyshevAmpSliders[i]);
-        chebyshevAmpSliders[i].setSliderStyle(Slider::LinearVertical);
+        container.addAndMakeVisible(chebyshevAmpSliders[i]);
         chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::NoTextBox, true, 20, 20);
     }
    
-    addAndMakeVisible (resetEnvelope);
+    container.addAndMakeVisible (resetEnvelope);
     resetEnvelope.setButtonText ("Reset Envelope.");
     resetEnvelope.addListener (this);
    
-    addAndMakeVisible(resetModEnvelope);
+    container.addAndMakeVisible(resetModEnvelope);
     resetModEnvelope.setButtonText ("Reset Modulation Envelope.");
     resetModEnvelope.addListener (this);
    
-    addAndMakeVisible(savePreset);
+    container.addAndMakeVisible(savePreset);
     savePreset.setButtonText("Save Preset");
     savePreset.addListener(this);
    
-    addAndMakeVisible(presetsBox);
+    container.addAndMakeVisible(presetsBox);
 
-    addAndMakeVisible(iNumBox);
+    container.addAndMakeVisible(iNumBox);
    
     for (int i = 2; i < 100; i++)
     {
         iNumBox.addItem(std::to_string(i), i);
     }
    
-    addAndMakeVisible(iDenBox);
+    container.addAndMakeVisible(iDenBox);
     for (int i = 2; i <= 20; i++)
     {
         iDenBox.addItem(std::to_string(i), i);
@@ -107,19 +113,19 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
     iNumBox.setSelectedId(2);
 
    
-    addAndMakeVisible(iEnvBox);
-    iEnvBox.addItem("Lin Att. - Lin Dec.", 0);
-    iEnvBox.addItem("Exp Att.. - Lin Dec.", 1);
-    iEnvBox.addItem("Lin Att.. - Exp Dec.", 2);
+    container.addAndMakeVisible(iEnvBox);
+    iEnvBox.addItem("Lin Att. - Lin Dec.", 1);
+    iEnvBox.addItem("Exp Att.. - Lin Dec.", 2);
+    iEnvBox.addItem("Lin Att.. - Exp Dec.", 3);
 
-    iEnvBox.addItem("Exp Att.. - Exp Dec.", 3);
+    iEnvBox.addItem("Exp Att.. - Exp Dec.", 4);
    
-    addAndMakeVisible(iModBox);
-    iModBox.addItem("Lin Att. - Lin Dec.", 0);
-    iModBox.addItem("Exp Att.. - Lin Dec.", 1);
-    iModBox.addItem("Lin Att.. - Exp Dec.", 2);
+    container.addAndMakeVisible(iModBox);
+    iModBox.addItem("Lin Att. - Lin Dec.", 1);
+    iModBox.addItem("Exp Att.. - Lin Dec.", 2);
+    iModBox.addItem("Lin Att.. - Exp Dec.", 3);
 
-    iModBox.addItem("Exp Att.. - Exp Dec.", 3);
+    iModBox.addItem("Exp Att.. - Exp Dec.", 4);
 
 
            
@@ -175,13 +181,19 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
     // add a label that will display the current timecode and status..
     addAndMakeVisible (timecodeDisplayLabel);
     timecodeDisplayLabel.setFont (Font (Font::getDefaultMonospacedFontName(), 15.0f, Font::plain));
-
-    setResizable(true, true);
+    timecodeDisplayLabel.setJustificationType(juce::Justification::centred);
+    
+    
+    //setResizable(true, true);
 
     lastUIWidth .referTo (owner.state.state.getChildWithName ("uiState").getPropertyAsValue ("width",  nullptr));
     lastUIHeight.referTo (owner.state.state.getChildWithName ("uiState").getPropertyAsValue ("height", nullptr));
 
     // set our component's initial size to be the last one that was stored in the filter's settings
+    
+    myViewport.setViewedComponent(&container, false);
+    addAndMakeVisible(myViewport);
+    setResizable(true, true);
     setSize (lastUIWidth.getValue(), lastUIHeight.getValue());
 
     lastUIWidth. addListener (this);
@@ -196,15 +208,14 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
    
 
 JuceDemoPluginAudioProcessorEditor::~JuceDemoPluginAudioProcessorEditor(){}
-void JuceDemoPluginAudioProcessorEditor::buttonClicked (juce::Button* button)  // [2]
+void JuceDemoPluginAudioProcessorEditor::buttonClicked (juce::Button* button)
 {
-    if (button == &resetEnvelope)                                                      // [3]
+    if (button == &resetEnvelope)
     {
-        // [6]
         releaseSlider.setValue(0.0);
         sustainSlider.setValue(100.0);
         attackSlider.setValue(0.0);
-   }else  if (button == &resetModEnvelope)  {                                                    // [3]
+   }else  if (button == &resetModEnvelope)  {
        // [6]
        mreleaseSlider.setValue(0.0);
        msustainSlider.setValue(100.0);
@@ -215,76 +226,39 @@ void JuceDemoPluginAudioProcessorEditor::buttonClicked (juce::Button* button)  /
 //===============================================================================
 void JuceDemoPluginAudioProcessorEditor::paint (Graphics& g)
 {
-    //auto numSamples = buffer.getNumSamples();
     g.setColour (backgroundColour);
     g.fillAll();
-    
-    auto mattack = getProcessor().state.getParameter("mattack");
-   
-    //Chart 1
-    g.setColour(juce::Colours::skyblue);
-    juce::Rectangle<int> chart1 (550, 300, 200, 170);
-    g.drawRect (chart1);
-    g.setColour(juce::Colours::peachpuff);
-    Path wavePath;
-    
-    wavePath.startNewSubPath (550, 300);
-    auto w = chart1.getWidth();
-    auto h = chart1.getHeight();
-    auto startx = chart1.getX();
-    auto starty = chart1.getCentreY();
-    for (auto x = 0; x < w; ++x)
-    {
-        wavePath.lineTo (startx++ , starty+ h/2 * std::sin (x* .2f));
-    }
-        
-    g.setColour (getLookAndFeel().findColour (Slider::thumbColourId));
-    g.strokePath (wavePath, PathStrokeType (2.0f));
-    //g.drawLine(550, 470, 750, 300);
-    //Chart 2
-    g.setColour(juce::Colours::sandybrown);
-    juce::Rectangle<int> chart2 (800, 300, 200, 170);
-    g.drawRect (chart2);
-    w = chart2.getWidth();
-    h = chart2.getHeight();
-    startx = chart2.getX();
-    starty = chart2.getCentreY();
-    
-    Path wavePath2;
-    wavePath2.startNewSubPath (startx, starty);
-    for (auto x = 0; x < w; ++x)
-    {
-        wavePath2.lineTo (startx++ , starty+ h/2 * pow(-1,x)*std::sin (2*M_PI*x));
-    }
-    g.setColour (getLookAndFeel().findColour (Slider::thumbColourId));
-    g.strokePath (wavePath2, PathStrokeType (2.0f));
 }
 
 void JuceDemoPluginAudioProcessorEditor::resized()
 {
     // This lays out our child components...
-    
-    auto r = getLocalBounds().reduced (8);
-
-    timecodeDisplayLabel.setBounds (r.removeFromTop (26));
+    auto r  = getLocalBounds().reduced (8);
+        
+    timecodeDisplayLabel.setBounds (r.removeFromTop (30));
     midiKeyboard        .setBounds (r.removeFromBottom (70));
-
-    r.removeFromTop (20);
-    auto sliderArea = r.removeFromTop (60);
-    auto spacer = r.removeFromTop(20);
-    auto sliderArea2 = r.removeFromTop (60);
-    auto spacer2 = r.removeFromTop(20);
-    auto sliderArea3 = r.removeFromTop (60);
-    auto sliderArea4 = r.removeFromTop (60);
-    auto sliderArea5 = r.removeFromTop (60);
-    auto sliderArea6 = r.removeFromTop (60);
-
-    gainSlider.setBounds  (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth() / 2)));
-    delaySlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
-    modSlider.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
-    iNumBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth()/2)));
+    
+    container.setBounds(0, timecodeDisplayLabel.getHeight(), 1200, 700);
+    myViewport.setBounds(0, timecodeDisplayLabel.getHeight(), getWidth(), getHeight() - midiKeyboard.getHeight() - timecodeDisplayLabel.getHeight() - 8);
+    
+    auto r2 = container.getLocalBounds();
+    r2.removeFromTop (20);
+    auto sliderArea     =   r2.removeFromTop(60);
+    auto spacer         =   r2.removeFromTop(20);
+    auto sliderArea2    =   r2.removeFromTop(60);
+    auto spacer2        =   r2.removeFromTop(20);
+    auto sliderArea3    =   r2.removeFromTop(60);
+    auto sliderArea4    =   r2.removeFromTop(60);
+    auto sliderArea5    =   r2.removeFromTop(60);
+    auto sliderArea6    =   r2.removeFromTop(60);
+    auto sliderArea7    =   r2.removeFromTop(60);
+    
+    gainSlider.setBounds(sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth() / 2)));
+    delaySlider.setBounds(sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+    modSlider.setBounds(sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+    iNumBox.setBounds(sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth()/2)));
     auto boxSpacer_1a = sliderArea.removeFromLeft(20);
-    iDenBox.setBounds (sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
+    iDenBox.setBounds(sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
     auto boxSpacer_1b = sliderArea.removeFromLeft(20);
     savePreset.setBounds(sliderArea.removeFromLeft(jmin(180, sliderArea.getWidth())));
 
@@ -316,7 +290,7 @@ void JuceDemoPluginAudioProcessorEditor::resized()
     chebyshevAmpSliders[chebyshev7].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
     chebyshevAmpSliders[chebyshev8].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
     chebyshevAmpSliders[chebyshev9].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
-
+    
     lastUIWidth  = getWidth();
     lastUIHeight = getHeight();
 }

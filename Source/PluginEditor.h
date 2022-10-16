@@ -29,6 +29,7 @@ public:
     void buttonClicked (juce::Button* button) override;
 
     private:
+        
         MidiKeyboardComponent midiKeyboard;
         enum chebyshevSliders {
             chebyshev1, chebyshev2, chebyshev3,
@@ -49,7 +50,10 @@ public:
             msustainLabel{ {}, "Mod Sustain Magnitude:" },
             mreleaseLabel{ {}, "Mod Release Speed:" },
         presetsLabel{ {}, "Presets" };
-
+        
+        Viewport myViewport;
+        Component container;
+        
         Label chebyshevLabels[numberOfChebyshevs];
 
         Slider gainSlider, delaySlider, modSlider, attackSlider, sustainSlider, releaseSlider, mattackSlider, msustainSlider, mreleaseSlider;
