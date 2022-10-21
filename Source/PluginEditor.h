@@ -32,32 +32,33 @@ public:
         
         MidiKeyboardComponent midiKeyboard;
         enum chebyshevSliders {
+            gainSlider, delaySlider, modSlider,
+            attackSlider, sustainSlider, releaseSlider,
+            mattackSlider, msustainSlider, mreleaseSlider,
+            numberOfSliders};
+        enum numSliders {
             chebyshev1, chebyshev2, chebyshev3,
             chebyshev4, chebyshev5, chebyshev6,
             chebyshev7, chebyshev8, chebyshev9,
             numberOfChebyshevs};
 
-        Label timecodeDisplayLabel,
-            gainLabel{ {}, "Throughput level:" },
-            delayLabel{ {}, "Delay:" },
-            modLabel{ {}, "Freq Mod (deviation):" },
-            numLabel{ {},  "Index Numerator:" },
-            denLabel{ {},  "Index Denominator:" },
-            attackLabel{ {}, "Attack Speed:" },
-            sustainLabel{ {}, "Sustain Magnitude:" },
-            releaseLabel{ {}, "Release Speed:" },
-            mattackLabel{ {}, "Mod Attack Speed:" },
-            msustainLabel{ {}, "Mod Sustain Magnitude:" },
-            mreleaseLabel{ {}, "Mod Release Speed:" },
-        presetsLabel{ {}, "Presets" };
+        Label   timecodeDisplayLabel,
+                numLabel{ {},  "Index Numerator" },
+                denLabel{ {},  "Index Denominator" },
+                presetsLabel{ {}, "Presets" };
         
         Viewport myViewport;
         Component container;
-        
+        Array<String> sliderLabelText = {"Throughput Level", "Delay", "Freq Mod",
+                                         "Attack", "Sustain","Release",
+                                         "Mod Attack", "Mod Sustain", "Mod Release"};
         Label chebyshevLabels[numberOfChebyshevs];
-
-        Slider gainSlider, delaySlider, modSlider, attackSlider, sustainSlider, releaseSlider, mattackSlider, msustainSlider, mreleaseSlider;
+        Label sliderLabels[numberOfSliders];
+        
+        Slider sliders[numberOfSliders];
         Slider chebyshevAmpSliders[numberOfChebyshevs];
+        ComboBox comboBoxes[numberOfComboBoxes];
+        juce::TextButton Buttons[numberOfButtons];
         
         ComboBox iNumBox, iDenBox, iEnvBox, iModBox, presetsBox;
         

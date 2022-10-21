@@ -13,17 +13,17 @@
 JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemoPluginAudioProcessor& owner)
    : AudioProcessorEditor       (owner),
      midiKeyboard               (owner.keyboardState, MidiKeyboardComponent::horizontalKeyboard),
-     gainAttachment             (owner.state, "gain",  gainSlider),
-     delayAttachment            (owner.state, "delay", delaySlider),
-     modAttachment              (owner.state, "mod", modSlider),
+     gainAttachment             (owner.state, "gain",  sliders[gainSlider]),
+     delayAttachment            (owner.state, "delay", sliders[delaySlider]),
+     modAttachment              (owner.state, "mod", sliders[modSlider]),
      iNumAttachment             (owner.state, "indexNum", iNumBox),
      iDenAttachment             (owner.state, "indexDen", iDenBox),
-     attackAttachment           (owner.state, "attack", attackSlider),
-     sustainAttachment          (owner.state, "sustain", sustainSlider),
-     releaseAttachment          (owner.state, "release", releaseSlider),
-     mattackAttachment          (owner.state, "mattack", mattackSlider),
-     msustainAttachment         (owner.state, "msustain", msustainSlider),
-     mreleaseAttachment         (owner.state, "mrelease", mreleaseSlider),
+     attackAttachment           (owner.state, "attack", sliders[attackSlider]),
+     sustainAttachment          (owner.state, "sustain", sliders[sustainSlider]),
+     releaseAttachment          (owner.state, "release", sliders[releaseSlider]),
+     mattackAttachment          (owner.state, "mattack", sliders[mattackSlider]),
+     msustainAttachment         (owner.state, "msustain", sliders[msustainSlider]),
+     mreleaseAttachment         (owner.state, "mrelease", sliders[mreleaseSlider]),
      iEnvAttachment             (owner.state, "expLineEnv", iEnvBox),
      iModEnvAttachment          (owner.state, "expLinModEnv", iModBox),
      presetsAttachment          (owner.state, "presets", presetsBox),
@@ -41,52 +41,25 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
 {
     //TODO: Is it possible to convert this to a for loop?
     // add some sliders..
-    int w = lastUIWidth.getValue();
-    int h = lastUIHeight.getValue();
+    const int textBoxWidth  = 50;
+    const int textBoxHeight = 20;
+    const int numDecimalPlaces = 2;
     
     
     
-    container.addAndMakeVisible (gainSlider);
-    gainSlider.setSliderStyle (Slider::Rotary);
-    gainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
-    
-    container.addAndMakeVisible (delaySlider);
-    delaySlider.setSliderStyle (Slider::Rotary);
-    delaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
-    
-    container.addAndMakeVisible (modSlider);
-    modSlider.setSliderStyle (Slider::Rotary);
-    modSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
-    
-    container.addAndMakeVisible(attackSlider);
-    attackSlider.setSliderStyle(Slider::Rotary);
-    attackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
-
-    container.addAndMakeVisible(sustainSlider);
-    sustainSlider.setSliderStyle(Slider::Rotary);
-    sustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
-
-    container.addAndMakeVisible(releaseSlider);
-    releaseSlider.setSliderStyle(Slider::Rotary);
-    releaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
-    
-    container.addAndMakeVisible(mattackSlider);
-    mattackSlider.setSliderStyle(Slider::Rotary);
-    mattackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
-
-    container.addAndMakeVisible(msustainSlider);
-    msustainSlider.setSliderStyle(Slider::Rotary);
-    msustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
-
-    container.addAndMakeVisible(mreleaseSlider);
-    mreleaseSlider.setSliderStyle(Slider::Rotary);
-    mreleaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
-   
+    for (int i = (int) gainSlider; i < numberOfSliders; i++)
+    {
+        container.addAndMakeVisible(sliders[i]);
+        sliders[i].setSliderStyle(Slider::Rotary);
+        sliders[i].setNumDecimalPlacesToDisplay(numDecimalPlaces);
+        sliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, textBoxWidth, textBoxHeight);
+    }
    
     for (int i = (int) chebyshev1; i < numberOfChebyshevs; i++)
     {
         container.addAndMakeVisible(chebyshevAmpSliders[i]);
-        chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
+        chebyshevAmpSliders[i].setNumDecimalPlacesToDisplay(numDecimalPlaces);
+        chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, textBoxWidth, textBoxHeight);
     }
    
     container.addAndMakeVisible (resetEnvelope);
@@ -139,49 +112,14 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
 
     // add some labels for the sliders..
     const Font sliderLabelFont = Font(16.0f);
-    gainLabel.attachToComponent (&gainSlider, false);
-    gainLabel.setFont (sliderLabelFont);
-    gainLabel.setJustificationType(juce::Justification::centred);
-
-    delayLabel.attachToComponent (&delaySlider, false);
-    delayLabel.setFont (sliderLabelFont);
-    delayLabel.setJustificationType(juce::Justification::centred);
-   
-    modLabel.attachToComponent (&modSlider, false);
-    modLabel.setFont (sliderLabelFont);
-    modLabel.setJustificationType(juce::Justification::centred);
-   
-    numLabel.attachToComponent (&iNumBox, false);
-    numLabel.setFont (sliderLabelFont);
-    numLabel.setJustificationType(juce::Justification::centred);
-   
-    denLabel.attachToComponent (&iDenBox, false);
-    denLabel.setFont (sliderLabelFont);
-    denLabel.setJustificationType(juce::Justification::centred);
-
-    attackLabel.attachToComponent(&attackSlider, false);
-    attackLabel.setFont(sliderLabelFont);
-    attackLabel.setJustificationType(juce::Justification::centred);
-
-    sustainLabel.attachToComponent(&sustainSlider, false);
-    sustainLabel.setFont(sliderLabelFont);
-    sustainLabel.setJustificationType(juce::Justification::centred);
-
-    releaseLabel.attachToComponent(&releaseSlider, false);
-    releaseLabel.setFont(sliderLabelFont);
-    releaseLabel.setJustificationType(juce::Justification::centred);
-   
-    mattackLabel.attachToComponent(&mattackSlider, false);
-    mattackLabel.setFont(sliderLabelFont);
-    mattackLabel.setJustificationType(juce::Justification::centred);
-
-    msustainLabel.attachToComponent(&msustainSlider, false);
-    msustainLabel.setFont(sliderLabelFont);
-    msustainLabel.setJustificationType(juce::Justification::centred);
-
-    mreleaseLabel.attachToComponent(&mreleaseSlider, false);
-    mreleaseLabel.setFont(sliderLabelFont);
-    mreleaseLabel.setJustificationType(juce::Justification::centred);
+    
+    for (int i = (int) gainSlider; i < numberOfSliders; i++)
+    {
+        sliderLabels[i].setText(sliderLabelText[i], {});
+        sliderLabels[i].attachToComponent (&sliders[i], false);
+        sliderLabels[i].setFont (sliderLabelFont);
+        sliderLabels[i].setJustificationType(juce::Justification::centred);
+    }
 
     presetsLabel.attachToComponent(&presetsBox, false);
     presetsLabel.setFont(sliderLabelFont);
@@ -233,14 +171,14 @@ void JuceDemoPluginAudioProcessorEditor::buttonClicked (juce::Button* button)
 {
     if (button == &resetEnvelope)
     {
-        releaseSlider.setValue(0.0);
-        sustainSlider.setValue(100.0);
-        attackSlider.setValue(0.0);
+        sliders[releaseSlider].setValue(0.0);
+        sliders[sustainSlider].setValue(100.0);
+        sliders[attackSlider].setValue(0.0);
    }else  if (button == &resetModEnvelope)  {
        // [6]
-       mreleaseSlider.setValue(0.0);
-       msustainSlider.setValue(100.0);
-       mattackSlider.setValue(0.0);
+       sliders[mreleaseSlider].setValue(0.0);
+       sliders[msustainSlider].setValue(100.0);
+       sliders[mattackSlider].setValue(0.0);
   }
 }
 
@@ -259,61 +197,115 @@ void JuceDemoPluginAudioProcessorEditor::resized()
     timecodeDisplayLabel.setBounds (r.removeFromTop (30));
     midiKeyboard        .setBounds (r.removeFromBottom (70));
     
-    container.setBounds(0, timecodeDisplayLabel.getHeight(), 1200, 700);
+    juce::FlexBox fb;
+    fb.flexWrap = juce::FlexBox::Wrap::wrap;
+    //fb.justifyContent = juce::FlexBox::JustifyContent::flexStart;
+    //fb.alignContent = juce::FlexBox::AlignContent::center;
+    
+    juce::FlexBox fb2;
+    fb2.flexWrap = juce::FlexBox::Wrap::wrap;
+    fb2.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
+    fb2.alignContent = juce::FlexBox::AlignContent::spaceAround;
+    fb2.flexDirection = juce::FlexBox::Direction::row;
+    
+    juce::FlexBox fb3;
+    fb3.flexWrap = juce::FlexBox::Wrap::wrap;
+    fb3.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
+    fb3.alignContent = juce::FlexBox::AlignContent::spaceAround;
+    fb3.flexDirection = juce::FlexBox::Direction::row;
+    
+    juce::FlexBox fb4;
+    fb4.flexWrap = juce::FlexBox::Wrap::wrap;
+    fb4.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
+    fb4.alignContent = juce::FlexBox::AlignContent::spaceAround;
+    fb4.flexDirection = juce::FlexBox::Direction::row;
+    
+    juce::FlexBox fb5;
+    fb5.flexWrap = juce::FlexBox::Wrap::wrap;
+    fb5.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
+    fb5.alignContent = juce::FlexBox::AlignContent::spaceAround;
+    fb5.flexDirection = juce::FlexBox::Direction::row;
+    //fb.add.items(fb2);
+    //fb.add.items(fb3);
+    
+    container.setBounds(0, 0, getWidth(), getHeight());
     myViewport.setBounds(0, timecodeDisplayLabel.getHeight(), getWidth(), getHeight() - midiKeyboard.getHeight() - timecodeDisplayLabel.getHeight() - 8);
     
-    auto r2 = container.getLocalBounds();
-    r2.removeFromTop (20);
-    auto sliderArea     =   r2.removeFromTop(60);
-    auto spacer         =   r2.removeFromTop(20);
-    auto sliderArea2    =   r2.removeFromTop(60);
-    auto spacer2        =   r2.removeFromTop(20);
-    auto sliderArea3    =   r2.removeFromTop(60);
-    auto sliderArea4    =   r2.removeFromTop(60);
-    auto sliderArea5    =   r2.removeFromTop(60);
-    auto sliderArea6    =   r2.removeFromTop(60);
-    auto sliderArea7    =   r2.removeFromTop(60);
+    //fb.items.add(juce::FlexItem (container).withMinWidth (50.0f).withMinHeight (50.0f));
+    auto bounds = container.getLocalBounds();
+    float flexw  = 100.0f; //getWidth()/ 8;
+    float flexw2 = 100.0f; //getWidth()/ 8;
+    float flexh  = 100.0f; //getHeight()/ 8;
+    float flexh2 = 100.0f; //getHeight()/ 8;
     
-    gainSlider.setBounds(sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth() / 2)));
-    delaySlider.setBounds(sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
-    modSlider.setBounds(sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
-    iNumBox.setBounds(sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth()/2)));
-    auto boxSpacer_1a = sliderArea.removeFromLeft(20);
-    iDenBox.setBounds(sliderArea.removeFromLeft (jmin (180, sliderArea.getWidth())));
-    auto boxSpacer_1b = sliderArea.removeFromLeft(20);
-    savePreset.setBounds(sliderArea.removeFromLeft(jmin(180, sliderArea.getWidth())));
-
-    attackSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
-    sustainSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
-    releaseSlider.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
-    resetEnvelope.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth() /2)));
-    auto boxSpacer_2a = sliderArea2.removeFromLeft(20);
-    iEnvBox.setBounds (sliderArea2.removeFromLeft (jmin (180, sliderArea2.getWidth())));
-    auto boxSpacer_2b = sliderArea2.removeFromLeft(20);
-    presetsBox.setBounds(sliderArea2.removeFromLeft(jmin(180, sliderArea2.getWidth())));
-
-    mattackSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
-    msustainSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
-    mreleaseSlider.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
-    resetModEnvelope.setBounds(sliderArea3.removeFromLeft(jmin(180, sliderArea3.getWidth())));
-    auto boxSpacer3a = sliderArea3.removeFromLeft(20);
-    iModBox.setBounds (sliderArea3.removeFromLeft (jmin (180, sliderArea3.getWidth())));
-    auto boxSpacer3b = sliderArea3.removeFromLeft(20);
     
-    chebyshevAmpSliders[chebyshev1].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
-    chebyshevAmpSliders[chebyshev2].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
-    chebyshevAmpSliders[chebyshev3].setBounds(sliderArea4.removeFromLeft(jmin(180, sliderArea4.getWidth())));
-   
-    chebyshevAmpSliders[chebyshev4].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
-    chebyshevAmpSliders[chebyshev5].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
-    chebyshevAmpSliders[chebyshev6].setBounds(sliderArea5.removeFromLeft(jmin(180, sliderArea5.getWidth())));
-   
-    chebyshevAmpSliders[chebyshev7].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
-    chebyshevAmpSliders[chebyshev8].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
-    chebyshevAmpSliders[chebyshev9].setBounds(sliderArea6.removeFromLeft(jmin(180, sliderArea6.getWidth())));
+    for (int i = (int) gainSlider; i < numberOfSliders; i++)
+    {
+        fb2.items.add(juce::FlexItem (sliders[i]).withMinWidth (flexw).withMinHeight (flexh));
+    }
+    
+    for (int i= chebyshev1; i < numberOfChebyshevs; i++)
+    {
+        fb4.items.add(juce::FlexItem (chebyshevAmpSliders[i]).withMinWidth (flexw).withMinHeight (flexh));
+    }
+    
+    fb3.items.add(juce::FlexItem (iNumBox).withMinWidth (flexw2).withMinHeight (flexh2));
+    fb3.items.add(juce::FlexItem (iDenBox).withMinWidth (flexw2).withMinHeight (flexh2));
+    fb3.items.add(juce::FlexItem (presetsBox).withMinWidth (flexw2).withMinHeight (flexh2));
+    fb3.items.add(juce::FlexItem (savePreset).withMinWidth (flexw2).withMinHeight (flexh2));
+    fb5.items.add(juce::FlexItem (iEnvBox).withMinWidth (flexw2).withMinHeight (flexh2));
+    fb5.items.add(juce::FlexItem (iModBox).withMinWidth (flexw2).withMinHeight (flexh2));
+    fb5.items.add(juce::FlexItem (resetEnvelope).withMinWidth (flexw2).withMinHeight (flexh2));
+    fb5.items.add(juce::FlexItem (resetModEnvelope).withMinWidth (flexw2).withMinHeight (flexh2));
+    
+    
+    
+    
+    //fb.performLayout(r2.toFloat());
+    auto left = bounds.removeFromLeft(bounds.getWidth()/2);
+    auto topLeft = left.removeFromTop(left.getHeight()/2);
+    auto bottomLeft = left;
+    auto right = bounds;
+    auto topRight = right.removeFromTop(right.getHeight()/2);
+    auto bottomRight = right;
+    fb2.performLayout(topLeft);
+    fb4.performLayout(bottomLeft);
+    fb3.performLayout(topRight);
+    fb5.performLayout(bottomRight);
+    
+    
     
     lastUIWidth  = getWidth();
     lastUIHeight = getHeight();
+
+    /*
+    fb2.items.add(juce::FlexItem (gainSlider).withMinWidth (flexw).withMinHeight (flexh));
+    fb2.items.add(juce::FlexItem (delaySlider).withMinWidth (flexw).withMinHeight (flexh));
+    fb2.items.add(juce::FlexItem (modSlider).withMinWidth (flexw).withMinHeight (flexh));
+    fb3.items.add(juce::FlexItem (iNumBox).withMinWidth (flexw2).withMinHeight (flexh2));
+    fb3.items.add(juce::FlexItem (iDenBox).withMinWidth (flexw2).withMinHeight (flexh2));
+    fb3.items.add(juce::FlexItem (presetsBox).withMinWidth (flexw2).withMinHeight (flexh2));
+    fb3.items.add(juce::FlexItem (savePreset).withMinWidth (flexw2).withMinHeight (flexh2));
+    
+    
+    
+    fb2.items.add(juce::FlexItem (attackSlider).withMinWidth (flexw).withMinHeight (flexh));
+    fb2.items.add(juce::FlexItem (sustainSlider).withMinWidth (flexw).withMinHeight (flexh));
+    fb2.items.add(juce::FlexItem (releaseSlider).withMinWidth (flexw).withMinHeight (flexh));
+    fb3.items.add(juce::FlexItem (resetEnvelope).withMinWidth (flexw2).withMinHeight (flexh2));
+    fb3.items.add(juce::FlexItem (iEnvBox).withMinWidth (flexw2).withMinHeight (flexh2));
+    
+    
+    
+    fb2.items.add(juce::FlexItem (mattackSlider).withMinWidth (flexw).withMinHeight (flexh));
+    fb2.items.add(juce::FlexItem (msustainSlider).withMinWidth (flexw).withMinHeight (flexh));
+    fb2.items.add(juce::FlexItem (mreleaseSlider).withMinWidth (flexw).withMinHeight (flexh));
+    fb3.items.add(juce::FlexItem (resetModEnvelope).withMinWidth (flexw2).withMinHeight (flexh2));
+    fb3.items.add(juce::FlexItem (iModBox).withMinWidth (flexw2).withMinHeight (flexh2));
+     */
+    
+    //fb.items.add(juce::FlexItem (presetsBox).withMinWidth (150.0f).withMinHeight (150.0f));
+    
 }
 
 void JuceDemoPluginAudioProcessorEditor::timerCallback()
@@ -328,9 +320,9 @@ void JuceDemoPluginAudioProcessorEditor::hostMIDIControllerIsAvailable (bool con
 
 int JuceDemoPluginAudioProcessorEditor::getControlParameterIndex (Component& control)
 {
-    if (&control == &gainSlider)
+    if (&control == &sliders[gainSlider])
         return 0;
-    if (&control == &delaySlider)
+    if (&control == &sliders[delaySlider])
         return 1;
     return -1;
 }
