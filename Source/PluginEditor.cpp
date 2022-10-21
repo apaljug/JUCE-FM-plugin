@@ -277,34 +277,6 @@ void JuceDemoPluginAudioProcessorEditor::resized()
     
     lastUIWidth  = getWidth();
     lastUIHeight = getHeight();
-
-    /*
-    fb2.items.add(juce::FlexItem (gainSlider).withMinWidth (flexw).withMinHeight (flexh));
-    fb2.items.add(juce::FlexItem (delaySlider).withMinWidth (flexw).withMinHeight (flexh));
-    fb2.items.add(juce::FlexItem (modSlider).withMinWidth (flexw).withMinHeight (flexh));
-    fb3.items.add(juce::FlexItem (iNumBox).withMinWidth (flexw2).withMinHeight (flexh2));
-    fb3.items.add(juce::FlexItem (iDenBox).withMinWidth (flexw2).withMinHeight (flexh2));
-    fb3.items.add(juce::FlexItem (presetsBox).withMinWidth (flexw2).withMinHeight (flexh2));
-    fb3.items.add(juce::FlexItem (savePreset).withMinWidth (flexw2).withMinHeight (flexh2));
-    
-    
-    
-    fb2.items.add(juce::FlexItem (attackSlider).withMinWidth (flexw).withMinHeight (flexh));
-    fb2.items.add(juce::FlexItem (sustainSlider).withMinWidth (flexw).withMinHeight (flexh));
-    fb2.items.add(juce::FlexItem (releaseSlider).withMinWidth (flexw).withMinHeight (flexh));
-    fb3.items.add(juce::FlexItem (resetEnvelope).withMinWidth (flexw2).withMinHeight (flexh2));
-    fb3.items.add(juce::FlexItem (iEnvBox).withMinWidth (flexw2).withMinHeight (flexh2));
-    
-    
-    
-    fb2.items.add(juce::FlexItem (mattackSlider).withMinWidth (flexw).withMinHeight (flexh));
-    fb2.items.add(juce::FlexItem (msustainSlider).withMinWidth (flexw).withMinHeight (flexh));
-    fb2.items.add(juce::FlexItem (mreleaseSlider).withMinWidth (flexw).withMinHeight (flexh));
-    fb3.items.add(juce::FlexItem (resetModEnvelope).withMinWidth (flexw2).withMinHeight (flexh2));
-    fb3.items.add(juce::FlexItem (iModBox).withMinWidth (flexw2).withMinHeight (flexh2));
-     */
-    
-    //fb.items.add(juce::FlexItem (presetsBox).withMinWidth (150.0f).withMinHeight (150.0f));
     
 }
 
