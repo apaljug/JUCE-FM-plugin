@@ -48,38 +48,45 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
     
     container.addAndMakeVisible (gainSlider);
     gainSlider.setSliderStyle (Slider::Rotary);
+    gainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
     
     container.addAndMakeVisible (delaySlider);
     delaySlider.setSliderStyle (Slider::Rotary);
+    delaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
     
     container.addAndMakeVisible (modSlider);
     modSlider.setSliderStyle (Slider::Rotary);
-    
-    
+    modSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
     
     container.addAndMakeVisible(attackSlider);
     attackSlider.setSliderStyle(Slider::Rotary);
+    attackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
 
     container.addAndMakeVisible(sustainSlider);
     sustainSlider.setSliderStyle(Slider::Rotary);
+    sustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
 
     container.addAndMakeVisible(releaseSlider);
     releaseSlider.setSliderStyle(Slider::Rotary);
-   
+    releaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
+    
     container.addAndMakeVisible(mattackSlider);
     mattackSlider.setSliderStyle(Slider::Rotary);
+    mattackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
 
     container.addAndMakeVisible(msustainSlider);
     msustainSlider.setSliderStyle(Slider::Rotary);
+    msustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
 
     container.addAndMakeVisible(mreleaseSlider);
     mreleaseSlider.setSliderStyle(Slider::Rotary);
+    mreleaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
    
    
     for (int i = (int) chebyshev1; i < numberOfChebyshevs; i++)
     {
         container.addAndMakeVisible(chebyshevAmpSliders[i]);
-        chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::NoTextBox, true, 20, 20);
+        chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
     }
    
     container.addAndMakeVisible (resetEnvelope);
