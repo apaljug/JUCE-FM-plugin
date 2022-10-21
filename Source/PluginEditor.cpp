@@ -131,48 +131,62 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
            
 
     // add some labels for the sliders..
+    const Font sliderLabelFont = Font(16.0f);
     gainLabel.attachToComponent (&gainSlider, false);
-    gainLabel.setFont (Font (11.0f));
+    gainLabel.setFont (sliderLabelFont);
+    gainLabel.setJustificationType(juce::Justification::centred);
 
     delayLabel.attachToComponent (&delaySlider, false);
-    delayLabel.setFont (Font (11.0f));
+    delayLabel.setFont (sliderLabelFont);
+    delayLabel.setJustificationType(juce::Justification::centred);
    
     modLabel.attachToComponent (&modSlider, false);
-    modLabel.setFont (Font (11.0f));
+    modLabel.setFont (sliderLabelFont);
+    modLabel.setJustificationType(juce::Justification::centred);
    
     numLabel.attachToComponent (&iNumBox, false);
-    numLabel.setFont (Font (11.0f));
+    numLabel.setFont (sliderLabelFont);
+    numLabel.setJustificationType(juce::Justification::centred);
    
     denLabel.attachToComponent (&iDenBox, false);
-    denLabel.setFont (Font (11.0f));
+    denLabel.setFont (sliderLabelFont);
+    denLabel.setJustificationType(juce::Justification::centred);
 
     attackLabel.attachToComponent(&attackSlider, false);
-    attackLabel.setFont(Font(11.0f));
+    attackLabel.setFont(sliderLabelFont);
+    attackLabel.setJustificationType(juce::Justification::centred);
 
     sustainLabel.attachToComponent(&sustainSlider, false);
-    sustainLabel.setFont(Font(11.0f));
+    sustainLabel.setFont(sliderLabelFont);
+    sustainLabel.setJustificationType(juce::Justification::centred);
 
     releaseLabel.attachToComponent(&releaseSlider, false);
-    releaseLabel.setFont(Font(11.0f));
+    releaseLabel.setFont(sliderLabelFont);
+    releaseLabel.setJustificationType(juce::Justification::centred);
    
     mattackLabel.attachToComponent(&mattackSlider, false);
-    attackLabel.setFont(Font(11.0f));
+    mattackLabel.setFont(sliderLabelFont);
+    mattackLabel.setJustificationType(juce::Justification::centred);
 
     msustainLabel.attachToComponent(&msustainSlider, false);
-    msustainLabel.setFont(Font(11.0f));
+    msustainLabel.setFont(sliderLabelFont);
+    msustainLabel.setJustificationType(juce::Justification::centred);
 
     mreleaseLabel.attachToComponent(&mreleaseSlider, false);
-    mreleaseLabel.setFont(Font(11.0f));
+    mreleaseLabel.setFont(sliderLabelFont);
+    mreleaseLabel.setJustificationType(juce::Justification::centred);
 
     presetsLabel.attachToComponent(&presetsBox, false);
-    presetsLabel.setFont(Font(11.0f));
+    presetsLabel.setFont(sliderLabelFont);
+    presetsLabel.setJustificationType(juce::Justification::centred);
    
     //Add Chebyshev Labels
     for (int i = (int) chebyshev1; i < numberOfChebyshevs; i++)
     {
-        chebyshevLabels[i].setText("Chebyshev Amplitude " + std::to_string(i+1), {});
+        chebyshevLabels[i].setText("Chebyshev " + std::to_string(i+1), {});
         chebyshevLabels[i].attachToComponent(&chebyshevAmpSliders[i], false);
-        chebyshevLabels[i].setFont(Font(11.0f));
+        chebyshevLabels[i].setFont(sliderLabelFont);
+        chebyshevLabels[i].setJustificationType(juce::Justification::centred);
     }
 
     // add the midi keyboard component..
@@ -233,7 +247,7 @@ void JuceDemoPluginAudioProcessorEditor::paint (Graphics& g)
 void JuceDemoPluginAudioProcessorEditor::resized()
 {
     // This lays out our child components...
-    auto r  = getLocalBounds().reduced (8);
+    auto r  = getLocalBounds();
         
     timecodeDisplayLabel.setBounds (r.removeFromTop (30));
     midiKeyboard        .setBounds (r.removeFromBottom (70));
