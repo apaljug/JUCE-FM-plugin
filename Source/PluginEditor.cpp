@@ -144,6 +144,7 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
 
     // add the midi keyboard component..
     addAndMakeVisible (midiKeyboard);
+    midiKeyboard.setScrollButtonWidth(getWidth()/20);
 
     // add a label that will display the current timecode and status..
     addAndMakeVisible (timecodeDisplayLabel);
