@@ -41,6 +41,7 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
 {
     //TODO: Is it possible to convert this to a for loop?
     
+    
     //Sliders
     for (int i = (int) gainSlider; i < numberOfSliders; i++)
     {
@@ -91,17 +92,15 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
     comboBoxes[iEnvBox].addItem("Lin Att. - Lin Dec.", 1);
     comboBoxes[iEnvBox].addItem("Exp Att.. - Lin Dec.", 2);
     comboBoxes[iEnvBox].addItem("Lin Att.. - Exp Dec.", 3);
-
     comboBoxes[iEnvBox].addItem("Exp Att.. - Exp Dec.", 4);
    
     
     comboBoxes[iModBox].addItem("Lin Att. - Lin Dec.", 1);
     comboBoxes[iModBox].addItem("Exp Att.. - Lin Dec.", 2);
     comboBoxes[iModBox].addItem("Lin Att.. - Exp Dec.", 3);
-
     comboBoxes[iModBox].addItem("Exp Att.. - Exp Dec.", 4);
 
-
+    
            
 
     // Add Labels to Sliders
@@ -152,11 +151,14 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
 
     // set our component's initial size to be the last one that was stored in the filter's settings
     
+    
     myViewport.setViewedComponent(&container, false);
     addAndMakeVisible(myViewport);
     setResizable(true, true);
     setSize (lastUIWidth.getValue(), lastUIHeight.getValue());
-
+    
+    container.setBounds(0, 0, getWidth(), getHeight());
+    myViewport.setBounds(0, timecodeDisplayLabel.getHeight(), getWidth(), getHeight() - midiKeyboard.getHeight() - timecodeDisplayLabel.getHeight() - 8);
     lastUIWidth. addListener (this);
     lastUIHeight.addListener (this);
 
@@ -193,11 +195,26 @@ void JuceDemoPluginAudioProcessorEditor::paint (Graphics& g)
 
 void JuceDemoPluginAudioProcessorEditor::resized()
 {
-    // This lays out our child components...
-    auto r  = getLocalBounds();
+    const float flexw  = getWidth()/ 9;
+    const float flexh  = getHeight()/ 9;
+    const Font  myFont = Font(getHeight()/40);
+    const int textBoxWidth  = getWidth()/20;
+    const int textBoxHeight = myFont.getHeight();
+    auto appBounds  = getLocalBounds();
+    
+    container.setBounds(0, 0, getWidth(), getHeight());
+    myViewport.setBounds(0, timecodeDisplayLabel.getHeight(), getWidth(), getHeight() - midiKeyboard.getHeight() - timecodeDisplayLabel.getHeight() - 8);
+    
+    auto bounds         = container.getLocalBounds();
+    auto left           = bounds.removeFromLeft(bounds.getWidth()/2);
+    auto topLeft        = left.removeFromTop(left.getHeight()/2);
+    auto bottomLeft     = left;
+    auto right          = bounds;
+    auto topRight       = right.removeFromTop(right.getHeight()/2);
+    auto bottomRight    = right;
         
-    timecodeDisplayLabel.setBounds (r.removeFromTop (30));
-    midiKeyboard        .setBounds (r.removeFromBottom (70));
+    timecodeDisplayLabel.setBounds (appBounds.removeFromTop (30));
+    midiKeyboard        .setBounds (appBounds.removeFromBottom (70));
     midiKeyboard.setScrollButtonWidth(getWidth()/20);
     
     juce::FlexBox sliderFlexBox;
@@ -224,21 +241,18 @@ void JuceDemoPluginAudioProcessorEditor::resized()
     fb5.alignContent = juce::FlexBox::AlignContent::spaceAround;
     fb5.flexDirection = juce::FlexBox::Direction::row;
     
-    container.setBounds(0, 0, getWidth(), getHeight());
-    myViewport.setBounds(0, timecodeDisplayLabel.getHeight(), getWidth(), getHeight() - midiKeyboard.getHeight() - timecodeDisplayLabel.getHeight() - 8);
-    
-    
-    auto bounds = container.getLocalBounds();
-    
-    
     for (int i = (int) gainSlider; i < numberOfSliders; i++)
     {
-        //sliderLabels[i].setFont(Font(getHeight()/getWidth()));
+        sliderLabels[i].setFont(myFont);
+        sliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, textBoxWidth, textBoxHeight);
+        sliders[i].setNumDecimalPlacesToDisplay(0);
         sliderFlexBox.items.add(juce::FlexItem (sliders[i]).withMinWidth (flexw).withMinHeight (flexh));
     }
     
     for (int i= chebyshev1; i < numberOfChebyshevs; i++)
     {
+        chebyshevLabels[i].setFont(myFont);
+        chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, textBoxWidth, textBoxHeight);
         chebyshevFlexBox.items.add(juce::FlexItem (chebyshevAmpSliders[i]).withMinWidth (flexw).withMinHeight (flexh));
     }
     
@@ -253,12 +267,7 @@ void JuceDemoPluginAudioProcessorEditor::resized()
     }
     
     
-    auto left = bounds.removeFromLeft(bounds.getWidth()/2);
-    auto topLeft = left.removeFromTop(left.getHeight()/2);
-    auto bottomLeft = left;
-    auto right = bounds;
-    auto topRight = right.removeFromTop(right.getHeight()/2);
-    auto bottomRight = right;
+    
     sliderFlexBox.performLayout(topLeft);
     chebyshevFlexBox.performLayout(bottomLeft);
     comboBoxFlexBox.performLayout(topRight);
@@ -339,8 +348,7 @@ void JuceDemoPluginAudioProcessorEditor::updateTimecodeDisplay (AudioPlayHead::C
 {
     MemoryOutputStream displayText;
 
-    displayText << "[" << SystemStats::getJUCEVersion() << "]   "
-    << String (pos.bpm, 2) << " bpm, "
+    displayText << String (pos.bpm, 2) << " BPM "
     << pos.timeSigNumerator << '/' << pos.timeSigDenominator
     << "  -  " << timeToTimecodeString (pos.timeInSeconds)
     << "  -  " << quarterNotePositionToBarsBeatsString (pos.ppqPosition,
