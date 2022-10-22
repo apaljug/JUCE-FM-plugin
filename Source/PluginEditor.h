@@ -41,15 +41,24 @@ public:
             chebyshev4, chebyshev5, chebyshev6,
             chebyshev7, chebyshev8, chebyshev9,
             numberOfChebyshevs};
+        enum numComboBoxes {
+            iNumBox, iDenBox, iEnvBox,
+            iModBox, presetsBox,
+            numberOfComboBoxes};
+        enum numButtons {
+            resetEnvelope, resetModEnvelope, savePreset,
+            numberOfButtons};
 
         Label   timecodeDisplayLabel,
-                numLabel{ {},  "Index Numerator" },
-                denLabel{ {},  "Index Denominator" },
+                numeratorLabel{ {},  "Index Numerator" },
+                denominatorLabel{ {},  "Index Denominator" },
+                environmentLabel{ {},  "Index Denominator" },
+                modEnvironmentLabel{ {},  "Index Denominator" },
                 presetsLabel{ {}, "Presets" };
         
         Viewport myViewport;
         Component container;
-        Array<String> sliderLabelText = {"Throughput Level", "Delay", "Freq Mod",
+        Array<String> sliderLabelText = {"Throughput", "Delay", "Freq Mod",
                                          "Attack", "Sustain","Release",
                                          "Mod Attack", "Mod Sustain", "Mod Release"};
         Label chebyshevLabels[numberOfChebyshevs];
@@ -58,11 +67,11 @@ public:
         Slider sliders[numberOfSliders];
         Slider chebyshevAmpSliders[numberOfChebyshevs];
         ComboBox comboBoxes[numberOfComboBoxes];
-        juce::TextButton Buttons[numberOfButtons];
+        juce::TextButton buttons[numberOfButtons];
         
-        ComboBox iNumBox, iDenBox, iEnvBox, iModBox, presetsBox;
+        //ComboBox iNumBox, iDenBox, iEnvBox, iModBox, presetsBox;
         
-        juce::TextButton resetEnvelope, resetModEnvelope, savePreset;
+        //juce::TextButton resetEnvelope, resetModEnvelope, savePreset;
         
         AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment, attackAttachment, sustainAttachment, releaseAttachment, mattackAttachment, msustainAttachment, mreleaseAttachment, chebyshevAmpAttachment1, chebyshevAmpAttachment2, chebyshevAmpAttachment3, chebyshevAmpAttachment4, chebyshevAmpAttachment5, chebyshevAmpAttachment6, chebyshevAmpAttachment7, chebyshevAmpAttachment8, chebyshevAmpAttachment9;
         

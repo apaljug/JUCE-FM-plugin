@@ -16,17 +16,17 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
      gainAttachment             (owner.state, "gain",  sliders[gainSlider]),
      delayAttachment            (owner.state, "delay", sliders[delaySlider]),
      modAttachment              (owner.state, "mod", sliders[modSlider]),
-     iNumAttachment             (owner.state, "indexNum", iNumBox),
-     iDenAttachment             (owner.state, "indexDen", iDenBox),
+     iNumAttachment             (owner.state, "indexNum", comboBoxes[iNumBox]),
+     iDenAttachment             (owner.state, "indexDen", comboBoxes[iDenBox]),
      attackAttachment           (owner.state, "attack", sliders[attackSlider]),
      sustainAttachment          (owner.state, "sustain", sliders[sustainSlider]),
      releaseAttachment          (owner.state, "release", sliders[releaseSlider]),
      mattackAttachment          (owner.state, "mattack", sliders[mattackSlider]),
      msustainAttachment         (owner.state, "msustain", sliders[msustainSlider]),
      mreleaseAttachment         (owner.state, "mrelease", sliders[mreleaseSlider]),
-     iEnvAttachment             (owner.state, "expLineEnv", iEnvBox),
-     iModEnvAttachment          (owner.state, "expLinModEnv", iModBox),
-     presetsAttachment          (owner.state, "presets", presetsBox),
+     iEnvAttachment             (owner.state, "expLineEnv", comboBoxes[iEnvBox]),
+     iModEnvAttachment          (owner.state, "expLinModEnv", comboBoxes[iModBox]),
+     presetsAttachment          (owner.state, "presets", comboBoxes[presetsBox]),
      chebyshevAmpAttachment1    (owner.state, "chebyshevAmp1", chebyshevAmpSliders[chebyshev1]),
      chebyshevAmpAttachment2    (owner.state, "chebyshevAmp2", chebyshevAmpSliders[chebyshev2]),
      chebyshevAmpAttachment3    (owner.state, "chebyshevAmp3", chebyshevAmpSliders[chebyshev3]),
@@ -47,6 +47,7 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
     
     
     
+    //Sliders
     for (int i = (int) gainSlider; i < numberOfSliders; i++)
     {
         container.addAndMakeVisible(sliders[i]);
@@ -61,57 +62,55 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
         chebyshevAmpSliders[i].setNumDecimalPlacesToDisplay(numDecimalPlaces);
         chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, textBoxWidth, textBoxHeight);
     }
-   
-    container.addAndMakeVisible (resetEnvelope);
-    resetEnvelope.setButtonText ("Reset Envelope.");
-    resetEnvelope.addListener (this);
-   
-    container.addAndMakeVisible(resetModEnvelope);
-    resetModEnvelope.setButtonText ("Reset Modulation Envelope.");
-    resetModEnvelope.addListener (this);
-   
-    container.addAndMakeVisible(savePreset);
-    savePreset.setButtonText("Save Preset");
-    savePreset.addListener(this);
-   
-    container.addAndMakeVisible(presetsBox);
-
-    container.addAndMakeVisible(iNumBox);
+    
+    for (int i = (int) resetEnvelope; i < numberOfButtons; i++)
+    {
+        container.addAndMakeVisible (buttons[i]);
+        buttons[i].addListener (this);
+    }
+    
+    buttons[resetEnvelope].setButtonText ("Reset Envelope");
+    buttons[resetModEnvelope].setButtonText ("Reset Modulation Envelope");
+    buttons[savePreset].setButtonText("Save Preset");
+    
+    for (int i = (int) iNumBox; i < numberOfComboBoxes; i++)
+    {
+        container.addAndMakeVisible (comboBoxes[i]);
+    }
    
     for (int i = 2; i < 100; i++)
     {
-        iNumBox.addItem(std::to_string(i), i);
+        comboBoxes[iNumBox].addItem(std::to_string(i), i);
     }
    
-    container.addAndMakeVisible(iDenBox);
+    
     for (int i = 2; i <= 20; i++)
     {
-        iDenBox.addItem(std::to_string(i), i);
+        comboBoxes[iDenBox].addItem(std::to_string(i), i);
     }
    
-    iDenBox.setSelectedId(2);
-    iNumBox.setSelectedId(2);
+    comboBoxes[iDenBox].setSelectedId(2);
+    comboBoxes[iNumBox].setSelectedId(2);
 
    
-    container.addAndMakeVisible(iEnvBox);
-    iEnvBox.addItem("Lin Att. - Lin Dec.", 1);
-    iEnvBox.addItem("Exp Att.. - Lin Dec.", 2);
-    iEnvBox.addItem("Lin Att.. - Exp Dec.", 3);
+    
+    comboBoxes[iEnvBox].addItem("Lin Att. - Lin Dec.", 1);
+    comboBoxes[iEnvBox].addItem("Exp Att.. - Lin Dec.", 2);
+    comboBoxes[iEnvBox].addItem("Lin Att.. - Exp Dec.", 3);
 
-    iEnvBox.addItem("Exp Att.. - Exp Dec.", 4);
+    comboBoxes[iEnvBox].addItem("Exp Att.. - Exp Dec.", 4);
    
-    container.addAndMakeVisible(iModBox);
-    iModBox.addItem("Lin Att. - Lin Dec.", 1);
-    iModBox.addItem("Exp Att.. - Lin Dec.", 2);
-    iModBox.addItem("Lin Att.. - Exp Dec.", 3);
+    
+    comboBoxes[iModBox].addItem("Lin Att. - Lin Dec.", 1);
+    comboBoxes[iModBox].addItem("Exp Att.. - Lin Dec.", 2);
+    comboBoxes[iModBox].addItem("Lin Att.. - Exp Dec.", 3);
 
-    iModBox.addItem("Exp Att.. - Exp Dec.", 4);
+    comboBoxes[iModBox].addItem("Exp Att.. - Exp Dec.", 4);
 
 
            
 
-    // add some labels for the sliders..
-    const Font sliderLabelFont = Font(16.0f);
+    // Add Labels to Sliders
     
     for (int i = (int) gainSlider; i < numberOfSliders; i++)
     {
@@ -121,9 +120,19 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
         sliderLabels[i].setJustificationType(juce::Justification::centred);
     }
 
-    presetsLabel.attachToComponent(&presetsBox, false);
+    presetsLabel.attachToComponent(&comboBoxes[presetsBox], false);
     presetsLabel.setFont(sliderLabelFont);
     presetsLabel.setJustificationType(juce::Justification::centred);
+    
+    numeratorLabel.attachToComponent(&comboBoxes[iNumBox], false);
+    numeratorLabel.setFont(sliderLabelFont);
+    numeratorLabel.setJustificationType(juce::Justification::centred);
+    
+    denominatorLabel.attachToComponent(&comboBoxes[iDenBox], false);
+    denominatorLabel.setFont(sliderLabelFont);
+    denominatorLabel.setJustificationType(juce::Justification::centred);
+    
+    
    
     //Add Chebyshev Labels
     for (int i = (int) chebyshev1; i < numberOfChebyshevs; i++)
@@ -142,8 +151,6 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
     timecodeDisplayLabel.setFont (Font (Font::getDefaultMonospacedFontName(), 15.0f, Font::plain));
     timecodeDisplayLabel.setJustificationType(juce::Justification::centred);
     
-    
-    //setResizable(true, true);
 
     lastUIWidth .referTo (owner.state.state.getChildWithName ("uiState").getPropertyAsValue ("width",  nullptr));
     lastUIHeight.referTo (owner.state.state.getChildWithName ("uiState").getPropertyAsValue ("height", nullptr));
@@ -169,12 +176,12 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
 JuceDemoPluginAudioProcessorEditor::~JuceDemoPluginAudioProcessorEditor(){}
 void JuceDemoPluginAudioProcessorEditor::buttonClicked (juce::Button* button)
 {
-    if (button == &resetEnvelope)
+    if (button == &buttons[resetEnvelope])
     {
         sliders[releaseSlider].setValue(0.0);
         sliders[sustainSlider].setValue(100.0);
         sliders[attackSlider].setValue(0.0);
-   }else  if (button == &resetModEnvelope)  {
+   }else  if (button == &buttons[resetModEnvelope])  {
        // [6]
        sliders[mreleaseSlider].setValue(0.0);
        sliders[msustainSlider].setValue(100.0);
@@ -196,85 +203,71 @@ void JuceDemoPluginAudioProcessorEditor::resized()
         
     timecodeDisplayLabel.setBounds (r.removeFromTop (30));
     midiKeyboard        .setBounds (r.removeFromBottom (70));
+    midiKeyboard.setScrollButtonWidth(getWidth()/20);
     
-    juce::FlexBox fb;
-    fb.flexWrap = juce::FlexBox::Wrap::wrap;
-    //fb.justifyContent = juce::FlexBox::JustifyContent::flexStart;
-    //fb.alignContent = juce::FlexBox::AlignContent::center;
+    juce::FlexBox sliderFlexBox;
+    sliderFlexBox.flexWrap = juce::FlexBox::Wrap::wrap;
+    sliderFlexBox.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
+    sliderFlexBox.alignContent = juce::FlexBox::AlignContent::spaceAround;
+    sliderFlexBox.flexDirection = juce::FlexBox::Direction::row;
     
-    juce::FlexBox fb2;
-    fb2.flexWrap = juce::FlexBox::Wrap::wrap;
-    fb2.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
-    fb2.alignContent = juce::FlexBox::AlignContent::spaceAround;
-    fb2.flexDirection = juce::FlexBox::Direction::row;
+    juce::FlexBox comboBoxFlexBox;
+    comboBoxFlexBox.flexWrap = juce::FlexBox::Wrap::wrap;
+    comboBoxFlexBox.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
+    comboBoxFlexBox.alignContent = juce::FlexBox::AlignContent::spaceAround;
+    comboBoxFlexBox.flexDirection = juce::FlexBox::Direction::row;
     
-    juce::FlexBox fb3;
-    fb3.flexWrap = juce::FlexBox::Wrap::wrap;
-    fb3.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
-    fb3.alignContent = juce::FlexBox::AlignContent::spaceAround;
-    fb3.flexDirection = juce::FlexBox::Direction::row;
-    
-    juce::FlexBox fb4;
-    fb4.flexWrap = juce::FlexBox::Wrap::wrap;
-    fb4.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
-    fb4.alignContent = juce::FlexBox::AlignContent::spaceAround;
-    fb4.flexDirection = juce::FlexBox::Direction::row;
+    juce::FlexBox chebyshevFlexBox;
+    chebyshevFlexBox.flexWrap = juce::FlexBox::Wrap::wrap;
+    chebyshevFlexBox.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
+    chebyshevFlexBox.alignContent = juce::FlexBox::AlignContent::spaceAround;
+    chebyshevFlexBox.flexDirection = juce::FlexBox::Direction::row;
     
     juce::FlexBox fb5;
     fb5.flexWrap = juce::FlexBox::Wrap::wrap;
     fb5.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
     fb5.alignContent = juce::FlexBox::AlignContent::spaceAround;
     fb5.flexDirection = juce::FlexBox::Direction::row;
-    //fb.add.items(fb2);
-    //fb.add.items(fb3);
     
     container.setBounds(0, 0, getWidth(), getHeight());
     myViewport.setBounds(0, timecodeDisplayLabel.getHeight(), getWidth(), getHeight() - midiKeyboard.getHeight() - timecodeDisplayLabel.getHeight() - 8);
     
-    //fb.items.add(juce::FlexItem (container).withMinWidth (50.0f).withMinHeight (50.0f));
+    
     auto bounds = container.getLocalBounds();
-    float flexw  = 100.0f; //getWidth()/ 8;
-    float flexw2 = 100.0f; //getWidth()/ 8;
-    float flexh  = 100.0f; //getHeight()/ 8;
-    float flexh2 = 100.0f; //getHeight()/ 8;
     
     
     for (int i = (int) gainSlider; i < numberOfSliders; i++)
     {
-        fb2.items.add(juce::FlexItem (sliders[i]).withMinWidth (flexw).withMinHeight (flexh));
+        //sliderLabels[i].setFont(Font(getHeight()/getWidth()));
+        sliderFlexBox.items.add(juce::FlexItem (sliders[i]).withMinWidth (flexw).withMinHeight (flexh));
     }
     
     for (int i= chebyshev1; i < numberOfChebyshevs; i++)
     {
-        fb4.items.add(juce::FlexItem (chebyshevAmpSliders[i]).withMinWidth (flexw).withMinHeight (flexh));
+        chebyshevFlexBox.items.add(juce::FlexItem (chebyshevAmpSliders[i]).withMinWidth (flexw).withMinHeight (flexh));
     }
     
-    fb3.items.add(juce::FlexItem (iNumBox).withMinWidth (flexw2).withMinHeight (flexh2));
-    fb3.items.add(juce::FlexItem (iDenBox).withMinWidth (flexw2).withMinHeight (flexh2));
-    fb3.items.add(juce::FlexItem (presetsBox).withMinWidth (flexw2).withMinHeight (flexh2));
-    fb3.items.add(juce::FlexItem (savePreset).withMinWidth (flexw2).withMinHeight (flexh2));
-    fb5.items.add(juce::FlexItem (iEnvBox).withMinWidth (flexw2).withMinHeight (flexh2));
-    fb5.items.add(juce::FlexItem (iModBox).withMinWidth (flexw2).withMinHeight (flexh2));
-    fb5.items.add(juce::FlexItem (resetEnvelope).withMinWidth (flexw2).withMinHeight (flexh2));
-    fb5.items.add(juce::FlexItem (resetModEnvelope).withMinWidth (flexw2).withMinHeight (flexh2));
+    for (int i= iNumBox; i < numberOfComboBoxes; i++)
+    {
+        comboBoxFlexBox.items.add(juce::FlexItem (comboBoxes[i]).withMinWidth (flexw).withMinHeight (flexh));
+    }
+    
+    for (int i= resetEnvelope; i < numberOfButtons; i++)
+    {
+        comboBoxFlexBox.items.add(juce::FlexItem (buttons[i]).withMinWidth (flexw).withMinHeight (flexh));
+    }
     
     
-    
-    
-    //fb.performLayout(r2.toFloat());
     auto left = bounds.removeFromLeft(bounds.getWidth()/2);
     auto topLeft = left.removeFromTop(left.getHeight()/2);
     auto bottomLeft = left;
     auto right = bounds;
     auto topRight = right.removeFromTop(right.getHeight()/2);
     auto bottomRight = right;
-    fb2.performLayout(topLeft);
-    fb4.performLayout(bottomLeft);
-    fb3.performLayout(topRight);
+    sliderFlexBox.performLayout(topLeft);
+    chebyshevFlexBox.performLayout(bottomLeft);
+    comboBoxFlexBox.performLayout(topRight);
     fb5.performLayout(bottomRight);
-    
-    
-    
     lastUIWidth  = getWidth();
     lastUIHeight = getHeight();
     
