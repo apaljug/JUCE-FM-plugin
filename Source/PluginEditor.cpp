@@ -149,7 +149,7 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
 
     // add a label that will display the current timecode and status..
     addAndMakeVisible (timecodeDisplayLabel);
-    timecodeDisplayLabel.setFont (Font (Font::getDefaultMonospacedFontName(), 15.0f, Font::plain));
+    timecodeDisplayLabel.setFont (Font (Font::getDefaultMonospacedFontName(), 30.0f, Font::plain));
     timecodeDisplayLabel.setJustificationType(juce::Justification::centred);
     
 
