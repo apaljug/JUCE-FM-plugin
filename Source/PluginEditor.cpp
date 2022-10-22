@@ -40,11 +40,6 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
 
 {
     //TODO: Is it possible to convert this to a for loop?
-    // Constants
-    const int textBoxWidth  = 50;
-    const int textBoxHeight = 20;
-    const int numDecimalPlaces = 0;
-    const Font sliderLabelFont = Font(16.0f);
     
     //Sliders
     for (int i = (int) gainSlider; i < numberOfSliders; i++)

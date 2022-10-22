@@ -48,6 +48,12 @@ public:
         enum numButtons {
             resetEnvelope, resetModEnvelope, savePreset,
             numberOfButtons};
+    
+        //Constants
+        const int textBoxWidth  = 50;
+        const int textBoxHeight = 20;
+        const int numDecimalPlaces = 0;
+        const Font sliderLabelFont = Font(16.0f);
 
         Label   timecodeDisplayLabel,
                 numeratorLabel{ {},  "Index Numerator" },
