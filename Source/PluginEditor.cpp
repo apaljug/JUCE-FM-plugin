@@ -135,7 +135,14 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
         chebyshevLabels[i].setFont(sliderLabelFont);
         chebyshevLabels[i].setJustificationType(juce::Justification::centred);
     }
-
+    
+    
+    //Add Charts
+    container.addAndMakeVisible(totalChart);
+    container.addAndMakeVisible(chebyshevChart);
+    totalChart.setTitle("F(x)");
+    chebyshevChart.setTitle("F(sin(2*PI*t))");
+    
     // add the midi keyboard component..
     addAndMakeVisible (midiKeyboard);
     midiKeyboard.setScrollButtonWidth(getWidth()/20);
@@ -212,6 +219,10 @@ void JuceDemoPluginAudioProcessorEditor::resized()
     auto right          = bounds;
     auto topRight       = right.removeFromTop(right.getHeight()/2);
     auto bottomRight    = right;
+    
+    auto totalChartBounds       = bottomRight.removeFromLeft(bottomRight.getWidth()/2);
+    auto chebyshevChartBounds   = bottomRight.removeFromLeft(bottomRight.getWidth());
+    
         
     timecodeDisplayLabel.setBounds (appBounds.removeFromTop (30));
     midiKeyboard        .setBounds (appBounds.removeFromBottom (70));
@@ -271,7 +282,8 @@ void JuceDemoPluginAudioProcessorEditor::resized()
     sliderFlexBox.performLayout(topLeft);
     chebyshevFlexBox.performLayout(bottomLeft);
     comboBoxFlexBox.performLayout(topRight);
-    fb5.performLayout(bottomRight);
+    totalChart.setBounds(totalChartBounds);
+    chebyshevChart.setBounds(chebyshevChartBounds);
     lastUIWidth  = getWidth();
     lastUIHeight = getHeight();
     

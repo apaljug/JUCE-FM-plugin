@@ -8,7 +8,10 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-  class JuceDemoPluginAudioProcessorEditor  : public AudioProcessorEditor,
+#include "WaveshaperChart.h"
+
+
+class JuceDemoPluginAudioProcessorEditor  : public AudioProcessorEditor,
                                                 private Timer,
                                                 private Value::Listener,//,
                                                 public Button::Listener
@@ -54,6 +57,10 @@ public:
         const int textBoxHeight = 20;
         const int numDecimalPlaces = 0;
         const Font sliderLabelFont = Font(16.0f);
+    
+    
+        //
+        Rectangle<int> waveshapeChartBounds;
 
         Label   timecodeDisplayLabel,
                 numeratorLabel{ {},  "Index Numerator" },
@@ -74,10 +81,9 @@ public:
         Slider chebyshevAmpSliders[numberOfChebyshevs];
         ComboBox comboBoxes[numberOfComboBoxes];
         juce::TextButton buttons[numberOfButtons];
-        
-        //ComboBox iNumBox, iDenBox, iEnvBox, iModBox, presetsBox;
-        
-        //juce::TextButton resetEnvelope, resetModEnvelope, savePreset;
+    
+        WaveshaperChart totalChart;
+        WaveshaperChart chebyshevChart;
         
         AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment, attackAttachment, sustainAttachment, releaseAttachment, mattackAttachment, msustainAttachment, mreleaseAttachment, chebyshevAmpAttachment1, chebyshevAmpAttachment2, chebyshevAmpAttachment3, chebyshevAmpAttachment4, chebyshevAmpAttachment5, chebyshevAmpAttachment6, chebyshevAmpAttachment7, chebyshevAmpAttachment8, chebyshevAmpAttachment9;
         
