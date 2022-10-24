@@ -32,8 +32,7 @@ public:
     void buttonClicked (juce::Button* button) override;
 
     private:
-        
-        MidiKeyboardComponent midiKeyboard;
+        //Enums
         enum chebyshevSliders {
             gainSlider, delaySlider, modSlider,
             attackSlider, sustainSlider, releaseSlider,
@@ -58,32 +57,31 @@ public:
         const int numDecimalPlaces = 0;
         const Font sliderLabelFont = Font(16.0f);
     
+        //Components
+        MidiKeyboardComponent midiKeyboard;
+        Viewport myViewport;
+        Component container;
+        Slider sliders[numberOfSliders];
+        Slider chebyshevAmpSliders[numberOfChebyshevs];
+        ComboBox comboBoxes[numberOfComboBoxes];
+        juce::TextButton buttons[numberOfButtons];
+        WaveshaperChart totalChart;
+        WaveshaperChart chebyshevChart;
     
-        //
-        Rectangle<int> waveshapeChartBounds;
-
+        //Labels
         Label   timecodeDisplayLabel,
                 numeratorLabel{ {},  "Index Numerator" },
                 denominatorLabel{ {},  "Index Denominator" },
                 environmentLabel{ {},  "Index Denominator" },
                 modEnvironmentLabel{ {},  "Index Denominator" },
                 presetsLabel{ {}, "Presets" };
-        
-        Viewport myViewport;
-        Component container;
+        Label chebyshevLabels[numberOfChebyshevs];
+        Label sliderLabels[numberOfSliders];
         Array<String> sliderLabelText = {"Throughput", "Delay", "Freq Mod",
                                          "Attack", "Sustain","Release",
                                          "Mod Attack", "Mod Sustain", "Mod Release"};
-        Label chebyshevLabels[numberOfChebyshevs];
-        Label sliderLabels[numberOfSliders];
         
-        Slider sliders[numberOfSliders];
-        Slider chebyshevAmpSliders[numberOfChebyshevs];
-        ComboBox comboBoxes[numberOfComboBoxes];
-        juce::TextButton buttons[numberOfButtons];
-    
-        WaveshaperChart totalChart;
-        WaveshaperChart chebyshevChart;
+        
         
         AudioProcessorValueTreeState::SliderAttachment gainAttachment, delayAttachment, modAttachment, attackAttachment, sustainAttachment, releaseAttachment, mattackAttachment, msustainAttachment, mreleaseAttachment, chebyshevAmpAttachment1, chebyshevAmpAttachment2, chebyshevAmpAttachment3, chebyshevAmpAttachment4, chebyshevAmpAttachment5, chebyshevAmpAttachment6, chebyshevAmpAttachment7, chebyshevAmpAttachment8, chebyshevAmpAttachment9;
         

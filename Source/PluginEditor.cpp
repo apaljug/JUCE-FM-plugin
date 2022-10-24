@@ -39,9 +39,6 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
 
 
 {
-    //TODO: Is it possible to convert this to a for loop?
-    
-    
     //Sliders
     for (int i = (int) gainSlider; i < numberOfSliders; i++)
     {
@@ -50,7 +47,7 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
         sliders[i].setNumDecimalPlacesToDisplay(numDecimalPlaces);
         sliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, textBoxWidth, textBoxHeight);
     }
-   
+    
     for (int i = (int) chebyshev1; i < numberOfChebyshevs; i++)
     {
         container.addAndMakeVisible(chebyshevAmpSliders[i]);
@@ -58,6 +55,7 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
         chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, textBoxWidth, textBoxHeight);
     }
     
+    //Buttons
     for (int i = (int) resetEnvelope; i < numberOfButtons; i++)
     {
         container.addAndMakeVisible (buttons[i]);
@@ -68,6 +66,7 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
     buttons[resetModEnvelope].setButtonText ("Reset Modulation Envelope");
     buttons[savePreset].setButtonText("Save Preset");
     
+    //Combo Boxes
     for (int i = (int) iNumBox; i < numberOfComboBoxes; i++)
     {
         container.addAndMakeVisible (comboBoxes[i]);
@@ -143,11 +142,11 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
     totalChart.setTitle("F(x)");
     chebyshevChart.setTitle("F(sin(2*PI*t))");
     
-    // add the midi keyboard component..
+    //Add Midi Keyboard
     addAndMakeVisible (midiKeyboard);
     midiKeyboard.setScrollButtonWidth(getWidth()/20);
 
-    // add a label that will display the current timecode and status..
+    // Add a label that will display the current timecode and status..
     addAndMakeVisible (timecodeDisplayLabel);
     timecodeDisplayLabel.setFont (Font (Font::getDefaultMonospacedFontName(), 30.0f, Font::plain));
     timecodeDisplayLabel.setJustificationType(juce::Justification::centred);
@@ -156,9 +155,9 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
     lastUIWidth .referTo (owner.state.state.getChildWithName ("uiState").getPropertyAsValue ("width",  nullptr));
     lastUIHeight.referTo (owner.state.state.getChildWithName ("uiState").getPropertyAsValue ("height", nullptr));
 
-    // set our component's initial size to be the last one that was stored in the filter's settings
     
     
+    //Add Viewport
     myViewport.setViewedComponent(&container, false);
     addAndMakeVisible(myViewport);
     setResizable(true, true);
@@ -245,12 +244,6 @@ void JuceDemoPluginAudioProcessorEditor::resized()
     chebyshevFlexBox.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
     chebyshevFlexBox.alignContent = juce::FlexBox::AlignContent::spaceAround;
     chebyshevFlexBox.flexDirection = juce::FlexBox::Direction::row;
-    
-    juce::FlexBox fb5;
-    fb5.flexWrap = juce::FlexBox::Wrap::wrap;
-    fb5.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
-    fb5.alignContent = juce::FlexBox::AlignContent::spaceAround;
-    fb5.flexDirection = juce::FlexBox::Direction::row;
     
     for (int i = (int) gainSlider; i < numberOfSliders; i++)
     {
