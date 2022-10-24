@@ -94,8 +94,6 @@ JuceDemoPluginAudioProcessor::JuceDemoPluginAudioProcessor()
           std::make_unique<AudioParameterFloat>("chebyshevAmp9", "Chebyshev Amplitude", NormalisableRange<float>(0.0f, 100.0f), 0.5f)
           //min, max, default
           })
-
-           //    std::make_unique<AudioParameterFloat> ("delay", "Delay Feedback", NormalisableRange<float> (0.0f, 1.0f), 0.5f) })
 {
     // Add a sub-tree to store the state of our UI
     state.state.addChild ({ "uiState", { { "width",  1200 }, { "height", 800 } }, {} }, -1, nullptr);

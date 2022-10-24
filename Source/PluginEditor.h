@@ -70,16 +70,15 @@ public:
     
         //Labels
         Label   timecodeDisplayLabel,
-                numeratorLabel{ {},  "Index Numerator" },
-                denominatorLabel{ {},  "Index Denominator" },
-                environmentLabel{ {},  "Index Denominator" },
-                modEnvironmentLabel{ {},  "Index Denominator" },
-                presetsLabel{ {}, "Presets" };
-        Label chebyshevLabels[numberOfChebyshevs];
-        Label sliderLabels[numberOfSliders];
+                chebyshevLabels[numberOfChebyshevs],
+                sliderLabels[numberOfSliders],
+                comboBoxLabels[numberOfComboBoxes];
         Array<String> sliderLabelText = {"Throughput", "Delay", "Freq Mod",
                                          "Attack", "Sustain","Release",
                                          "Mod Attack", "Mod Sustain", "Mod Release"};
+        Array<String> comboBoxLabelText = {"Index Numerator","Index Denominator",
+                                            "Environment", "Mod Environment",
+                                            "Presets"};
         
         
         

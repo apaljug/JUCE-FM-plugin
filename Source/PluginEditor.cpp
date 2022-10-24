@@ -112,20 +112,6 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
         sliderLabels[i].setJustificationType(juce::Justification::centred);
     }
 
-    presetsLabel.attachToComponent(&comboBoxes[presetsBox], false);
-    presetsLabel.setFont(sliderLabelFont);
-    presetsLabel.setJustificationType(juce::Justification::centred);
-    
-    numeratorLabel.attachToComponent(&comboBoxes[iNumBox], false);
-    numeratorLabel.setFont(sliderLabelFont);
-    numeratorLabel.setJustificationType(juce::Justification::centred);
-    
-    denominatorLabel.attachToComponent(&comboBoxes[iDenBox], false);
-    denominatorLabel.setFont(sliderLabelFont);
-    denominatorLabel.setJustificationType(juce::Justification::centred);
-    
-    
-   
     //Add Chebyshev Labels
     for (int i = (int) chebyshev1; i < numberOfChebyshevs; i++)
     {
@@ -133,6 +119,16 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
         chebyshevLabels[i].attachToComponent(&chebyshevAmpSliders[i], false);
         chebyshevLabels[i].setFont(sliderLabelFont);
         chebyshevLabels[i].setJustificationType(juce::Justification::centred);
+    }
+    
+    //Add Combo Box Labels
+    //Add Chebyshev Labels
+    for (int i = (int) iNumBox; i < numberOfComboBoxes; i++)
+    {
+        comboBoxLabels[i].setText(comboBoxLabelText[i], {});
+        comboBoxLabels[i].attachToComponent(&comboBoxes[i], false);
+        comboBoxLabels[i].setFont(sliderLabelFont);
+        comboBoxLabels[i].setJustificationType(juce::Justification::centred);
     }
     
     
