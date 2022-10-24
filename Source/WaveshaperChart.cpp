@@ -9,9 +9,8 @@
 #include "WaveshaperChart.h"
 
 
-WaveshaperChart::WaveshaperChart(){
-    
-}
+WaveshaperChart::WaveshaperChart(){}
+WaveshaperChart::~WaveshaperChart(){}
 
 
 void WaveshaperChart::paint(Graphics &g){
@@ -45,9 +44,5 @@ void WaveshaperChart::paint(Graphics &g){
 void WaveshaperChart::setTitle(String titleString)
 {
     title = titleString;
-}
-
-WaveshaperChart::~WaveshaperChart(){
-    
 }
 

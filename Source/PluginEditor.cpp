@@ -56,7 +56,7 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
     }
     
     //Buttons
-    for (int i = (int) resetEnvelope; i < numberOfButtons; i++)
+    for (int i = (int) savePreset; i < numberOfButtons; i++)
     {
         container.addAndMakeVisible (buttons[i]);
         buttons[i].addListener (this);
@@ -201,8 +201,8 @@ void JuceDemoPluginAudioProcessorEditor::paint (Graphics& g)
 
 void JuceDemoPluginAudioProcessorEditor::resized()
 {
-    const float flexw  = getWidth()/ 9;
-    const float flexh  = getHeight()/ 9;
+    const float flexBoxWidth  = getWidth()/ 8;
+    const float flexBoxHeight  = getHeight()/ 8;
     const Font  myFont = Font(getHeight()/40);
     const int textBoxWidth  = getWidth()/20;
     const int textBoxHeight = myFont.getHeight();
@@ -250,24 +250,24 @@ void JuceDemoPluginAudioProcessorEditor::resized()
         sliderLabels[i].setFont(myFont);
         sliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, textBoxWidth, textBoxHeight);
         sliders[i].setNumDecimalPlacesToDisplay(0);
-        sliderFlexBox.items.add(juce::FlexItem (sliders[i]).withMinWidth (flexw).withMinHeight (flexh));
+        sliderFlexBox.items.add(juce::FlexItem (sliders[i]).withMinWidth (flexBoxWidth).withMinHeight (flexBoxHeight));
     }
     
     for (int i= chebyshev1; i < numberOfChebyshevs; i++)
     {
         chebyshevLabels[i].setFont(myFont);
         chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, textBoxWidth, textBoxHeight);
-        chebyshevFlexBox.items.add(juce::FlexItem (chebyshevAmpSliders[i]).withMinWidth (flexw).withMinHeight (flexh));
+        chebyshevFlexBox.items.add(juce::FlexItem (chebyshevAmpSliders[i]).withMinWidth (flexBoxWidth).withMinHeight (flexBoxHeight));
     }
     
     for (int i= iNumBox; i < numberOfComboBoxes; i++)
     {
-        comboBoxFlexBox.items.add(juce::FlexItem (comboBoxes[i]).withMinWidth (flexw).withMinHeight (flexh));
+        comboBoxFlexBox.items.add(juce::FlexItem (comboBoxes[i]).withMinWidth (flexBoxWidth).withMinHeight (flexBoxHeight));
     }
     
-    for (int i= resetEnvelope; i < numberOfButtons; i++)
+    for (int i= savePreset; i < numberOfButtons; i++)
     {
-        comboBoxFlexBox.items.add(juce::FlexItem (buttons[i]).withMinWidth (flexw).withMinHeight (flexh));
+        comboBoxFlexBox.items.add(juce::FlexItem (buttons[i]).withMinWidth (flexBoxWidth).withMinHeight (flexBoxHeight));
     }
     
     

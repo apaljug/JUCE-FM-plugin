@@ -33,22 +33,22 @@ public:
 
     private:
         //Enums
-        enum chebyshevSliders {
+        enum chebyshevEnum {
             gainSlider, delaySlider, modSlider,
             attackSlider, sustainSlider, releaseSlider,
             mattackSlider, msustainSlider, mreleaseSlider,
             numberOfSliders};
-        enum numSliders {
+        enum slidersEnum {
             chebyshev1, chebyshev2, chebyshev3,
             chebyshev4, chebyshev5, chebyshev6,
             chebyshev7, chebyshev8, chebyshev9,
             numberOfChebyshevs};
-        enum numComboBoxes {
+        enum comboBoxesEnum {
             iNumBox, iDenBox, iEnvBox,
             iModBox, presetsBox,
             numberOfComboBoxes};
-        enum numButtons {
-            resetEnvelope, resetModEnvelope, savePreset,
+        enum buttonsEnum {
+            savePreset, resetEnvelope, resetModEnvelope, 
             numberOfButtons};
     
         //Constants
