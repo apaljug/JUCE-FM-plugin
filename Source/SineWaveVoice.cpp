@@ -46,7 +46,7 @@ void SineWaveVoice::startNote (int midiNoteNumber, float velocity,
     modIndex = freqDev / float(modFreq); //new
     adsr.noteOn();
 }
-float SineWaveVoice::chebyshevCalulation(int chebyshev, float x)
+float SineWaveVoice::chebyshevCalculation(int chebyshev, float x)
 {
     if (chebyshev == chebyshevLevel0)
     {
@@ -58,7 +58,7 @@ float SineWaveVoice::chebyshevCalulation(int chebyshev, float x)
     }
     else
     {
-        return 2 * x * chebyshevCalulation(chebyshev-1, x) - chebyshevCalulation(chebyshev-2, x);
+        return 2 * x * chebyshevCalculation(chebyshev-1, x) - chebyshevCalculation(chebyshev-2, x);
         
     }
 }
@@ -68,7 +68,7 @@ float SineWaveVoice::getChebyshevSignal(float currentSample)
     float chebyshevSignal = 0.0;
     for (auto chebyshevLevel = (int) chebyshevLevel1; chebyshevLevel < chebyshevLevelEnd; chebyshevLevel++)
     {
-        chebyshevSignal += chebyshevAmplitudes[chebyshevLevel] * chebyshevCalulation(chebyshevLevel, currentSample);
+        chebyshevSignal += chebyshevAmplitudes[chebyshevLevel] * chebyshevCalculation(chebyshevLevel, currentSample);
     }
     return chebyshevSignal;
 }
