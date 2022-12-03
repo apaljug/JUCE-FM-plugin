@@ -7,7 +7,7 @@
 //
 
 #include "WaveshaperChart.h"
-
+    
 
 WaveshaperChart::WaveshaperChart(){}
 WaveshaperChart::~WaveshaperChart(){}
@@ -32,17 +32,74 @@ void WaveshaperChart::paint(Graphics &g){
     auto startx = chartArea.getX();
     auto starty = chartArea.getCentreY();
     wavePath.startNewSubPath (startx, starty);
-    for (auto x = 0; x < w; ++x)
+    if (plotSetting == ChartSettingsEnum::straightChart)
     {
-        wavePath.lineTo (startx++ , starty+ h/2 * std::sin (x* .2f));
+        for (auto x = plotMin*w; x < plotMax*w; ++x)
+            wavePath.lineTo (startx++ , starty + getChebyshevSignal((float)x / (w)));
+    }
+    else if (plotSetting == ChartSettingsEnum::sinChart)
+    {
+        for (auto x = plotMin*w; x < plotMax*w; ++x)
+            wavePath.lineTo (startx++ , starty + getChebyshevSignal(sin(2*M_PI* x/w)));
+    }
+    else
+    {
+        //Just Plot sinewave
+        for (auto x = 0; x < w; ++x)
+            wavePath.lineTo (startx++ , starty+ h/2 * std::sin(x * .2f));
     }
     
     g.setColour (getLookAndFeel().findColour (Slider::thumbColourId));
     g.strokePath (wavePath, PathStrokeType (2.0f));
 }
-
+void WaveshaperChart::resized()
+{
+    //
+}
 void WaveshaperChart::setTitle(String titleString)
 {
     title = titleString;
 }
 
+void WaveshaperChart::plotFunction(float x, std::function<float(float, float)> func)
+{
+    plotFunc = func;
+    //funcx = x;
+}
+void WaveshaperChart::setChebyshevAmplitudes(float amplitude, SineWaveVoice::ChebyshevLevels chebyshevLevel)
+{
+    chebyshevAmplitudes[chebyshevLevel] = amplitude;
+}
+void WaveshaperChart::plotChebyshev(float min, float max, ChartSettingsEnum setting)
+{
+    plotSetting = setting;
+    plotMin = min;
+    plotMax = max;
+}
+
+float WaveshaperChart::chebyshevCalculation(int chebyshev, float x)
+{
+    if (chebyshev == SineWaveVoice::chebyshevLevel0)
+    {
+        return 1;
+    }
+    if (chebyshev == SineWaveVoice::chebyshevLevel1)
+    {
+        return x;
+    }
+    else
+    {
+        return 2 * x * chebyshevCalculation(chebyshev-1, x) - chebyshevCalculation(chebyshev-2, x);
+        
+    }
+}
+
+float WaveshaperChart::getChebyshevSignal(float currentSample)
+{
+    float chebyshevSignal = 0.0;
+    for (auto chebyshevLevel = (int) SineWaveVoice::chebyshevLevel1; chebyshevLevel < SineWaveVoice::chebyshevLevelEnd; chebyshevLevel++)
+    {
+        chebyshevSignal += chebyshevAmplitudes[chebyshevLevel] * chebyshevCalculation(chebyshevLevel, currentSample);
+    }
+    return chebyshevSignal;
+}

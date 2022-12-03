@@ -254,6 +254,8 @@ void JuceDemoPluginAudioProcessorEditor::resized()
         chebyshevLabels[i].setFont(myFont);
         chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, textBoxWidth, textBoxHeight);
         chebyshevFlexBox.items.add(juce::FlexItem (chebyshevAmpSliders[i]).withMinWidth (flexBoxWidth).withMinHeight (flexBoxHeight));
+        totalChart.setChebyshevAmplitudes(chebyshevAmpSliders[i].getValue(), (SineWaveVoice::ChebyshevLevels) i);
+        chebyshevChart.setChebyshevAmplitudes(chebyshevAmpSliders[i].getValue(), (SineWaveVoice::ChebyshevLevels) i);
     }
     
     for (int i= iNumBox; i < numberOfComboBoxes; i++)
@@ -272,7 +274,9 @@ void JuceDemoPluginAudioProcessorEditor::resized()
     chebyshevFlexBox.performLayout(bottomLeft);
     comboBoxFlexBox.performLayout(topRight);
     totalChart.setBounds(totalChartBounds);
+    totalChart.plotChebyshev(-1, 1, WaveshaperChart::straightChart);
     chebyshevChart.setBounds(chebyshevChartBounds);
+    chebyshevChart.plotChebyshev(0, 1, WaveshaperChart::sinChart);
     lastUIWidth  = getWidth();
     lastUIHeight = getHeight();
     
