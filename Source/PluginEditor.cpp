@@ -51,8 +51,11 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
     for (int i = (int) chebyshev1; i < numberOfChebyshevs; i++)
     {
         container.addAndMakeVisible(chebyshevAmpSliders[i]);
+        chebyshevAmpSliders[i].addListener(this);
         chebyshevAmpSliders[i].setNumDecimalPlacesToDisplay(numDecimalPlaces);
         chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, textBoxWidth, textBoxHeight);
+        totalChart.setChebyshevAmplitudes(chebyshevAmpSliders[i].getValue(), (SineWaveVoice::ChebyshevLevels) (i+1));
+        chebyshevChart.setChebyshevAmplitudes(chebyshevAmpSliders[i].getValue(), (SineWaveVoice::ChebyshevLevels) (i+1));
     }
     
     //Buttons
@@ -137,6 +140,8 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
     container.addAndMakeVisible(chebyshevChart);
     totalChart.setTitle("F(x)");
     chebyshevChart.setTitle("F(sin(2*PI*t))");
+    totalChart.plotChebyshev(-1, 1, WaveshaperChart::straightChart);
+    chebyshevChart.plotChebyshev(0, 1, WaveshaperChart::sinChart);
     
     //Add Midi Keyboard
     addAndMakeVisible (midiKeyboard);
@@ -165,6 +170,7 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
     lastUIHeight.addListener (this);
 
     updateTrackProperties();
+    
 
     // start a timer which will keep our timecode display updated
     startTimerHz (30);
@@ -197,8 +203,8 @@ void JuceDemoPluginAudioProcessorEditor::paint (Graphics& g)
 
 void JuceDemoPluginAudioProcessorEditor::resized()
 {
-    const float flexBoxWidth  = getWidth()/ 8;
-    const float flexBoxHeight  = getHeight()/ 8;
+    const float flexBoxWidth  = getWidth()/ 9;
+    const float flexBoxHeight  = getHeight()/ 9;
     const Font  myFont = Font(getHeight()/40);
     const int textBoxWidth  = getWidth()/20;
     const int textBoxHeight = myFont.getHeight();
@@ -254,8 +260,7 @@ void JuceDemoPluginAudioProcessorEditor::resized()
         chebyshevLabels[i].setFont(myFont);
         chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, textBoxWidth, textBoxHeight);
         chebyshevFlexBox.items.add(juce::FlexItem (chebyshevAmpSliders[i]).withMinWidth (flexBoxWidth).withMinHeight (flexBoxHeight));
-        totalChart.setChebyshevAmplitudes(chebyshevAmpSliders[i].getValue(), (SineWaveVoice::ChebyshevLevels) i);
-        chebyshevChart.setChebyshevAmplitudes(chebyshevAmpSliders[i].getValue(), (SineWaveVoice::ChebyshevLevels) i);
+        
     }
     
     for (int i= iNumBox; i < numberOfComboBoxes; i++)
@@ -274,9 +279,7 @@ void JuceDemoPluginAudioProcessorEditor::resized()
     chebyshevFlexBox.performLayout(bottomLeft);
     comboBoxFlexBox.performLayout(topRight);
     totalChart.setBounds(totalChartBounds);
-    totalChart.plotChebyshev(-1, 1, WaveshaperChart::straightChart);
     chebyshevChart.setBounds(chebyshevChartBounds);
-    chebyshevChart.plotChebyshev(0, 1, WaveshaperChart::sinChart);
     lastUIWidth  = getWidth();
     lastUIHeight = getHeight();
     
@@ -367,6 +370,20 @@ void JuceDemoPluginAudioProcessorEditor::updateTimecodeDisplay (AudioPlayHead::C
     timecodeDisplayLabel.setText (displayText.toString(), dontSendNotification);
 }
 
+void JuceDemoPluginAudioProcessorEditor::sliderValueChanged (juce::Slider * slider)
+{
+    
+    for (int i= chebyshev1; i < numberOfChebyshevs; i++)
+    {
+        if (slider == &chebyshevAmpSliders[i])
+        {
+            totalChart.setChebyshevAmplitudes(chebyshevAmpSliders[i].getValue(), (SineWaveVoice::ChebyshevLevels) (i+1));
+            chebyshevChart.setChebyshevAmplitudes(chebyshevAmpSliders[i].getValue(), (SineWaveVoice::ChebyshevLevels) (i+1));
+            return;
+        }
+    }
+    
+}
 // called when the stored window size changes
 void JuceDemoPluginAudioProcessorEditor::valueChanged (Value&)
 {

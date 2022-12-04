@@ -16,8 +16,6 @@ WaveshaperChart::~WaveshaperChart(){}
 void WaveshaperChart::paint(Graphics &g){
     g.setColour(juce::Colours::skyblue);
     auto textBox = getLocalBounds().removeFromTop(50);
-    //g.drawRect (getLocalBounds());
-    //g.drawRect (textBox);
     g.setFont(textBox.getHeight()/3);
     g.drawText(title, textBox, juce::Justification::centred, true);
     g.setColour(juce::Colours::peachpuff);
@@ -34,20 +32,34 @@ void WaveshaperChart::paint(Graphics &g){
     wavePath.startNewSubPath (startx, starty);
     if (plotSetting == ChartSettingsEnum::straightChart)
     {
-        for (auto x = plotMin*w; x < plotMax*w; ++x)
-            wavePath.lineTo (startx++ , starty + getChebyshevSignal((float)x / (w)));
+        for (auto x = plotMin*w/2; x < plotMax*w/2; ++x)
+        {
+            auto delta = starty + getChebyshevSignal(x/w/2);
+            /*if (delta > chartArea.getHeight())
+                delta = chartArea.getHeight();
+            else if (delta < chartArea.getBottom())
+                delta = chartArea.getBottom();*/
+            wavePath.lineTo (startx++ , delta);
+        }
     }
-    else if (plotSetting == ChartSettingsEnum::sinChart)
+    if (plotSetting == ChartSettingsEnum::sinChart)
     {
         for (auto x = plotMin*w; x < plotMax*w; ++x)
-            wavePath.lineTo (startx++ , starty + getChebyshevSignal(sin(2*M_PI* x/w)));
+        {
+            auto delta = starty + .2* getChebyshevSignal(sin(2*M_PI* x/w));
+            /*if (delta > chartArea.getHeight())
+                delta = chartArea.getHeight();
+            else if (delta < chartArea.getBottom())
+                delta = chartArea.getBottom();*/
+            wavePath.lineTo (startx++ , delta);
+        }
     }
-    else
+    /*else
     {
         //Just Plot sinewave
         for (auto x = 0; x < w; ++x)
             wavePath.lineTo (startx++ , starty+ h/2 * std::sin(x * .2f));
-    }
+    }*/
     
     g.setColour (getLookAndFeel().findColour (Slider::thumbColourId));
     g.strokePath (wavePath, PathStrokeType (2.0f));
@@ -69,6 +81,7 @@ void WaveshaperChart::plotFunction(float x, std::function<float(float, float)> f
 void WaveshaperChart::setChebyshevAmplitudes(float amplitude, SineWaveVoice::ChebyshevLevels chebyshevLevel)
 {
     chebyshevAmplitudes[chebyshevLevel] = amplitude;
+    repaint();
 }
 void WaveshaperChart::plotChebyshev(float min, float max, ChartSettingsEnum setting)
 {
@@ -90,7 +103,6 @@ float WaveshaperChart::chebyshevCalculation(int chebyshev, float x)
     else
     {
         return 2 * x * chebyshevCalculation(chebyshev-1, x) - chebyshevCalculation(chebyshev-2, x);
-        
     }
 }
 

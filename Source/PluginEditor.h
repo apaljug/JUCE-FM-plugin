@@ -14,7 +14,8 @@
 class JuceDemoPluginAudioProcessorEditor  : public AudioProcessorEditor,
                                                 private Timer,
                                                 private Value::Listener,//,
-                                                public Button::Listener
+                                                public Button::Listener,
+                                                public Slider::Listener
 {
 public:
     JuceDemoPluginAudioProcessorEditor (JuceDemoPluginAudioProcessor& owner);
@@ -30,6 +31,7 @@ public:
     int getControlParameterIndex (Component& control) override;
     void updateTrackProperties();
     void buttonClicked (juce::Button* button) override;
+    void sliderValueChanged(juce::Slider * slider) override;
 
     private:
         //Enums
