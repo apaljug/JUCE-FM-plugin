@@ -18,16 +18,14 @@
 class WaveshaperChart  : public Component
 {
 public:
-    enum ChartSettingsEnum{straightChart, sinChart, noneChart};
+    enum ChartSettingsEnum{straightChart, sinChart, noInput};
     WaveshaperChart ();
     ~WaveshaperChart() override;
-    void resized() override;
     void setTitle(String titleString);
     void setChebyshevAmplitudes(float amplitude, SineWaveVoice::ChebyshevLevels chebyshevLevel);
     void plotChebyshev(float min, float max, ChartSettingsEnum setting);
     float chebyshevCalculation(int chebyshev, float x);
     float getChebyshevSignal(float currentSample);
-    void plotFunction(float x, std::function<float(float, float)> func);
     void paint (Graphics& g) override;
     
     
@@ -37,6 +35,6 @@ public:
         float plotMin, plotMax;
         int chebyshevLevel = 1;
         float chebyshevAmplitudes[SineWaveVoice::chebyshevLevelEnd];
-        ChartSettingsEnum plotSetting = ChartSettingsEnum::noneChart;
+        ChartSettingsEnum plotSetting = ChartSettingsEnum::noInput;
         SineWaveVoice myVoice;
 };

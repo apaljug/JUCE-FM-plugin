@@ -23,61 +23,50 @@ void WaveshaperChart::paint(Graphics &g){
     
     
     
-    auto chartArea = getLocalBounds().reduced(50);
+    auto chartArea = getLocalBounds().reduced(10, 50);
     g.drawRect(chartArea);
     auto w = chartArea.getWidth();
     auto h = chartArea.getHeight();
     auto startx = chartArea.getX();
     auto starty = chartArea.getCentreY();
-    wavePath.startNewSubPath (startx, starty);
+    g.setColour (getLookAndFeel().findColour
+                 (Slider::thumbColourId));
+    
+    //TODO: Remove Magic Numbers
+    //w is used to make waves start in the center
+    //And to create enough sample points to span the width of the graph.
     if (plotSetting == ChartSettingsEnum::straightChart)
     {
-        for (auto x = plotMin*w/2; x < plotMax*w/2; ++x)
+        wavePath.startNewSubPath (startx, starty);
+        for (float x = plotMin*w/2; x < plotMax*w/2; ++x)
         {
-            auto delta = starty + getChebyshevSignal(x/w/2);
-            /*if (delta > chartArea.getHeight())
-                delta = chartArea.getHeight();
-            else if (delta < chartArea.getBottom())
-                delta = chartArea.getBottom();*/
-            wavePath.lineTo (startx++ , delta);
+            auto delta = starty - getChebyshevSignal(x/w*2);
+            wavePath.lineTo (startx++, delta);
         }
+        g.strokePath (wavePath, PathStrokeType (2.0f));
     }
-    if (plotSetting == ChartSettingsEnum::sinChart)
-    {
-        for (auto x = plotMin*w; x < plotMax*w; ++x)
-        {
-            auto delta = starty + .2* getChebyshevSignal(sin(2*M_PI* x/w));
-            /*if (delta > chartArea.getHeight())
-                delta = chartArea.getHeight();
-            else if (delta < chartArea.getBottom())
-                delta = chartArea.getBottom();*/
-            wavePath.lineTo (startx++ , delta);
-        }
-    }
-    /*else
-    {
-        //Just Plot sinewave
-        for (auto x = 0; x < w; ++x)
-            wavePath.lineTo (startx++ , starty+ h/2 * std::sin(x * .2f));
-    }*/
     
-    g.setColour (getLookAndFeel().findColour (Slider::thumbColourId));
-    g.strokePath (wavePath, PathStrokeType (2.0f));
-}
-void WaveshaperChart::resized()
-{
-    //
+    else if (plotSetting == ChartSettingsEnum::sinChart)
+    {
+        wavePath.startNewSubPath (startx, starty);
+        for (float x = (plotMin)*w; x < plotMax*w; ++x)
+        {
+            auto delta = starty - getChebyshevSignal(sin(2*M_PI* x/w));
+            wavePath.lineTo (startx++ , delta);
+        }
+        g.strokePath (wavePath, PathStrokeType (2.0f));
+    }
+    else
+    {
+        //Display No Input
+        g.drawText("No Input", chartArea, juce::Justification::centred, true);
+    }
 }
 void WaveshaperChart::setTitle(String titleString)
 {
     title = titleString;
 }
 
-void WaveshaperChart::plotFunction(float x, std::function<float(float, float)> func)
-{
-    plotFunc = func;
-    //funcx = x;
-}
 void WaveshaperChart::setChebyshevAmplitudes(float amplitude, SineWaveVoice::ChebyshevLevels chebyshevLevel)
 {
     chebyshevAmplitudes[chebyshevLevel] = amplitude;
