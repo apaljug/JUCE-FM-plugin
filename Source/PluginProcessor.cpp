@@ -83,15 +83,15 @@ JuceDemoPluginAudioProcessor::JuceDemoPluginAudioProcessor()
           std::make_unique<AudioParameterFloat>("mrelease", "mRelease", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
           std::make_unique<AudioParameterInt> ("expLineEnv", "Index Numerator", 0, 3, 0),
           std::make_unique<AudioParameterInt> ("expLinModEnv", "Index Denominator", 0, 3, 0),
-          std::make_unique<AudioParameterFloat>("chebyshevAmp1", "Chebyshev Amplitude", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
-          std::make_unique<AudioParameterFloat>("chebyshevAmp2", "Chebyshev Amplitude", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
-          std::make_unique<AudioParameterFloat>("chebyshevAmp3", "Chebyshev Amplitude", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
-          std::make_unique<AudioParameterFloat>("chebyshevAmp4", "Chebyshev Amplitude", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
-          std::make_unique<AudioParameterFloat>("chebyshevAmp5", "Chebyshev Amplitude", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
-          std::make_unique<AudioParameterFloat>("chebyshevAmp6", "Chebyshev Amplitude", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
-          std::make_unique<AudioParameterFloat>("chebyshevAmp7", "Chebyshev Amplitude", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
-          std::make_unique<AudioParameterFloat>("chebyshevAmp8", "Chebyshev Amplitude", NormalisableRange<float>(0.0f, 100.0f), 0.5f),
-          std::make_unique<AudioParameterFloat>("chebyshevAmp9", "Chebyshev Amplitude", NormalisableRange<float>(0.0f, 100.0f), 0.5f)
+          std::make_unique<AudioParameterFloat>("chebyshevAmp1", "Chebyshev Amplitude", NormalisableRange<float>(-100.0f, 100.0f), 0.5f),
+          std::make_unique<AudioParameterFloat>("chebyshevAmp2", "Chebyshev Amplitude", NormalisableRange<float>(-100.0f, 100.0f), 0.5f),
+          std::make_unique<AudioParameterFloat>("chebyshevAmp3", "Chebyshev Amplitude", NormalisableRange<float>(-100.0f, 100.0f), 0.5f),
+          std::make_unique<AudioParameterFloat>("chebyshevAmp4", "Chebyshev Amplitude", NormalisableRange<float>(-100.0f, 100.0f), 0.5f),
+          std::make_unique<AudioParameterFloat>("chebyshevAmp5", "Chebyshev Amplitude", NormalisableRange<float>(-100.0f, 100.0f), 0.5f),
+          std::make_unique<AudioParameterFloat>("chebyshevAmp6", "Chebyshev Amplitude", NormalisableRange<float>(-100.0f, 100.0f), 0.5f),
+          std::make_unique<AudioParameterFloat>("chebyshevAmp7", "Chebyshev Amplitude", NormalisableRange<float>(-100.0f, 100.0f), 0.5f),
+          std::make_unique<AudioParameterFloat>("chebyshevAmp8", "Chebyshev Amplitude", NormalisableRange<float>(-100.0f, 100.0f), 0.5f),
+          std::make_unique<AudioParameterFloat>("chebyshevAmp9", "Chebyshev Amplitude", NormalisableRange<float>(-100.0f, 100.0f), 0.5f)
           //min, max, default
           })
 {
