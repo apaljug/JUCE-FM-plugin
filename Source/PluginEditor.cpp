@@ -45,7 +45,7 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
         container.addAndMakeVisible(sliders[i]);
         sliders[i].setSliderStyle(Slider::Rotary);
         sliders[i].setNumDecimalPlacesToDisplay(numDecimalPlaces);
-        sliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, textBoxWidth, textBoxHeight);
+        sliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, false, textBoxWidth, textBoxHeight);
     }
     
     for (int i = (int) chebyshev1; i < numberOfChebyshevs; i++)
@@ -53,7 +53,7 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
         container.addAndMakeVisible(chebyshevAmpSliders[i]);
         chebyshevAmpSliders[i].addListener(this);
         chebyshevAmpSliders[i].setNumDecimalPlacesToDisplay(numDecimalPlaces);
-        chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, textBoxWidth, textBoxHeight);
+        chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, false, textBoxWidth, textBoxHeight);
         totalChart.setChebyshevAmplitudes(chebyshevAmpSliders[i].getValue(), (SineWaveVoice::ChebyshevLevels) (i+1));
         chebyshevChart.setChebyshevAmplitudes(chebyshevAmpSliders[i].getValue(), (SineWaveVoice::ChebyshevLevels) (i+1));
     }
@@ -192,6 +192,10 @@ void JuceDemoPluginAudioProcessorEditor::buttonClicked (juce::Button* button)
        sliders[msustainSlider].setValue(100.0);
        sliders[mattackSlider].setValue(0.0);
   }
+    /*else if (button == &buttons[savePreset])
+    {
+        getProcessor()->getStateInformation();
+    }*/
 }
 
 //===============================================================================
@@ -258,7 +262,7 @@ void JuceDemoPluginAudioProcessorEditor::resized()
     for (int i= chebyshev1; i < numberOfChebyshevs; i++)
     {
         chebyshevLabels[i].setFont(myFont);
-        chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, true, textBoxWidth, textBoxHeight);
+        chebyshevAmpSliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, false, textBoxWidth, textBoxHeight);
         chebyshevFlexBox.items.add(juce::FlexItem (chebyshevAmpSliders[i]).withMinWidth (flexBoxWidth).withMinHeight (flexBoxHeight));
         
     }

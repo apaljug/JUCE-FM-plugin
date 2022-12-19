@@ -316,11 +316,7 @@ void JuceDemoPluginAudioProcessor::process (AudioBuffer<FloatType>& buffer, Midi
                 }
             }
         }
-
-
     }
-    
-    
     // and now get our synth to process these midi events and generate its output.
     synth.renderNextBlock (buffer, midiMessages, 0, numSamples);
 
